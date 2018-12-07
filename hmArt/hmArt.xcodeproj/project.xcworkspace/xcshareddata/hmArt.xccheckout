@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>6066D4B7-B39C-42A7-BAFE-7996AB350538</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9773781a-96e7-ce48-98bf-3d9a208d89b1++8335</key>
+		<string>http://192.168.1.254/svn/tdm/client/51art/ios/trunk/hmArt</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>hmArt.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9773781a-96e7-ce48-98bf-3d9a208d89b1++8335</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>9773781a-96e7-ce48-98bf-3d9a208d89b1++8335</key>
+		<string>http://192.168.1.254/svn/tdm</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://192.168.1.254/svn/tdm/client/51art/ios/trunk/hmArt/hmArt.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9773781a-96e7-ce48-98bf-3d9a208d89b1++8335</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9773781a-96e7-ce48-98bf-3d9a208d89b1++8335</string>
+			<key>IDESourceControlWCCName</key>
+			<string>hmArt</string>
+		</dict>
+	</array>
+</dict>
+</plist>

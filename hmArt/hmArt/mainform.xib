@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HMAppDelegate">
+            <connections>
+                <outlet property="rootController" destination="2" id="25"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tabBarController definesPresentationContext="YES" id="2">
+            <extendedEdge key="edgesForExtendedLayout"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <tabBar key="tabBar" autoresizesSubviews="NO" contentMode="scaleToFill" id="3">
+                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            </tabBar>
+            <viewControllers>
+                <navigationController title="首页" nibName="HMHome" definesPresentationContext="YES" id="8">
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="首页" image="tab_ico_1.png" id="12"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <viewControllers>
+                        <viewController title="首页" nibName="HMHome" id="10" customClass="HMHome">
+                            <extendedEdge key="edgesForExtendedLayout"/>
+                            <navigationItem key="navigationItem" title="首页" id="11"/>
+                        </viewController>
+                    </viewControllers>
+                </navigationController>
+                <navigationController title="拍卖" nibName="HMAuction" definesPresentationContext="YES" id="18">
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="分类" image="tab_ico_2.png" id="22"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="19">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <viewControllers>
+                        <viewController title="分类" nibName="HMAuction" id="20" customClass="HMAuction">
+                            <extendedEdge key="edgesForExtendedLayout"/>
+                            <navigationItem key="navigationItem" title="分类" id="21"/>
+                        </viewController>
+                    </viewControllers>
+                </navigationController>
+                <navigationController title="一口价" nibName="HMFixed" definesPresentationContext="YES" id="AiP-nR-Z8b">
+                    <tabBarItem key="tabBarItem" tag="3" title="一口价" image="tab_ico_3.png" id="E8Z-2Q-fUe"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MPZ-NS-T7V">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <viewControllers>
+                        <viewController title="一口价" nibName="HMFixed" id="2AT-2U-B44" customClass="HMFixed">
+                            <navigationItem key="navigationItem" title="一口价" id="E5D-il-d4f"/>
+                        </viewController>
+                    </viewControllers>
+                </navigationController>
+                <navigationController title="火龙果" nibName="HMStore" definesPresentationContext="YES" hidesBarsWhenVerticallyCompact="YES" id="13">
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <tabBarItem key="tabBarItem" tag="4" title="火龙果" image="tab_ico_4.png" id="17"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="14">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <viewControllers>
+                        <viewController title="火龙果" nibName="HMStore" id="15" customClass="HMStore">
+                            <extendedEdge key="edgesForExtendedLayout"/>
+                            <navigationItem key="navigationItem" title="火龙果" id="16"/>
+                        </viewController>
+                    </viewControllers>
+                </navigationController>
+                <navigationController title="我的" nibName="HMMy" definesPresentationContext="YES" id="fKi-s8-fYW">
+                    <tabBarItem key="tabBarItem" tag="5" title="我的" image="tab_ico_5.png" id="ktt-QM-gF3"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WcR-Aa-MZk">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.8862745098" green="0.14901960780000001" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <viewControllers>
+                        <viewController title="我的" nibName="HMMy" id="ysS-ZZ-T0Y" customClass="HMMy">
+                            <navigationItem key="navigationItem" title="我的" id="tMj-Vi-gX6"/>
+                        </viewController>
+                    </viewControllers>
+                </navigationController>
+            </viewControllers>
+            <connections>
+                <outlet property="delegate" destination="-1" id="24"/>
+            </connections>
+            <point key="canvasLocation" x="440" y="206.89655172413794"/>
+        </tabBarController>
+    </objects>
+    <resources>
+        <image name="tab_ico_1.png" width="30" height="30"/>
+        <image name="tab_ico_2.png" width="30" height="30"/>
+        <image name="tab_ico_3.png" width="30" height="30"/>
+        <image name="tab_ico_4.png" width="30" height="30"/>
+        <image name="tab_ico_5.png" width="30" height="30"/>
+    </resources>
+</document>
