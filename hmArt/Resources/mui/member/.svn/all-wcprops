@@ -9,17 +9,17 @@ svn:wc:ra_dav:version-url
 V 67
 /svn/!svn/ver/6341/51art/assets/mui/member/HMJoinApplyProtocol.html
 END
-HMDepositLog2.html
-K 25
-svn:wc:ra_dav:version-url
-V 60
-/svn/!svn/ver/958/51art/assets/mui/member/HMDepositLog2.html
-END
 HMPush_list1.html
 K 25
 svn:wc:ra_dav:version-url
 V 60
 /svn/!svn/ver/1398/51art/assets/mui/member/HMPush_list1.html
+END
+HMDepositLog2.html
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/958/51art/assets/mui/member/HMDepositLog2.html
 END
 HMAuction_log.html
 K 25
@@ -33,11 +33,11 @@ svn:wc:ra_dav:version-url
 V 53
 /svn/!svn/ver/749/51art/assets/mui/member/HMHtml.html
 END
-HMOrder_list.html
+HMPass.html
 K 25
 svn:wc:ra_dav:version-url
-V 60
-/svn/!svn/ver/1279/51art/assets/mui/member/HMOrder_list.html
+V 53
+/svn/!svn/ver/751/51art/assets/mui/member/HMPass.html
 END
 HMConsigneeList.html
 K 25
@@ -45,11 +45,11 @@ svn:wc:ra_dav:version-url
 V 63
 /svn/!svn/ver/5192/51art/assets/mui/member/HMConsigneeList.html
 END
-HMPass.html
+HMOrder_list.html
 K 25
 svn:wc:ra_dav:version-url
-V 53
-/svn/!svn/ver/751/51art/assets/mui/member/HMPass.html
+V 60
+/svn/!svn/ver/1279/51art/assets/mui/member/HMOrder_list.html
 END
 HMDeposit.html
 K 25
@@ -69,17 +69,11 @@ svn:wc:ra_dav:version-url
 V 60
 /svn/!svn/ver/1112/51art/assets/mui/member/HMDepositLog.html
 END
-HMOrderRefund_list.html
+HMPush_list.html
 K 25
 svn:wc:ra_dav:version-url
-V 65
-/svn/!svn/ver/541/51art/assets/mui/member/HMOrderRefund_list.html
-END
-HMDepositRechatge.html
-K 25
-svn:wc:ra_dav:version-url
-V 64
-/svn/!svn/ver/958/51art/assets/mui/member/HMDepositRechatge.html
+V 59
+/svn/!svn/ver/1810/51art/assets/mui/member/HMPush_list.html
 END
 HMOrder_pay_addrList.html
 K 25
@@ -87,11 +81,17 @@ svn:wc:ra_dav:version-url
 V 67
 /svn/!svn/ver/543/51art/assets/mui/member/HMOrder_pay_addrList.html
 END
-HMPush_list.html
+HMDepositRechatge.html
 K 25
 svn:wc:ra_dav:version-url
-V 59
-/svn/!svn/ver/1810/51art/assets/mui/member/HMPush_list.html
+V 64
+/svn/!svn/ver/958/51art/assets/mui/member/HMDepositRechatge.html
+END
+HMOrderRefund_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/541/51art/assets/mui/member/HMOrderRefund_list.html
 END
 HMOrder_unpaid.html
 K 25

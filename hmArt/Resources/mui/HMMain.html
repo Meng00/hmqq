@@ -482,8 +482,7 @@
 					if(i == 0) cdInterval = null;
 					cd = cd + 1;
 				},toDistr: function(data){
-					alert(JSON.stringify())
-//					app.HMARTJsObj(api.my.getLoginMobile.DATA,'winLoad.checkDistr');
+					app.HMARTJsObj(api.my.getLoginMobile.DATA,'winLoad.checkDistr');
 				},checkDistr : function(data){
 					api.my.getLoginMobile.param = eval('(' + data +')');
 					app.ajax(api.my.getLoginMobile,function(data){
@@ -498,7 +497,7 @@
 						if(err.result==2)	app.pushView('hmqq-app://Login')
 					});
 				},toIntegralShop: function(data){
-					
+					app.pushView('hmqq-mui://www.hlgart.com/pitaya/web/integral/HMIntegralShop.html');
 				},getVersion: function(data){
 					api.other.sysVersion.param = eval('(' + data +')');
 					app.ajax(api.other.sysVersion,function(data){
