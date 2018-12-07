@@ -1,0 +1,35 @@
+{
+	"index.html": {
+		"resources": [
+			"images/limit_pic2.png",
+			"images/recom_pic1.png",
+			"images/boutique_pic1.png",
+			"images/icon6.png",
+			"js/swiper.min.js",
+			"images/limit_pic3.png",
+			"images/num_icon.png",
+			"fonts/iconfont.woff",
+			"images/recom_pic3.png",
+			"images/banner1.png",
+			"images/icon4.png",
+			"images/icon5.png",
+			"images/icon9.png",
+			"js/mui.js",
+			"fonts/mui.ttf",
+			"css/style.css",
+			"images/icon3.png",
+			"images/icon7.png",
+			"images/icon8.png",
+			"css/swiper.css",
+			"images/index-logo.png",
+			"css/mui.css",
+			"images/icon2.png",
+			"images/limit_pic1.png",
+			"images/icon10.png",
+			"images/icon1.png",
+			"images/recom_pic2.png",
+			"images/share_icon.png",
+			"images/boutique_pic2.png"
+		]
+	}
+}

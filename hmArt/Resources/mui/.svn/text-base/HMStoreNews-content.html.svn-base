@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>店铺公告</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/>  
+     <style>
+     	.mui-content {
+		    background-color: #fff;
+		}
+     </style>
+</head>
+<body class="bg_white">
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">店铺公告</h1>
+	</header>
+	<div class="mui-content" style="width=100%;"></div>
+	<script src="js/mui.min.js"></script>
+	<script src="js/app.js"></script>
+	<script type="text/javascript">
+		function onARTJsObjReady(){
+			var url = config.HOST + 'shopNews/detail2.htm';
+			mui.ajax({
+				type:'post',
+				url: url,
+				data:{id:appParams.newsId},
+				dataType: 'html',
+				timeout: 30000, //超时时间
+				success : function(data){
+					mui('.mui-content')[0].innerHTML = data;
+				},
+				error : function(xhr, type, errorThrown){
+					//errorCallback(xhr, type, errorThrown);
+				}
+			});
+		}
+//		app.loadding.show();
+	</script> 
+</body>
+</html>

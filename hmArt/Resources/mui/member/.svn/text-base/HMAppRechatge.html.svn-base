@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>余额</title>
+     <link rel="stylesheet" href="../css/swiper.css">
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+     <link href="../css/style.css" rel="stylesheet"/>
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+     <style>
+     	.mui-btn-block{padding: 10px 0;}
+		.hidden{display: none;}
+		.pubcon{}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">余额充值</h1>
+		<a class="mui-icon mui-pull-right mui-icon-help hidden"></a>
+	</header>
+	<div class="mui-content confirm">
+		<div class="pubcon" style="line-height: 50px;height: 50px;font-size: 1.4rem;color: #2d2d2d;padding: 0 10px;background: #fff;">
+			<label>余额充值</label><input type="text" id="amount" placeholder="请输入充值金额" style="width: 60%;border: none;" />
+		</div>
+		<div class="limit_group over_hidd auction_group shop_colle install_group order_list paddingt-5">
+		<p class="mes_tit">选择支付方式</p>
+		<ul class="mui-table-view mui-table-view-chevron pay_type">
+			<li class="mui-table-view-cell mui-media clearfix" value="2" style="display: none;">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf1_icon.png" alt="" />银行卡支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="2" type="radio" name="type"/>						
+					<lable for="ok1"></lable>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix" value="1">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf2_icon.png" alt="" />支付宝支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="1" type="radio" name="type" />							
+					<lable for="ok2"></lable>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix" value="3">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf3_icon.png" alt="" />微信支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="3" type="radio" name="type" checked />							
+					<lable for="ok3"></lable>
+				</div>
+			</li>
+		</ul>
+		</div>
+		<div align="center">
+			<div style="width: 98%;text-align: center;">
+				<button id="toPay" type="button" class="mui-btn mui-btn-danger mui-btn-block">充值</button>
+			</div>
+		</div>
+	</div>
+
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script>
+	var winLoad = {
+		init: function() {
+			api.my.deposit.recharge.DATA.type = 3;
+//			type: 1:VIP充值；2：商家保证金充值；3：用户余额充值
+//			payType：1：支付宝；2：银联；3：微信
+//			jsPay：1：网页支付；其他APP支付
+				mui('.pay_type').on('change', 'input', function() {
+					api.my.deposit.recharge.DATA.payType = this.id;
+				});
+			mui('#toPay')[0].addEventListener("tap",function(){
+				winLoad.blur();
+				api.my.deposit.recharge.DATA.amount = mui('#amount')[0].value;
+				//api.my.deposit.recharge.DATA.jsPay = 1;
+				if(api.my.deposit.recharge.DATA.amount.length==0){
+					app.toast('请输入您想要充值的余额');
+					return;
+				}else{
+					var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+					var amountnum = mui('#amount')[0].value;
+					if (!reg.test(amountnum)){
+					    app.toast('请输入正确金额！');
+					    return ;
+					}else{
+						app.HMARTJsObj(api.my.deposit.recharge.DATA,'winLoad.toPay');
+					}
+				}				
+			});
+		},
+		blur: function(){
+			mui('input').each(function(i,itme){
+				this.blur();
+			});
+		},
+		serach: function(data) {
+			api.my.deposit.serach.param = eval('(' + data +')');
+			app.ajax(api.my.deposit.serach,function(data){
+				
+			});
+		},
+		toPay :function(data){
+			api.my.deposit.recharge.param = eval('(' + data +')');
+			app.ajax(api.my.deposit.recharge,function(data){
+				if(data.obj.isPaySuccess == true){
+//					app.toast('支付成功，请前往个人中心查看详情。');
+//					mui.back();
+				}else{
+						app.loadding.show();
+						if(data.obj.payType == 2||data.obj.payType==5||data.obj.payType==1){
+							HMARTJsObj.toPayData(data.obj.payType, data.obj.data);
+						}else{
+							HMARTJsObj.toPayData(data.obj.payType, JSON.stringify(data.obj.data));
+						}
+						app.loadding.hide();
+						api.my.wxJsPayStatus.DATA.paySerialNo = data.obj.paySerialNo;
+						setTimeout("app.HMARTJsObj(api.my.wxJsPayStatus.DATA,'winLoad.wxJsPayStatus')",5000);
+				}
+			});
+		},
+		wxJsPayStatus: function(data){
+			api.my.wxJsPayStatus.param = eval('(' + data +')');
+			app.ajax2(api.my.wxJsPayStatus,function(data){
+				if(data.result==1){
+						if(data.obj.status == 2){//1 :重复调用2：提示支付成功 其他：提示支付失败
+							app.confirm.init({
+								message :  '充值成功',
+								btnArray : ['确认'],
+								callback : function(i){
+									mui.back();
+								}
+							});
+						}else if(data.obj.status == 1){									
+							setTimeout("app.HMARTJsObj(api.my.wxJsPayStatus.DATA,'winLoad.wxJsPayStatus')",1000);
+						}else{
+							app.confirm.init({
+								message :  '充值失败',
+								btnArray : ['确认'],
+								callback : function(i){
+									mui.back();
+								}
+							});
+						}
+				}
+			},function(){},false)
+		}
+	}
+	function onARTJsObjReady(){
+		api.my.deposit.recharge.DATA.payType = 3;
+		api.my.deposit.recharge.DATA.type = 3;
+		var type = 3;//1:VIP充值；2：商家保证金充值
+		winLoad.init();
+	}
+	app.load.mock(function(){});
+</script>
+</body>
+</html>

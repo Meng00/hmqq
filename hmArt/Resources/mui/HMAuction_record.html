@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>出价记录</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/>
+     
+</head>
+<body class="bg_white">
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">出价记录</h1>
+	</header>
+	
+	<div class="mui-content">
+			<div class="over_hidd Description record_all">
+				<ol class="Description_1">
+					
+				</ol>
+		</div>
+	</div>
+	
+<script type="text/html" id="temp-list">
+	{{each obj as item}}
+	<li class="price record_list margintb-0">
+		<div>
+			<p class="record first_line">
+				<span>{{item.mobile}}</span>				
+				<span>{{item.time}}</span>
+				<span>{{item.status}}</span>
+				<strong>￥{{item.amount}}</strong>
+			</p>
+		</div>
+	</li>
+	{{/each}}
+</script>
+<script src="js/mui.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/mock-min.js"></script>
+<script>
+	
+	var winLoad = {
+		init : function(){
+			if(mui.os.ios || mui.os.android){
+				mui('header')[0].classList.add('mui-bar-transparent');
+			}
+			
+			app.HMARTJsObj(api.store.records.DATA,'winLoad.list');
+		},
+		list :function(data){
+			api.store.records.param = eval('(' + data +')');
+			app.ajax(api.store.records,function(data){
+				var html = template('temp-list', data);
+				mui('.Description_1')[0].innerHTML = html;
+			
+			});
+		}
+	}
+    //app通知
+	function onARTJsObjReady(){
+		if(typeof(HMARTJsObj) == "undefined"){
+			appParams = {};
+			appParams.ownerId = 14;
+		}
+		mui('#offCanvasSideScroll').scroll();
+		
+		api.store.records.DATA.id = appParams.ownerId;
+		winLoad.init();
+		
+	}
+	
+	Mock.mock(config.HOST+config.MOCK_KEY+api.store.records.URL,{"result":"1","message":"加载成功","obj":[{"mobile":"176****9708","time":"10.16 23:23:13","amount":"120","status":"领先"},{"mobile":"186****9762","time":"10.16 23:00:29","amount":"100","status":"出局"},{"mobile":"176****9708","time":"10.15 22:43:08","amount":"80","status":"出局"}]});
+	app.load.mock(function(){
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+	});
+</script>
+
+
+</body>
+</html>
+</body>
+</html>

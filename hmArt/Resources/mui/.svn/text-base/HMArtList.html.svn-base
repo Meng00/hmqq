@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>店铺</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/>
+	<style> 
+		/** 条件检索页面 样式调整**/
+header.kind_sea input[type="search"] {
+	background: #f4f4f4 none repeat scroll 0 0;
+	padding: 0 8px;
+	text-align: left;
+}
+.mui-bar .mui-btn-link {
+	font-size: 14px;
+}
+.mui-bar .mui-title {
+	right: 50px;
+	left: 50px;
+}
+/*** 条件检索页面结束 **/
+
+
+#search_all .mui-table-view {
+	margin-top: 2px;
+	background: #efeff4;
+}
+#search_all .mui-table-view-cell{
+	width: 49%;
+	padding: 5px;
+	margin: 0;
+	margin-bottom: 1rem;
+	float: left;
+	position: static;
+	background: #fff;
+}
+#search_all .mui-table-view-cell:nth-child(odd){
+	margin-right:2%;
+}
+#search_all .mui-table-view-cell .mui-media-object {
+	width: 100%;
+	max-width: 100% !important;
+	height: auto;
+}
+#search_all .mui-table-view-cell .mui-media-body{
+	width: 100%;
+	display: inline-block;
+}
+#search_all .mui-table-view-cell .mui-media-body .p2{
+	overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+
+}
+#search_all .auction_ing .p3 em, #search_all .boutique_txt .p3 em{position: relative;float: right;}
+.nogoods{
+	padding: 10px;
+    line-height: 30px;
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+}
+input{color:#333 !important;}
+::-webkit-input-placeholder{text-align: center;}
+header.art_1226 .bdb_1{border-bottom: 1px solid #eee;}
+.mui-bar-nav ~ .mui-content{padding-top: 84px;}
+.mui-android .mui-modal .mui-bar{position: fixed;}
+.hidden{display: none;}
+.tab_sec{border-top: 1px solid #e9e9e9 !important;}
+.mui-table-view-cell:after{left: 0;}
+	</style>
+</head>
+<body>
+	<div class="mui-content">
+		<header class="mui-bar mui-bar-nav top-style auction_1220 fixed_1220 art_1226 paddinglr-0">
+			<div class="clearfix pos_rel bdb_1">
+				<a class="mui-action-back mui-icon mui-icon-back mui-pull-left margin-0"></a>
+				<a class="iconfont mui-icon mui-pull-left mui-pull-right modal margin-0">&#xe608;</a>
+				<h1 class="mui-title color-2d" style="right: 50px;">艺术品列表</h1>
+			</div>
+			<div class="mui-icon mui-icon-arrowthinup scroll_init hidden"></div>
+			<!--分类菜单-->
+			<div id="sliderSegmentedControl" class="mui-segmented-control mui-segmented-control-inverted bg_white" style="top:0;">
+				<a class="mui-control-item changeclick" href="#item3mobile" data-type='0'>一口价</a>
+			</div>
+			<!--分类菜单（end）-->
+			<!--综合 Tab栏-->
+			<ul class="tab_sec clearfix">
+				<li index="1"><a class="active">综合</a></li>
+				<li index="2"><a href="#topPopover">价格<em class="order"></em></a></li>
+				<li index="3"><a href="#topPopover2">浏览次数<em class="order"></em></a></li>
+				<li index="4"><a>最新上线</a></li>
+			</ul>
+			<!--综合 Tab栏end-->
+		</header>
+		<!--价格弹窗-->
+		<div id="topPopover" class="mui-popover store_pop fixed_pop">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" orderBy="desc">
+							从高到低
+						</li>
+						<li class="mui-table-view-cell" orderBy="asc">
+							从低到高
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="topPopover2" class="mui-popover store_pop fixed_pop">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" orderBy="desc">
+							从高到低
+						</li>
+						<li class="mui-table-view-cell" orderBy="asc">
+							从低到高
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll" style="padding-top: 40px;">
+				<div id="search_all" class="list">
+				</div>
+			</div>
+		</div>
+		
+		<div id="modal" class="mui-modal">
+			<header class="mui-bar mui-bar-nav bg_white kind_sea">
+				<a href="#modal" class="mui-btn mui-btn-blue mui-btn-link mui-pull-left" id="cancel" style="color: gray;">取消</a>
+				<h1 class="mui-title">
+					<input type="search" class="mui-input-clear" placeholder="请输入作品名称、艺术家名"/>
+				</h1>
+				<a href="#modal" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="confirm">确认</a>
+			</header>
+			<div id="modal-content" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div class="area1">
+						<p>价格</p>
+						<div class="price_area">
+							<span>价格区间（元）</span>
+							<input type="tel" class="min_price mui-text-left" placeholder="最低价" id="minPrice" onfocus="" />
+							<span>-</span> 
+							<input type="tel" class="max_price mui-text-left" placeholder="最高价" id="maxPrice" onfocus="" />
+						</div>
+						<ul class="price_item clearfix" id="price_mm">
+							<li class="" minPrice="0" 		maxPrice="1000">0-1000</li>
+							<li class="" minPrice="1000" 	maxPrice="5000">1000-5000</li>
+							<li class="" minPrice="5000" 	maxPrice="10000">5000-1万</li>
+							<li class="" minPrice="10000" maxPrice="50000">1万-5万</li>
+							<li class="" minPrice="50000" maxPrice="100000">5万-10万</li>
+							<li class="" minPrice="100000" maxPrice="">10万以上</li>
+						</ul>
+					</div>
+					<div class="area1">
+						<p>分类</p>			
+						<ul class="price_item clearfix" id="price_classfiy"></ul>
+					</div>
+					<div class="area1"   >
+						<p>题材</p>			
+						<ul class="price_item clearfix" id="price_material"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/html" id="temp-price_classfiy">
+	{{each obj as item i}}
+	<li class="" data-id={{item.id}} data-chiled={{item.chiled | toString}}>{{item.name}}</li>
+	{{/each}}
+</script>
+<script type="text/html" id="temp-price_material">
+	{{each data as item i}}
+	<li class="" data-id={{item.id}} >{{item.name}}</li>
+	{{/each}}
+</script>
+<script src="js/mui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/mock-min.js"></script>
+<script>
+		if(mui.os.ios){
+			mui('#offCanvasContentScroll')[0].classList.add('paddingt_106');
+			mui('#modal-content')[0].classList.add('paddingt-66');
+		}else{
+			mui('#modal-content')[0].classList.add('paddingt-44');
+		}
+		var currsign="";
+		winBind = {
+			init : function(){
+				mui('.tab_sec').on('tap','li',function(){
+					var index = this.getAttribute('index');
+					if(index == 1 || index == 4){
+						mui('.tab_sec')[0].querySelector('.active').classList.remove('active');
+						this.firstChild.classList.add('active');
+						api.store.search.DATA.other.sort = index-1;
+						api.store.search.DATA.other.order = '';
+						winLoad.initData();
+						mui('.order')[0].className = 'order';
+						mui('.order')[1].className = 'order';
+					}
+				});
+				mui('#topPopover').on('tap','li',function(){
+					mui('#topPopover')[0].classList.remove('mui-active');
+					mui('#topPopover')[0].style.display = 'none';
+					mui('.mui-backdrop')[0].remove();
+					mui('.tab_sec')[0].querySelector('.active').classList.remove('active');
+					mui('.order')[0].parentNode.classList.add('active');
+					var orderBy = this.getAttribute('orderBy');
+					if(orderBy == 'desc'){
+						mui('.order')[0].className = 'order dot_bottom';
+					}else {
+						mui('.order')[0].className = 'order dot_top';
+					}
+					mui('.order')[1].className = 'order';
+					api.store.search.DATA.other.sort = 1;
+					api.store.search.DATA.other.order = orderBy;
+					winLoad.initData();
+				});
+				mui('#topPopover2').on('tap','li',function(){
+					mui('#topPopover2')[0].classList.remove('mui-active');
+					mui('#topPopover2')[0].style.display = 'none';
+					mui('.mui-backdrop')[0].remove();
+					mui('.tab_sec')[0].querySelector('.active').classList.remove('active');
+					mui('.order')[1].parentNode.classList.add('active');
+					var orderBy = this.getAttribute('orderBy');
+					if(orderBy == 'desc'){
+						mui('.order')[1].className = 'order dot_bottom';
+					}else {
+						mui('.order')[1].className = 'order dot_top';
+					}
+					mui('.order')[0].className = 'order';
+					api.store.search.DATA.other.sort = 2;
+					api.store.search.DATA.other.order = orderBy;
+					winLoad.initData();
+				});
+				
+				
+				mui('header').on('tap','.modal',function(){
+					api.store.search.DATA.other.minPrice = '';
+					api.store.search.DATA.other.maxPrice = '';
+					api.store.search.DATA.other.keywork = '';
+					api.store.search.DATA.other.classifyCode = '';
+					
+					mui('.mui-input-clear')[0].value = '';
+					mui('#minPrice')[0].value = '';
+					mui('#maxPrice')[0].value = '';
+					mui.each(mui('#price_mm li'),function(){
+						this.setAttribute("class","");
+					});
+					mui.each(mui('#price_classfiy li'),function(){
+						this.setAttribute("class","");
+					});
+					
+					mui('#price_material')[0].innerHTML = '';
+					
+					mui("#modal")[0].classList.add('mui-active');
+					setTimeout(function(){
+						var top = mui('.area1')[0].style.paddingTop;
+						if(top == '0px'){
+							mui('.area1')[0].style.paddingTop = '1px';
+						}else{
+							mui('.area1')[0].style.paddingTop = '0px';
+						}
+						
+					},300);
+				});
+				winBind.onPrice_mm();
+				winBind.onPrice_classfiy();
+				winBind.onPrice_material();
+				winBind.onConfirm();
+				mui('body').on('tap','.min_price',function(){
+					if(mui('#price_mm .price_active')[0]){
+						mui('#price_mm .price_active')[0].setAttribute('class','');
+					}
+				});
+				mui('body').on('tap','.max_price',function(){
+					if(mui('#price_mm .price_active')[0]){
+						mui('#price_mm .price_active')[0].setAttribute('class','');
+					}
+				});
+				mui('#sliderSegmentedControl').on('tap','a',function(){
+					mui('.tab_sec')[0].querySelector('.active').classList.remove('active');
+					mui('.tab_sec a')[0].classList.add('active');
+					mui('.order')[0].className = 'order';
+					mui('.order')[1].className = 'order';
+				  	var type  = this.getAttribute('data-type');
+				  	api.store.search.DATA.other.type = type;
+				  	api.store.search.DATA.other.order = "";
+				  	api.store.search.DATA.other.sort = 0;
+				  	winLoad.initData();
+				}) 
+				winBind.scroll_top_init();
+
+			},
+			scroll_top_init:function(){
+				var scroll = mui('#offCanvasContentScroll').scroll();//search_all
+				document.querySelector('#offCanvasContentScroll').addEventListener('scroll', function (e) {
+					scroll_y = -scroll.y;		
+					if(scroll_y <80){
+						mui('.scroll_init')[0].classList.add('hidden');
+					}else{
+						mui('.scroll_init')[0].classList.remove('hidden');
+					}
+				})
+				mui('.scroll_init')[0].setAttribute('style', 'top:'+(document.body.scrollHeight-80)+'px');
+				mui('header').on('tap','.scroll_init',function(){
+				  	mui('#offCanvasContentScroll').scroll().scrollTo(0,0,100);
+				})
+			},
+			onPrice_classfiy : function(){
+				mui('#price_classfiy').on("tap","li",function(){
+					var self = this;
+					mui.each(mui('#price_classfiy li'),function(){
+						if(this != self)this.setAttribute("class","");
+					})
+					
+					if(this.getAttribute("class").indexOf("price_active") > -1){
+						mui('#price_classfiy .price_active')[0].setAttribute("class","");	
+						mui('#price_material')[0].innerHTML = "";
+					}else{
+						this.setAttribute("class","price_active");
+						chiled = this.getAttribute("data-chiled");
+						//显示下级
+						chiled = JSON.parse(chiled);
+						var html = template('temp-price_material', {"data":chiled});
+						mui('#price_material')[0].innerHTML = html;	
+					}
+				});
+			},
+			onPrice_material : function(){
+				mui('#price_material').on("tap","li",function(){
+					var self = this;
+					mui.each(mui('#price_material li'),function(){
+						if(this != self) this.setAttribute("class","");
+					})
+					
+					if(this.getAttribute("class").indexOf("price_active") > -1) {
+						this.setAttribute("class","");
+					}else{
+						this.setAttribute("class","price_active");
+					} 
+				});
+			},
+			onPrice_mm : function(){
+				mui('#price_mm').on("tap","li",function(){
+					mui('#minPrice')[0].value = '';
+					mui('#maxPrice')[0].value = '';
+					var self = this;
+					mui.each(mui('#price_mm li'),function(){
+						if(this != self)this.setAttribute("class","");
+					})
+					
+					if(this.getAttribute("class").indexOf("price_active") > -1) mui('#price_mm .price_active')[0].setAttribute("class","");
+					else this.setAttribute("class","price_active");	
+				});
+			},
+			onConfirm : function(){
+				mui('#modal header').on("tap","#cancel",function(){
+					if(typeof(appParams) != "undefined" && appParams != null) {
+						if(appParams.goBack){
+							mui.back();
+						}
+					}
+				});
+				mui('#modal header').on("tap","#confirm",function(){
+					document.activeElement.blur();
+					api.store.search.DATA.other.minPrice = '';
+					api.store.search.DATA.other.maxPrice = '';
+					api.store.search.DATA.other.keywork = '';
+					
+					if(mui('#price_mm .price_active')[0]){
+						api.store.search.DATA.other.minPrice = mui('#price_mm .price_active')[0].getAttribute("minPrice");
+						api.store.search.DATA.other.maxPrice = mui('#price_mm .price_active')[0].getAttribute("maxPrice");
+					}
+					
+					api.store.search.DATA.other.classifyCode = mui('#price_classfiy .price_active')[0] ? mui('#price_classfiy .price_active')[0].getAttribute("data-id") : "";
+					if(mui('#price_material .price_active').length > 0){
+						api.store.search.DATA.other.classifyCode = mui('#price_material .price_active')[0].getAttribute("data-id");
+					}
+
+					if(mui('#minPrice')[0].value) api.store.search.DATA.other.minPrice = mui('#minPrice')[0].value;
+					if(mui('#maxPrice')[0].value) api.store.search.DATA.other.maxPrice = mui('#maxPrice')[0].value;
+					api.store.search.DATA.other.keywork = mui('.mui-input-clear')[0].value;
+					api.store.search.DATA.pageIndex = 1;
+
+					app.HMARTJsObj(api.store.search.DATA,'winLoad.search_all');
+					mui('#offCanvasContentScroll').scroll().scrollTo(0,0,100);//
+					
+				});
+			},
+			toArtInfo: function(){
+				app.DateUtil.initCountdown();
+				mui('#search_all ul').on('tap','li',function(){
+				 	var ownerId = this.getAttribute('ownerId');
+					var url = 'hmqq-jsweb://localhost/mui/HMArtInfo.html?ownerId='+ownerId;
+					if(typeof(appParams) != "undefined" && appParams != null && appParams.sellerId){
+						url = url+'&sellerId='+appParams.sellerId;
+					} 
+					app.pushView(url);
+				});
+			}
+		}
+		
+		winLoad = {
+			init : function(){
+				/* 加载数据 */
+				app.HMARTJsObj(api.store.classfiy.DATA,'winLoad.classfiy');
+				//app.DateUtil.initCountdown();
+				/* 初始化 上拉下拉 */
+				setTimeout(function(){
+					app.scroll.init({
+						scrollDom : mui('#offCanvasContentScroll')[0], // 滚动容器
+						up:function(){
+							/* 获取分页参数 */
+							api.store.search.DATA.pageIndex += 1; //下一页
+							app.HMARTJsObj(api.store.search.DATA,'winLoad.pullUp');
+						}
+					});
+				},1000);//给dom 1s的加载时间
+				api.other.sysVersion.DATA.device =  hmqq_device;
+				app.HMARTJsObj(api.other.sysVersion.DATA,'winLoad.getVersion');
+			},
+			initData :function(){
+				//alert(mui('.tab_sec')[0].querySelector('.active').outerHTML);
+				api.store.search.DATA.pageIndex = 1;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.search_all');
+				mui('#offCanvasContentScroll').scroll().scrollTo(0,0,100);//
+				mui('#search_all')[0].innerHTML = '';
+
+			},
+			pullUp : function(data){
+				api.store.search.param = eval('(' + data +')');
+				app.ajax(api.store.search,function(data){
+					if(typeof(appParams) != "undefined" && appParams != null && appParams.sellerId){
+						data.sellerId = appParams.sellerId;
+					}
+					winTemp.setListData(data);
+					//var html = template('temp-search_all', data);
+					//mui('#search_all')[0].innerHTML += html;
+					var div = document.createElement("div");
+				　　	div.innerHTML = html;
+				　　	mui('#search_all')[0].appendChild(div);
+				
+					if(data.pageCount > api.store.search.DATA.pageIndex){
+						mui("#offCanvasContentScroll")[0].setAttribute("up",'true');
+					}
+					winBind.toArtInfo();
+				});
+			},
+			search_all : function(data){
+				api.store.search.param = eval('(' + data +')');
+				app.ajax(api.store.search,function(data){
+						if(typeof(appParams) != "undefined" && appParams != null && appParams.sellerId){
+							data.sellerId = appParams.sellerId;
+						} 
+ 						winTemp.setListData(data);
+						if(data.total == 0){
+							mui('#search_all')[0].innerHTML = '<div class="nogoods">亲~  非常抱歉，没有符合规则作品！逛逛其他的吧。</div>'
+							winBind.toArtInfo();
+						}
+						if(data.pageCount > api.store.search.DATA.pageIndex){
+							mui("#offCanvasContentScroll")[0].setAttribute("up",'true');
+						}
+				});
+			},
+			classfiy : function(data){
+				api.store.classfiy.param = eval('(' + data +')');
+				app.ajax(api.store.classfiy,function(data){
+					var html = template('temp-price_classfiy', data);
+					mui('#price_classfiy')[0].innerHTML = html;
+				});
+			},getVersion: function(data){
+				api.other.sysVersion.param = eval('(' + data +')');
+				app.ajax(api.other.sysVersion,function(data){
+					currsign = data.obj.device+'_'+data.obj.version;
+					loadJs(config.HOST+'mui/apppage/artlist_'+currsign+'.js')
+				})
+			}
+		}
+		
+		function onARTJsObjReady() {
+			mui('.mui-scroll-wrapper').scroll({
+				 deceleration:deceleration, //阻尼系数,系数越小滑动越灵敏
+				 indicators: true //是否显示滚动条
+			});
+			//mui('body')[0].addEventListener('touchend',function(){
+			//	document.activeElement.blur();
+			//});
+			if(typeof(appParams) != "undefined" && appParams != null) {
+				appParams.goBack = false;
+				if(appParams.id){
+					api.store.search.DATA.other.classifyCode = appParams.id;
+				} 
+				if(appParams.tit){
+					mui('header .mui-title')[0].innerHTML = appParams.tit;
+				}
+				if(appParams.sellerId){
+					api.store.search.DATA.other.sellerId = appParams.sellerId;
+				}
+
+				if(appParams.point_time){
+					api.store.search.DATA.other.point_time = appParams.point_time;
+				}
+				if(appParams.search){
+					appParams.goBack = true;
+					mui("#modal")[0].classList.add('mui-active');
+				}
+				delete appParams.search;
+				if(appParams.classifyCode){
+					api.store.search.DATA.other.classifyCode = appParams.classifyCode;
+				}
+				if(appParams.keywork){
+					api.store.search.DATA.other.keywork = decodeURI(appParams.keywork);
+				}
+			}else{
+				api.store.search.DATA.other.type = 1;
+			}
+			winLoad.init();
+			winBind.init();
+		}
+
+		/* 模拟数据 启动 */
+		
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.search.URL,{"result":"1","message":"加载成功","pageCount":499,"total":4897415,"data":[{"ownerId":844,"code":"161114150844","artName":"暮云春树(布面油画）","image":"/hmqq/artwork-0-0/201611141449001_b743302b-wh.jpg","artSize":"63x122cm","artist":"梁峰","hits":2787,"attention":4,"type":1,"status":0,"price":"500","remainTime":334941},{"ownerId":8484,"code":"161230168484","artName":"岳阳楼大观图 （水墨纸本）","image":"/hmqq/artwork-0-0/201612301614003_4cc67ac9-wh.jpg","artSize":"24x246cm  98x246cm","artist":"杨晖","hits":2449,"attention":3,"type":1,"status":0,"price":"20000","remainTime":75741},{"ownerId":4510,"code":"161128174510","artName":"《静物》（布面油画）","image":"/hmqq/artwork-0-0/201611281733041_241e51f1-wh.jpg","artSize":"49x58cm","artist":"刘运庆","hits":2256,"attention":2,"type":1,"status":0,"price":"700","remainTime":75741},{"ownerId":4513,"code":"161128174513","artName":"《老人》（布面油画）","image":"/hmqq/artwork-0-0/201611281738036_f3cf9209-wh.jpg","artSize":"49x58cm","artist":"刘运庆","hits":1180,"attention":3,"type":1,"status":0,"price":"600","remainTime":162141},{"ownerId":4657,"code":"161130144657","artName":"中美协  乐女吟霓 系列一（水墨纸本）","image":"/hmqq/artwork-0-0/201611301356018_afd9a917-wh.jpg","artSize":"136x68cm","artist":"高伟","hits":1129,"attention":5,"type":1,"status":0,"price":"2000","remainTime":248541},{"ownerId":3165,"code":"161121113165","artName":"一水护田将绿绕(布面油画）","image":"/hmqq/artwork-0-0/201611211147022_4e464f24-wh.jpg","artSize":"62x122cm","artist":"梁峰","hits":1080,"attention":7,"type":1,"status":0,"price":"500","remainTime":248541},{"ownerId":4914,"code":"161202094914","artName":"雪域岁月 （水墨纸本 人物 动物）","image":"/hmqq/artwork-0-0/201612020917043_8f3b868b-wh.jpg","artSize":"68x112cm","artist":"陈金强","hits":1047,"attention":3,"type":1,"status":1,"price":"4000","remainTime":154941,"auctionNumber":0},{"ownerId":8483,"code":"161230168483","artName":"山中一夜雨 （水墨纸本 稍有破损）","image":"/hmqq/artwork-0-0/201612301612036_dc201f94-wh.jpg","artSize":"138x69cm","artist":"杨晖","hits":998,"attention":1,"type":1,"status":0,"price":"12000","remainTime":248541},{"ownerId":261,"code":"161110150261","artName":"嬉戏一（布面油画）","image":"/hmqq/artwork-0-0/201611101525048_16a27f19-wh.jpg","artSize":"40x48cm","artist":"邱宸","hits":951,"attention":9,"type":1,"status":0,"price":"100","remainTime":248541},{"ownerId":2251,"code":"161115172251","artName":"女人体（布面油画）","image":"/hmqq/artwork-0-0/201611151705041_087228d2-wh.jpg","artSize":"65x65cm","artist":"王伟","hits":935,"attention":1,"type":1,"status":2,"price":"14000"},{"ownerId":2268,"code":"161115172268","artName":"溪山秋色 （水墨纸本 山水）","image":"/hmqq/artwork-0-0/201611151715025_252582f7-wh.jpg","artSize":"68x136cm","artist":"郭换林","hits":863,"attention":2,"type":1,"status":0,"price":"400","remainTime":75741},{"ownerId":9025,"code":"170106179025","artName":"国画山水 山水 （纸本硬卡）","image":"/hmqq/artwork-0-0/201701061711049_31737cab-wh.jpg","artSize":"d：40cmx2","artist":"葛莲","hits":835,"attention":1,"type":1,"status":0,"price":"120","remainTime":162141},{"ownerId":5396,"code":"161206145396","artName":"流夏 （水墨绢本）","image":"/hmqq/artwork-0-0/201612061449053_a7fe79cd-wh.jpg","artSize":"118x70cm","artist":"周雪宁","hits":764,"attention":4,"type":1,"status":0,"price":"8000","remainTime":1198941},{"ownerId":10026,"code":"170119160026","artName":"山水 青山不老 绿水长存 （水墨纸本）","image":"/hmqq/artwork-0-0/201701191607055_940e7cbe-wh.jpg","artSize":"72x176cm","artist":"张稳宁","hits":761,"attention":3,"type":1,"status":0,"price":"400","remainTime":75741},{"ownerId":1924,"code":"161115151924","artName":"翡翠吊坠（弥勒佛）","image":"/hmqq/artwork-0-0/201611151457026_b6934d91-wh.jpg","artSize":"28x30x9mm","artist":"佚名","hits":754,"attention":2,"type":1,"status":2,"price":"500"},{"ownerId":801,"code":"161114140801","artName":"人物四条屏 （水墨纸本）","image":"/hmqq/artwork-0-0/201611141445015_4f8b4f7f-wh.jpg","artSize":"136x34cmx4","artist":"张春海","hits":718,"attention":5,"type":1,"status":0,"price":"100","remainTime":162141},{"ownerId":2010,"code":"161115152010","artName":"女人与猫（布面油画-带内框）","image":"/hmqq/artwork-0-0/201611151535000_484c10bd-wh.jpg","artSize":"90X60cm","artist":"魏巍","hits":698,"attention":7,"type":1,"status":0,"price":"2000","remainTime":248541},{"ownerId":5399,"code":"161206155399","artName":"花语 （水墨绢本 已托片）","image":"/hmqq/artwork-0-0/201612061456004_60300556-wh.jpg","artSize":"79x53cm","artist":"周雪宁","hits":697,"attention":3,"type":1,"status":0,"price":"6000","remainTime":1198941},{"ownerId":449,"code":"161111110449","artName":"彝风（布面油画）","image":"/hmqq/artwork-0-0/201611111100039_74c0fe25-wh.jpg","artSize":"155x200cm","artist":"邓伟华","hits":694,"attention":0,"type":1,"status":0,"price":"60000","remainTime":162141},{"ownerId":1780,"code":"161115131780","artName":"和田玉吊坠（观音）","image":"/hmqq/artwork-0-0/201611151353007_376eae4a-wh.jpg","artSize":"45x28x8mm 重17.6克","artist":"佚名","hits":691,"attention":0,"type":1,"status":0,"price":"1240","remainTime":75741},{"ownerId":23387,"code":"170715183387","artName":"元代花鸟","image":"/hmqq/artwork-1-1471/201707130002031_af845384-wh.JPG","artSize":"49，115","artist":"向阳","hits":662,"attention":1,"type":1,"status":1,"price":"800","remainTime":68540,"auctionNumber":0},{"ownerId":453,"code":"161111110453","artName":"流逝的斯朵利（布面油画）","image":"/hmqq/artwork-0-0/201611111123027_5591f497-wh.jpg","artSize":"150x120cm","artist":"年新琦","hits":654,"attention":0,"type":1,"status":1,"price":"50000","remainTime":75740,"auctionNumber":0},{"ownerId":8159,"code":"161228118159","artName":"省美协  荷韵 （水墨纸本 已托片）","image":"/hmqq/artwork-0-0/201612281155003_4d2cbd98-wh.jpg","artSize":"49x31cm","artist":"宗新民","hits":647,"attention":6,"type":1,"status":0,"price":"400","remainTime":162140},{"ownerId":4685,"code":"161130144685","artName":"中美协  待发伏击 （水墨纸本 有修补）","image":"/hmqq/artwork-0-0/201611301456055_f107b1a9-wh.jpg","artSize":"89x96cm","artist":"高伟","hits":634,"attention":2,"type":1,"status":1,"price":"30000","remainTime":75740,"auctionNumber":0},{"ownerId":6505,"code":"161214096505","artName":"高士四条屏 （水墨纸本）","image":"/hmqq/artwork-0-0/201612140928032_87b0eb37-wh.jpg","artSize":"119x34cmx4","artist":"张朝晖","hits":619,"attention":4,"type":1,"status":0,"price":"2000","remainTime":1198940},{"ownerId":3802,"code":"161123113802","artName":"长安 （水墨纸本 有破损）","image":"/hmqq/artwork-0-0/201611231150051_67e4b918-wh.jpg","artSize":"136x69cm","artist":"张辉","hits":617,"attention":0,"type":1,"status":1,"price":"1000","remainTime":75740,"auctionNumber":0},{"ownerId":8203,"code":"161228168203","artName":"行书","image":"/hmqq/artwork-1-396/201612281640056_776b0f9d-wh.jpg","artSize":"160x36cm","artist":"王宝君","hits":600,"attention":0,"type":1,"status":2,"price":"1000"},{"ownerId":692,"code":"161114110692","artName":"翡翠吊坠（麒麟）","image":"/hmqq/artwork-0-0/201611141147004_765b2a84-wh.jpg","artSize":"56x43x7mm 重32.6克","artist":"佚名","hits":587,"attention":0,"type":1,"status":0,"price":"600","remainTime":421340},{"ownerId":10024,"code":"170119160024","artName":"山水 青山不老 绿水长存 （水墨纸本）","image":"/hmqq/artwork-0-0/201701191605011_a59d5b4a-wh.jpg","artSize":"73x178cm","artist":"张稳宁","hits":573,"attention":2,"type":1,"status":1,"price":"400","remainTime":75740,"auctionNumber":0},{"ownerId":693,"code":"161114110693","artName":"翡翠吊坠（如意瓶）","image":"/hmqq/artwork-0-0/201611141148026_dc074df4-wh.jpg","artSize":"39x19x6mm 重6.74克","artist":"佚名","hits":564,"attention":0,"type":1,"status":1,"price":"260","remainTime":75740,"auctionNumber":0}]});
+		
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.classfiy.URL,{"result":"1","message":"加载成功","obj":[{"id":100000,"name":"当代书画","chiled":[{"id":100100,"name":"山水"},{"id":100300,"name":"花鸟"},{"id":100400,"name":"人物"},{"id":100500,"name":"动物"},{"id":100200,"name":"书法"},{"id":100600,"name":"工笔"}]},{"id":110000,"name":"西画","chiled":[{"id":110100,"name":"风景"},{"id":110200,"name":"人物"},{"id":110300,"name":"动物"},{"id":110400,"name":"静物"},{"id":110500,"name":"抽象"},{"id":110600,"name":"漆画"}]},{"id":120000,"name":"杂项","chiled":[{"id":120100,"name":"文房四宝"},{"id":120200,"name":"邮币票证"},{"id":120300,"name":"古籍文献"}]},{"id":130000,"name":"紫砂瓷器","chiled":[{"id":130100,"name":"紫砂"},{"id":130200,"name":"瓷器"}]},{"id":140000,"name":"木器根雕","chiled":[{"id":140100,"name":"家具"},{"id":140200,"name":"手串"},{"id":140300,"name":"把件"}]},{"id":150000,"name":"珠宝玉石","chiled":[{"id":150100,"name":"翡翠"},{"id":150200,"name":"和田玉"},{"id":150300,"name":"琥珀蜜蜡"},{"id":150400,"name":"水晶"},{"id":150500,"name":"玛瑙"},{"id":150600,"name":"绿松"}]},{"id":160000,"name":"备用分类1","chiled":[]},{"id":170000,"name":"备用分类2","chiled":[]},{"id":180000,"name":"备用分类3","chiled":[{"id":180100,"name":"备用3-1"},{"id":180200,"name":"备用3-2"}]}]});
+		app.load.mock(function(){});
+		
+</script>
+</html>

@@ -1,0 +1,114 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>百度地图</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/>
+     <style>
+		body, html,#baiduMap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+		.map_hotspot{width: 96%;}
+		.star_list{float:left;margin-right:10px;}
+		.star_list span,.limit_txt .p2,.limit_txt .kind{line-height:30px;height:30px;}
+		.limit_txt .kind span{color:#666;border-color:#666; display: inline-block; margin:10px 0.8rem 0px 0; }
+		.limit_txt .p2{float:left;}
+		.into_btn{position:absolute; right: -10px; top: 40px; font-size: 1.4rem;color: #f00;}		
+     </style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=R9rSDQKktOiriHd27YG5XYtk"></script>
+</head>
+<body>
+	<div class="mui-content">
+		<header class="mui-bar mui-bar-nav top-style">
+			<a class="mui-action-back mui-icon mui-icon-back mui-pull-left"></a>
+			<h1 class="mui-title color-2d">百度地图</h1>
+		</header>
+		<div id="baiduMap"></div>
+		<!--详细地址-->
+		<div class="mui-bar mui-bar-tab">
+			<div class="Description_txt store_txt">
+				<p class="p1">翰墨千秋艺术交易中中心翰墨千秋艺术交千术交易中心</p>
+				<p class="kind">
+					<span>当代书画</span><span>当代书画</span><span>当代书画</span>
+				</p>
+				<p class="p3"><strong><i class="mui-icon mui-icon-location"></i>500米</strong>北京市海淀区羊坊店路18号光耀东方广场N座</p>
+			</div>
+			<div class="Map_btns clearfix">
+			<button type="button"><i class="mui-icon mui-icon-paperplane"></i>导航</button>
+	        <button type="button"><i class="mui-icon iconfont">&#xe607;</i>进入店铺</button>
+			</div>
+		</div>
+	<!--详细地址end-->
+	</div>
+	<script>
+		var sContent =
+		"<div class='map_hotspot'>"+
+			'<div class="limit_txt auction_txt store_txt mui-col-xs-12">'+
+				'<p class="p1 mui-ellipsis line_1" style="line-height:30px; font-size:1.6rem;">翰墨千秋艺术交易中心</p>'+
+					'<div class="clearfix">'+
+						'<p class="star_list">'+ 
+						'<span class="mui-icon iconfont">&#xe603;</span>'+
+						'<span class="mui-icon iconfont">&#xe603;</span>'+
+						'<span class="mui-icon iconfont">&#xe603;</span>'+
+						'<span class="mui-icon iconfont">&#xe603;</span>'+
+						'<span class="mui-icon iconfont">&#xe603;</span>'+
+						'</p>'+			
+						'<p class="p2">粉丝<em>2000</em></p>'+
+					'</div>'+
+				'<p class="kind"><span>国画</span><span>珠宝玉石</span><span>书法</span><span>国画</span><span>珠宝玉石</span><span>书法</span><span>国画</span><span>珠宝玉石</span><span>书法</span></p>'+
+				'<span class="into_btn">进入店铺></span>'+
+			'</div>'+
+		"</div>";
+	
+	
+		var map = new BMap.Map("baiduMap");    // 创建Map实例
+		map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
+		map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+		map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+		map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+		
+		var infoWindow = new BMap.InfoWindow(sContent);
+		
+		// 创建标注函数,
+		function addMarker(point,icon){
+			icon = icon || {};
+			var marker = new BMap.Marker(point,icon);
+			map.addOverlay(marker);
+			return marker;
+		}
+		
+		//获取覆盖物位置
+		function onBindMarker(e){
+			this.openInfoWindow(infoWindow);
+			//图片加载完毕重绘infowindow
+			document.getElementById('imgDemo').onload = function (){
+				infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+			} 
+		}	
+		
+		var bounds = map.getBounds();
+		var sw = bounds.getSouthWest();
+		var ne = bounds.getNorthEast();
+		var lngSpan = Math.abs(sw.lng - ne.lng);
+		var latSpan = Math.abs(ne.lat - sw.lat);
+		for (var i = 0; i < 25; i ++) {
+			var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+			var myIcon = new BMap.Icon("images/shot_index.png", new BMap.Size(82,82));
+			var marker = addMarker(point,{'icon':myIcon});
+			
+			marker.addEventListener("click",onBindMarker);
+		}
+		
+		
+		
+//		map.addOverlay(new BMap.Marker(new BMap.Point(116.417, 39.809),{icon:''}));
+//		map.addOverlay(new BMap.Marker(new BMap.Point(116.317, 39.809),{icon:''}));
+//		map.addOverlay(new BMap.Marker(new BMap.Point(116.317, 39.709),{icon:''}));
+//		//	创建并将标注添加到地图中
+//		var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(250,157));
+//		map.addOverlay(new BMap.Marker(new BMap.Point(116.417, 39.909),{icon:myIcon}));              
+	</script>
+</body>
+</html>

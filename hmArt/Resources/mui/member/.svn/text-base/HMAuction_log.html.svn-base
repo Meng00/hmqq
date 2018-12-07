@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>记录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.css">
+		<!--公共样式的Css-->
+		<link rel="stylesheet" href="../css/style.css">
+		
+		<style>
+		/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 5px;
+		}
+		
+		/** 四周边距 **/
+	   .mui-table-view-cell::after {
+		    left: 5px;
+		}
+	    .mui-table-view-cell {
+	    		padding: 5px;
+	    }
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 120px;
+		}
+		.mui-table-view .store_img {
+		    height: auto;
+		    max-width: 80px;
+		}
+			
+			
+		.mui-bar~.mui-content .mui-fullscreen {
+				top: 44px;
+				height: auto;
+			}
+			.mui-pull-top-tips {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1000;
+			}
+			.mui-bar~.mui-pull-top-tips {
+				top: 46px;
+			}
+			/*.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}*/
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			.mui-pull-bottom-tips {
+				text-align: center;
+				background-color: #efeff4;
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+			.mui-pull-top-canvas {
+				overflow: hidden;
+				background-color: #fafafa;
+				border-radius: 40px;
+				box-shadow: 0 4px 10px #bbb;
+				width: 40px;
+				height: 40px;
+				margin: 0 auto;
+			}
+			.mui-pull-top-canvas canvas {
+				width: 40px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav top-style">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title color-2d">记录</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted mui-segmented-control-negative bg_white">
+					
+				</div>
+				<div id="slider" class="mui-slider">
+					<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+					<div id="item1" class="mui-control-content mui-active">
+						<div  class="pull mui-scroll-wrapper" id="wrapper1">
+							<div class="mui-scroll">
+								<ul class="pull-scroll" id="myAuction">
+									
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2" class="mui-control-content">
+						<div  class="pull mui-scroll-wrapper" id="wrapper2">
+							<div class="mui-scroll limit_group over_hidd auction_group">
+								<ul class="pull-scroll auction_list limit_list"  id="mySuccAuction">
+									
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/html" id="temp-mySuccAuction">
+		{{each data as item i}}
+		<li class="clearfix" ownerId="{{item.ownerId}}">  
+			<div class="limit_img boutique_img"><img src="{{imagePath}}{{item.image}}"/></div>
+			<div class="limit_txt auction_txt boutique_txt">
+				<p class="p1 line_1 paddingr-0">{{item.artName}}</p>
+				<p class="p2">作者<em>{{item.artist}}</em></p>
+				<p class="p3">成交金额<i>￥{{item.price}}</i></p>
+				<p class="p4">成交时间</p>
+				<p class="p5">{{item.auctionDate}}</p>
+			</div>
+		</li>
+		{{/each}}
+	</script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script src="../js/template.js"></script>
+	<script src="../js/template-ext.js"></script>
+	<script src="../js/mock-min.js"></script>
+<script src="../js/mui.pullToRefresh.js"></script>
+<script src="../js/mui.pullToRefresh.material.js"></script>
+	<script type="text/javascript">
+		winBind = {
+			init: function() {
+				winBind.toArtInfo();
+			},
+			toArtInfo: function(){
+				mui('ul').on('tap','li',function(){
+					var ownerId = this.getAttribute('ownerId');
+				 	var url = 'hmqq-jsweb://localhost/mui/HMArtInfo.html?ownerId='+ownerId;
+					app.pushView(url);
+				});
+			}
+		}
+		
+		winLoad = {
+			init: function() {
+				/* 容器最小高度 */
+				mui('.mui-control-content').each(function() {
+					this.style.minHeight = window.innerHeight - 66 + "px"; // - 50 
+				});
+				
+				api.other.sysVersion.DATA.device =  hmqq_device;
+				app.HMARTJsObj(api.other.sysVersion.DATA,'winLoad.getVersion');
+				app.HMARTJsObj(api.my.auctions.mySuccAuction.DATA, 'winLoad.mySuccAuction');
+				
+			},
+			checkLoginCallback: function (data) {
+				var json = eval('(' + data + ')');
+				if(json.loginStatus == '1') {
+					api.my.auctions.myAuction.DATA.other.mobile = json.mobile;
+					api.my.auctions.mySuccAuction.DATA.other.mobile = json.mobile;
+					winLoad.init();
+					winBind.init();
+				}
+			},
+			mySuccAuction: function(data) { // 竞买成功
+				api.my.auctions.mySuccAuction.param = eval('(' + data + ')');
+				app.ajax(api.my.auctions.mySuccAuction, function(data) {
+					var html = template('temp-mySuccAuction', data);
+					mui('#mySuccAuction')[0].innerHTML = '';
+					var div = document.createElement("div");
+			　　　　	div.innerHTML = html;
+			　　　　	mui('#mySuccAuction')[0].appendChild(div);
+					mui("#mySuccAuction")[0].setAttribute('data-type', 2);
+					winBind.toArtInfo();
+				});
+			},
+			getVersion: function(data){
+				api.other.sysVersion.param = eval('(' + data +')');
+				app.ajax(api.other.sysVersion,function(data){
+					currsign = data.obj.device+'_'+data.obj.version;
+					loadJs(config.HOST+'mui/apppage/auction_'+currsign+'.js')
+				})
+			}
+		}
+		
+		function onARTJsObjReady() {
+			mui('.mui-scroll-wrapper').scroll({
+				indicators: false ,//是否显示滚动条
+				deceleration: deceleration, //阻尼系数,系数越小滑动越灵敏
+			});
+			app.checkLogin(1, 'winLoad.checkLoginCallback');
+		}
+		
+		/* 模拟数据 启动 */
+		Mock.mock(config.HOST + config.MOCK_KEY + api.my.auctions.myAuction.URL,{"data":[{"ownerId":5573,"artName":"山水 （水墨纸本）","image":"/hmqq/artwork-0-0/201612071202050_ec5e9b6e-wh.jpg","artSize":"69x136cm","artist":"吕春梅","price":"360","remainTime":68667,"auctionNumber":1,"auctionStatus":1},{"ownerId":5574,"artName":"山水 （水墨纸本 有破损）","image":"/hmqq/artwork-0-0/201612071204048_c46c7696-wh.jpg","artSize":"69x67cm","artist":"吕春梅","price":"120","remainTime":68667,"auctionNumber":1,"auctionStatus":1},{"ownerId":5575,"artName":"春和景明 （水墨纸本）","image":"/hmqq/artwork-0-0/201612071206016_cb60ca9f-wh.jpg","artSize":"70x68cm","artist":"吕春梅","price":"120","remainTime":68667,"auctionNumber":1,"auctionStatus":1},{"ownerId":1103,"artName":"青溪归客-（水墨纸本）","image":"/hmqq/artwork-0-0/201611141731021_bca462ff-wh.jpg","artSize":"69x136cm","artist":"汪兆良","price":"120","remainTime":68667,"auctionNumber":1,"auctionStatus":1},{"ownerId":1086,"artName":"山水写意-（水墨纸本）","image":"/hmqq/artwork-0-0/201611141722052_8e29eac3-wh.jpg","artSize":"136x68cm","artist":"汪兆良","price":"120","remainTime":68667,"auctionNumber":1,"auctionStatus":1},{"ownerId":4351,"artName":"小清新 （布面油画）","image":"/hmqq/artwork-0-0/201611251647056_e7e2f910-wh.jpg","artSize":"63x53cm","artist":"秦国利","price":"100","auctionPrice":"100","auctionDate":"2016年12月07日 15:06:28","auctionStatus":2},{"ownerId":1847,"artName":"山水四条屏 （水墨纸本）","image":"/hmqq/artwork-0-0/201611151419055_bef71e34-wh.jpg","artSize":"69x34cmx4","artist":"朱国良","price":"160","auctionPrice":"200","auctionDate":"2016年12月07日 11:29:19","auctionStatus":2},{"ownerId":2455,"artName":"塞上 （水墨纸本）","image":"/hmqq/artwork-0-0/201611152046055_4eb8854c-wh.jpg","artSize":"69x69cm","artist":"俞正军","price":"100","auctionPrice":"100","auctionDate":"2016年12月06日 12:01:09","auctionStatus":2},{"ownerId":2586,"artName":"书法四条屏 （水墨纸本）","image":"/hmqq/artwork-0-0/201611161502052_91d8ee03-wh.jpg","artSize":"136x35cmx4","artist":"郭文正","price":"100","auctionPrice":"100","auctionDate":"2016年12月06日 12:01:10","auctionStatus":2},{"ownerId":2841,"artName":"趣 （布面油画）","image":"/hmqq/artwork-0-0/201611181156017_b7f14703-wh.jpg","artSize":"120x40cm","artist":"秦国利","price":"100","auctionPrice":"100","auctionDate":"2016年12月06日 12:01:11","auctionStatus":2}],"message":"加载成功","pageCount":3,"result":"1","total":1});
+		Mock.mock(config.HOST + config.MOCK_KEY + api.my.auctions.mySuccAuction.URL,{"data":[{"ownerId":5043,"artName":"般若波羅蜜多心经 （水墨纸本）","image":"/hmqq/artwork-0-0/201612021639031_d28b3227-wh.jpg","artSize":"128x32cmx4","artist":"韩立强","price":"100","auctionDate":"2016年12月04日 12:00:00"},{"ownerId":5040,"artName":"梅兰竹菊 （水墨纸本）","image":"/hmqq/artwork-0-0/201612021636046_e004f2ba-wh.jpg","artSize":"137x34cmx4","artist":"韩立强","price":"100","auctionDate":"2016年12月04日 12:00:00"},{"ownerId":5031,"artName":"春夏秋冬四条屏 （水墨纸本）","image":"/hmqq/artwork-0-0/201612021626002_e8c0af5f-wh.jpg","artSize":"130x32cmx4","artist":"韩立强","price":"100","auctionDate":"2016年12月04日 12:00:00"},{"ownerId":4979,"artName":"福缘善庆 （水墨纸本）","image":"/hmqq/artwork-0-0/201612021359043_b6f41c11-wh.jpg","artSize":"136x68cm 136x34cmx2","artist":"赵建营","price":"100","auctionDate":"2016年12月06日 12:00:00"},{"ownerId":4760,"artName":"风雨过后 （水墨纸本）","image":"/hmqq/artwork-0-0/201611301725047_c89d1f9b-wh.jpg","artSize":"68x69cm","artist":"段学潮","price":"100","auctionDate":"2016年12月05日 12:00:00"},{"ownerId":4351,"artName":"小清新 （布面油画）","image":"/hmqq/artwork-0-0/201611251647056_e7e2f910-wh.jpg","artSize":"63x53cm","artist":"秦国利","price":"100","auctionDate":"2016年12月07日 12:00:00"},{"ownerId":4129,"artName":"奋斗-（水墨纸本）","image":"/hmqq/artwork-0-0/201611241419053_a9bc84b3-wh.jpg","artSize":"90x70cm","artist":"柳峰","price":"100","auctionDate":"2016年12月06日 12:00:00"},{"ownerId":4126,"artName":"人物四条屏 （水墨纸本）","image":"/hmqq/artwork-0-0/201611241414033_2ac9ad0c-wh.jpg","artSize":"136x34cmx4","artist":"张春海","price":"100","auctionDate":"2016年12月06日 12:00:00"},{"ownerId":4106,"artName":"回家的路 （布面油画）","image":"/hmqq/artwork-0-0/201611240938041_cfac9930-wh.jpg","artSize":"60x120cm","artist":"秦国利","price":"100","auctionDate":"2016年12月06日 12:00:00"},{"ownerId":3739,"artName":"书法四条屏 （水墨纸本）","image":"/hmqq/artwork-0-0/201611231105000_2f5935bd-wh.jpg","artSize":"136x34cmx4","artist":"王建亮","price":"100","auctionDate":"2016年12月06日 12:00:00"}],"message":"加载成功","pageCount":3,"result":"1","total":22});
+		app.load.mock(function() {});
+		</script>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>保证金</title>
+     <link rel="stylesheet" href="../css/swiper.css">
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+     <link href="../css/style.css" rel="stylesheet"/>
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+     <style>
+     	.mui-btn-block {
+		    padding: 10px 0;
+		}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">保证金充值</h1>
+		<a class="mui-icon mui-pull-right mui-icon-help"></a>
+	</header>
+	<div class="mui-content confirm">
+		<div class="margin_top" id="top">
+			
+		</div>
+		<div class="limit_group over_hidd auction_group shop_colle install_group order_list paddingt-5">
+		<p class="mes_tit">选择支付方式</p>
+		<ul class="mui-table-view mui-table-view-chevron pay_type">
+			<li class="mui-table-view-cell mui-media clearfix" value="2">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf1_icon.png" alt="" />银行卡支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_2" type="radio" name="type"/>						
+					<lable for="ok1"></lable>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix" value="1">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf2_icon.png" alt="" />支付宝支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_1" type="radio" name="type" checked />							
+					<lable for="ok2"></lable>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix" value="3">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf3_icon.png" alt="" />微信支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_3" type="radio" name="type"/>							
+					<lable for="ok3"></lable>
+				</div>
+			</li>
+			<!--<li class="mui-table-view-cell mui-media clearfix" value="4">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf4_icon.png" alt="" />线下支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_4" type="radio" name="type"/>						
+					<lable for="ok4"></lable>
+				</div>
+			</li>-->
+		</ul>
+		</div>
+		<div align="center">
+			<div style="width: 98%;text-align: center;">
+				<button id="toPay" type="button" class="mui-btn mui-btn-danger mui-btn-block">去支付</button>
+			</div>
+		</div>
+	</div>
+
+<script type="text/html" id="temp-du">
+	<div class="margin_num">
+		<p>￥<span id="amount">500</span></p>
+		<p>VIP保证金（元）</p>
+	</div>
+</script>
+<script type="text/html" id="temp-ds">
+	<div class="margin_num">
+		<p>￥<span id="amount">1000</span></p>
+		<p>商家信誉保证金（元）</p>
+	</div>
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script src="../js/mui.picker.js"></script>
+<script src="../js/mui.poppicker.js"></script>
+<script>
+	var userPicker = new mui.PopPicker();
+		userPicker.setData([{
+			value: '1000',
+			text: '1000'
+		}, {
+			value: '2000',
+			text: '2000'
+		}, {
+			value: '3000',
+			text: '3000'
+		}, {
+			value: '5000',
+			text: '5000'
+		}, {
+			value: '10000',
+			text: '10000'
+		}]);
+	var winLoad = {
+		init: function() {
+			mui('.pay_type').on('tap','li',function(){
+				mui('.pay_type input').each(function(i,item){
+					this.removeAttribute('checked');
+				});
+				var type = this.getAttribute('value');
+				mui('#radio_'+type)[0].setAttribute('checked','checked'); 
+				api.my.deposit.recharge.DATA.payType = type;
+			});
+			mui('.mui-icon-help')[0].addEventListener("tap",function(){
+				var url = 'hmqq-jsweb://localhost/mui/member/HMHtml.html?type=5&tit=保证金规则';
+				app.pushView(url);
+			});
+			mui('#toPay')[0].addEventListener("tap",function(){
+				api.my.deposit.recharge.DATA.amount = mui('#amount')[0].innerHTML;
+				app.HMARTJsObj(api.my.deposit.recharge.DATA,'winLoad.toPay');
+			});
+		},
+		serach: function(data) {
+			api.my.deposit.serach.param = eval('(' + data +')');
+			app.ajax(api.my.deposit.serach,function(data){
+				
+			});
+		},
+		toPay :function(data){
+			api.my.deposit.recharge.param = eval('(' + data +')');
+			app.ajax(api.my.deposit.recharge,function(data){
+				if(data.obj.isPaySuccess == true){
+//					app.toast('支付成功，请前往个人中心查看详情。');
+//					mui.back();
+				}else{
+					app.loadding.show();
+					if(data.obj.payType == 2||data.obj.payType==5||data.obj.payType==1){
+						HMARTJsObj.toPayData(data.obj.payType, data.obj.data);
+					}else{
+						HMARTJsObj.toPayData(data.obj.payType, JSON.stringify(data.obj.data));
+					}
+					setTimeout(function(){
+						app.loadding.hide();
+						app.confirm.init({
+							message :  '您是否已经完成支付？',
+							btnArray : ['未完成支付','已完成支付'],
+							callback : function(i){
+								if(i == 1){
+									mui.back();
+								}
+							}
+						});
+					},2000);
+				}
+			});
+		}
+	}
+	function onARTJsObjReady(){
+		if(typeof(HMARTJsObj) == "undefined"){
+			appParams = {};
+			appParams.type = 2;
+		} 
+		api.my.deposit.recharge.DATA.payType = 1;
+		api.my.deposit.recharge.DATA.type = appParams.type;
+		var type = appParams.type;//1:VIP充值；2：商家保证金充值
+		if(type == 1){
+			var html = template('temp-du', {});
+			var div = document.createElement("div");
+	　　　　	div.innerHTML = html;
+	　　　　	mui('#top')[0].appendChild(div);
+		}else{
+			var html = template('temp-ds', {});
+			var div = document.createElement("div");
+	　　　　	div.innerHTML = html;
+	　　　　	mui('#top')[0].appendChild(div);
+			mui('#top').on('tap','#amount',function(){
+				userPicker.show(function(items) {
+					//返回 false 可以阻止选择框的关闭
+					//return false;
+					mui('#amount')[0].innerHTML = items[0].value; 
+				});
+			});
+		}
+		winLoad.init();
+	}
+	
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.deposit.recharge.URL,{"result":"1","message":"加载成功"});
+	app.load.mock(function(){});
+</script>
+</body>
+</html>

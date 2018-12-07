@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>分类</title>
+    <link href="css/mui.css" rel="stylesheet"/> 
+    <style type="text/css">
+		header{background: #fff !important;}
+	header input{ background: #f4f4f4 !important;}
+	.mui-bar .mui-title{margin: 0 8px; left: 30px;right: 50px;}
+	.mui-bar-nav{box-shadow: none; border-bottom: 1px solid #e0e0e0;}
+	.mui-input-clear{padding: 0 4px !important;margin: 0 !important; text-align: left !important;}
+	.hidden{display: none;}
+	{width: 100%; height:100%; margin-top: 0px; background: #f4f4f4; color: #2d2d2d;}
+	.menuItem{width: 26.7%; height: 100%; position: fixed; top:0px; left: 0; background: #fff; }
+	.menuItem ul,.n_menu .menuDetail ul{margin: 0; padding: 0; }
+	.menuItem li{width: 100%; height: 50px; line-height: 50px; display: block; margin: 0; padding: 0; background: #fff; color: #999; font-size: 16px; text-align: center; } 
+	.menuDetail{width: 73.3%; margin: 0; margin-left: 30%; padding-top: .8rem; background: #f4f4f4; }
+	.menuDetail ul{margin: 0; padding: 0;}
+	.menuDetail li{width: 30%;height: 36px; line-height: 36px; display: inline-block; margin: 1% 0;padding: 2% 0;font-size: 12px; text-align: center; }
+    .menuDetail img{width: 3.5em; height: 3.5em; margin: 0 auto; display: block; }
+	#goods_classfiy li.goods_active{color: #2d2d2d; background: #f4f4f4;}
+	/*#goods_material li.goods_active{color: #2d2d2d; background: #fff;}*/
+	/** 条件检索页面 样式调整**/
+	header.kind_sea input[type="search"] {
+	    background: #f4f4f4 none repeat scroll 0 0;
+	    padding: 0 8px;
+	    text-align: left;
+	    font-weight: normal;
+	}
+	.mui-bar .mui-btn-link {
+   		font-size: 14px;
+    }
+    .mui-bar .mui-title {
+	    right: 50px;
+	    left: 20px;
+	}
+	.headt-22{padding-top: 22px !important; box-sizing: content-box;}
+	.headt-22 .index_logo{top: 25px !important;}
+	.paddingt-66{padding-top:66px !important;}
+	.headt-android{margin-top: 44px !important;}
+	.headt-ios{margin-top: 66px !important;}
+	#cancel{opacity: 0;display: none;}
+    </style>
+</head>
+<body class="bg_white">
+	<header class="mui-bar mui-bar-nav bg_white kind_sea">
+		<a class="mui-btn mui-btn-blue mui-btn-link mui-action-back mui-pull-left" id="cancel" style="color: gray;">取消</a>
+		<h1 class="mui-title">
+			<input type="search" class="mui-input-clear" placeholder="请输入作品名称、艺术家名"/>
+		</h1>
+		<a class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="confirm">确认</a>
+		
+		<div class="area1 menuItem">			
+			<ul id="goods_classfiy"></ul>
+		</div>
+	</header>
+	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" style="height: 100%;">
+			<div class="area1 menuDetail">	
+				<ul id="goods_material"></ul>
+			</div>	
+		</div>
+	</div>
+	<script type="text/html" id="temp-goods_classfiy">
+		{{each obj as item i}}
+		<li class="" data-id={{item.id}} data-chiled={{item.chiled | toString}}>{{item.name}}</li>
+		{{/each}}
+	</script>
+	<script type="text/html" id="temp-goods_material">
+		{{each data as item i}}
+		<li class="" data-id={{item.id}} ><img src="images/kinds/{{parentId}}_{{item.id}}.png" />{{item.name}}</li>
+		{{/each}}
+		<li class="" data-id="{{parentId}}"><img src="images/kinds/allKind.png" />查看全部</li>
+	</script>
+<script src="js/mui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/mock-min.js"></script>
+	<script type="text/javascript">
+		if(mui.os.ios){
+			mui('.mui-bar-nav').each(function(){
+				this.classList.add('headt-22');
+			});
+			mui('.mui-content')[0].classList.add('paddingt-66');
+			mui('.menuItem')[0].classList.add('headt-ios');
+		}else{
+			mui('.mui-content')[0].classList.add('paddingt-44');
+			mui('.menuItem')[0].classList.add('headt-android');
+		}
+	var classifyCode;
+	winBind = {
+		init: function(){
+				winBind.get_classfiy();
+				winBind.on_confirm();
+		},
+		get_classfiy:function (){
+				mui('#goods_classfiy').on("tap","li",function(){
+					var self = this;
+					mui.each(mui('#goods_classfiy li'),function(){
+						if(this != self)this.setAttribute("class","");
+					})
+					this.setAttribute("class","goods_active");
+					chiled = this.getAttribute("data-chiled");
+					parentId = this.getAttribute("data-id");
+					//显示二级分类
+					chiled = JSON.parse(chiled);
+					var html = template('temp-goods_material', {"data":chiled,"parentId":parentId});
+					mui('#goods_material')[0].innerHTML = html;	
+					mui('.mui-scroll-wrapper').scroll().scrollTo(0,0,100);
+
+				});
+				mui('#goods_material').on("tap","li",function(){
+					var self = this;
+					mui.each(mui('#goods_material li'),function(){
+						if(this != self)this.setAttribute("class","");
+					})
+					this.setAttribute("class","goods_active");
+					classifyCode = mui('#goods_classfiy .goods_active')[0] ? mui('#goods_classfiy .goods_active')[0].getAttribute("data-id") : "";
+					if(mui('#goods_material .goods_active').length > 0){
+						classifyCode = mui('#goods_material .goods_active')[0].getAttribute("data-id");
+					} 
+					app.pushView('hmqq-jsweb://localhost/mui/HMArtList.html?keywork='+mui('.mui-input-clear')[0].value+'&classifyCode='+classifyCode);
+				});
+		},
+		on_confirm:function(){
+				mui("header").on('tap', '#confirm', function() {//确认跳转页面
+					classifyCode = mui('#goods_classfiy .goods_active')[0] ? mui('#goods_classfiy .goods_active')[0].getAttribute("data-id") : "";
+					if(mui('#goods_material .goods_active').length > 0){
+						classifyCode = mui('#goods_material .goods_active')[0].getAttribute("data-id");
+					} 
+					app.pushView('hmqq-jsweb://localhost/mui/HMArtList.html?keywork='+mui('.mui-input-clear')[0].value+'&classifyCode='+classifyCode)
+				});
+		}
+	}
+	winLoad = {
+		init:function(){
+			app.HMARTJsObj(api.store.classfiy.DATA,'winLoad.classfiy'); 
+		},
+		classfiy:function(data){//获取一级分类
+			api.store.classfiy.param = eval('(' + data +')');
+			app.ajax(api.store.classfiy,function(data){
+				mui.each(data.obj,function(i,item){
+					var html = template('temp-goods_classfiy', data);
+					mui('#goods_classfiy')[0].innerHTML = html;
+				});
+				mui.trigger(document.querySelectorAll('#goods_classfiy li')[0],'tap');
+				classifyCode = mui('#goods_classfiy .goods_active')[0].getAttribute("data-id");
+			});
+		}
+	}
+	
+	function onARTJsObjReady() {
+			mui('.mui-scroll-wrapper').scroll({
+				 deceleration:deceleration, //阻尼系数,系数越小滑动越灵敏
+				 indicators: true //是否显示滚动条
+			});
+			winLoad.init();
+			winBind.init();
+		}
+	Mock.mock(config.HOST+config.MOCK_KEY+ api.store.classfiy.URL, {"result":"1","message":"加载成功","obj":[{"id":100000,"name":"当代书画","chiled":[{"id":100100,"name":"山水"},{"id":100300,"name":"花鸟"},{"id":100400,"name":"人物"},{"id":100500,"name":"动物"},{"id":100200,"name":"书法"},{"id":100600,"name":"工笔"}]},{"id":110000,"name":"西画","chiled":[{"id":110100,"name":"风景"},{"id":110200,"name":"人物"},{"id":110300,"name":"动物"},{"id":110400,"name":"静物"},{"id":110500,"name":"抽象"},{"id":110600,"name":"水彩水粉"}]},{"id":120000,"name":"杂项","chiled":[{"id":120100,"name":"文房四宝"},{"id":120200,"name":"邮币票证"},{"id":120300,"name":"书籍文献"}]},{"id":130000,"name":"紫砂瓷器","chiled":[{"id":130100,"name":"紫砂"},{"id":130200,"name":"瓷器"}]},{"id":140000,"name":"木器根雕","chiled":[{"id":140200,"name":"手串"},{"id":140300,"name":"把件"}]},{"id":150000,"name":"珠宝玉石","chiled":[{"id":150100,"name":"翡翠"},{"id":150200,"name":"和田玉"},{"id":150300,"name":"琥珀蜜蜡"},{"id":150400,"name":"水晶"},{"id":150500,"name":"玛瑙"},{"id":150600,"name":"绿松"}]}]});
+	app.load.mock(function(){});			
+	</script> 
+</body>
+</html>

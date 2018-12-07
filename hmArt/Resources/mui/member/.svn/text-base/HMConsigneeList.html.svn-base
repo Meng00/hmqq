@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>收货地址管理</title>  
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.css">		
+		<!--公共样式的Css-->
+		<link rel="stylesheet" href="../css/style.css">
+		<style>
+			.mui-views,
+			.mui-view,
+			.mui-pages,
+			.mui-page,
+			.mui-page-content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #efeff4;
+			}
+			.mui-pages {
+				top: 46px;
+				height: auto;
+			}
+			
+			.mui-page.mui-transitioning {
+				-webkit-transition: -webkit-transform 300ms ease;
+				transition: transform 300ms ease;
+			}
+			.mui-page-left {
+				-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+			}
+			.mui-ios .mui-page-left {
+				-webkit-transform: translate3d(-20%, 0, 0);
+				transform: translate3d(-20%, 0, 0);
+			}
+			.mui-page {
+				display: none;
+			}
+			.mui-pages .mui-page {
+				display: block;
+			}
+			:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+			    color: #999;
+			}
+			
+			::-moz-placeholder { /* Mozilla Firefox 19+ */
+			    color: #999;
+			}
+			
+			input:-ms-input-placeholder{
+			    color: #999;
+			}
+			
+			input::-webkit-input-placeholder{
+			    color: #999;
+			}
+			.mui-content .default_address label { display: inline;}
+			.f{position: fixed;}
+			.add_list .mui-input-row label ~ input {line-height: 3.6rem;}
+		</style>
+	</head>
+
+	<body class="mui-fullscreen">
+		
+		<!--页面主结构开始-->
+		<div id="app" class="mui-views">
+			<div class="mui-view">
+				<div class="mui-navbar">
+				</div>
+				<div class="mui-pages">
+				</div>
+			</div>
+		</div>
+		<!--页面主结构结束-->
+		<!--单页面开始-->
+		<div id="setting" class="mui-page">
+			<!--页面标题栏开始-->
+			<div class="mui-navbar-inner mui-bar mui-bar-nav top-style bg_white">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav color_666"></span>					
+				</button>
+				<h1 class="mui-center mui-title">收货地址管理</h1>
+			</div>
+			<!--页面标题栏结束-->
+			<!--页面主内容区开始-->
+			<div class="mui-page-content mui-content">
+				<a class="add">
+				<!--<a class="add" href="#account">-->
+					<button type="button" class="mui-btn mui-btn-success btn8_red mui-icon mui-icon-plus">新增加收货地址</button>
+				</a>
+				<div id="list">
+					
+				</div>
+			</div>
+			<!--页面主内容区结束-->
+		</div>
+		<!--单页面结束-->
+		<div id="account" class="mui-page">
+			<div class="mui-navbar-inner mui-bar mui-bar-nav top-style">
+				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+				<h1 class="mui-center mui-title">新增收货地址</h1>
+			</div>
+			<div class="mui-page-content mui-content fixeddiv" style="background: #fff;">
+				<div class="add_list">
+					<input id="id" type="hidden">
+					<p class="mui-input-row">
+						<label>收货人：</label>
+						<input id="name" type="text">
+					</p>
+					<p class="mui-input-row">
+						<label>联系电话：</label>
+						<input id="tel" type="tel">
+					</p>
+					<div class="addr_txt">
+						<span class="xx_tit">详细地址：</span>
+						<div class="xx_addr">
+						<!--<textarea id="addr" rows="5"  onfocus="if(value=='输入所在省份、地区街道、楼牌号等'){value=''}"  onblur="if (value ==''){value='输入所在省份、地区街道、楼牌号等'}">输入所在省份、地区街道、楼牌号等</textarea>-->
+						<textarea id="addr" rows="5" placeholder="输入所在省份、地区街道、楼牌号等"></textarea>
+						</div>
+					</div>
+				</div>
+				<button type="button" id="save" class="mui-btn mui-btn-success btn8_red margint-41">保存</button>
+	
+			</div>
+		</div>
+<script type="text/html" id="temp-edit">
+	<input id="id" type="hidden" value="{{id}}">
+	<p class="mui-input-row">
+		<label>收货人：</label>
+		<input id="name" type="text" value="{{name}}">
+	</p>
+	<p class="mui-input-row">
+		<label>联系电话：</label>
+		<input id="tel" type="tel" value="{{tel}}">
+	</p>
+	<div class="addr_txt">
+		<span class="xx_tit">详细地址：</span>
+		<div class="xx_addr">
+		<textarea id="addr" rows="5">{{addr}}</textarea>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="temp-add">
+	<input id="id" type="hidden">
+	<p class="mui-input-row">
+		<label>收货人：</label>
+		<input id="name" type="text">
+	</p>
+	<p class="mui-input-row">
+		<label>联系电话：</label>
+		<input id="tel" type="tel">
+	</p>
+	<div class="addr_txt">
+		<span class="xx_tit">详细地址：</span>
+		<div class="xx_addr">
+		<!--<textarea id="addr" rows="5"  onfocus="if(value=='输入所在省份、地区街道、楼牌号等'){value=''}"  onblur="if (value ==''){value='输入所在省份、地区街道、楼牌号等'}">输入所在省份、地区街道、楼牌号等</textarea>-->
+		<textarea id="addr" rows="5" placeholder="输入所在省份、地区街道、楼牌号等"></textarea>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="temp-list">
+	{{each data as item i}}
+		<div class="addr_list">
+			<p class="names">{{item.name}}<span>{{item.tel}}</span></p>
+			<p class="color_666">收货地址：{{item.addr}}</p>
+			<p class="default_address mui-input-row mui-radio mui-left">
+				<label for="rad1" class="color_666">设为默认地址</label>
+				<input class="defaults" name="radio1" type="radio" {{if item.defaults}}checked="checked"{{/if}} id="{{item.id}}">
+				<span class="default_r">
+					<em class="edit" id="{{item.id}}" data-item="{{item |toString}}">编辑</em>
+					<em class="del" id="{{item.id}}">删除</em>
+				</span>
+			</p>
+		</div>
+	{{/each}}
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/mui.view.js "></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	
+	if(mui.os.ios){
+		mui('.mui-bar-nav').each(function(){
+			this.classList.add('headt-22');
+		});
+		mui('.mui-content').each(function(){
+			this.classList.remove('paddingt-66');
+			this.classList.add('headt-22');
+		});
+	}
+	
+	//初始化单页view
+	var viewApi = mui('#app').view({
+		defaultPage: '#setting'
+	});
+	
+	var view = viewApi.view;
+	mui.back = function() {
+		if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+			viewApi.back();
+			mui('.mui-pages')[0].classList.remove('f');
+		} else { //执行webview后退
+			HMARTJsObj.goBack();
+		}
+	};
+	winBind = {
+		init : function(){
+			winBind.onBack();
+			mui('body').on("tap",".del",function(){
+				var id = this.id;
+				app.confirm.init({
+					message :  '确认删除？',
+					btnArray : ['取消','删除'],
+					callback : function(i){
+						if(i == 1){
+							api.my.consignee.del.DATA.id = id;
+							app.HMARTJsObj(api.my.consignee.del.DATA,'winLoad.del');
+						}
+					}
+				});
+			});
+			mui('body').on("tap",".defaults",function(){
+				api.my.consignee.defaults.DATA.id = this.id;
+				app.HMARTJsObj(api.my.consignee.defaults.DATA,'winLoad.defaults');
+			});
+			mui('body').on("tap",".add",function(){
+				api.my.consignee.update.DATA.defaults=true;
+				mui('.mui-pages')[0].classList.add('f');//添加固定定位
+				var html = template('temp-add', {});
+				mui('.add_list')[0].innerHTML = html;
+				viewApi.go('#account');
+			});
+			mui('body').on("tap",".edit",function(){
+				api.my.consignee.update.DATA.defaults=false;
+				mui('.mui-pages')[0].classList.add('f');//添加固定定位
+				var data = JSON.parse(this.getAttribute("data-item"));
+				var html = template('temp-edit', data);
+				mui('.add_list')[0].innerHTML = html;
+				viewApi.go('#account');
+			});
+		},
+		onBack : function(){
+			mui('body').on("tap","#save",function(){
+				api.my.consignee.update.DATA.id = mui('#id')[0].value;
+				api.my.consignee.update.DATA.name = mui('#name')[0].value;
+				api.my.consignee.update.DATA.tel = mui('#tel')[0].value;
+				api.my.consignee.update.DATA.addr = mui('#addr')[0].value;
+				
+				if(api.my.consignee.update.DATA.name.length < 1){
+					mui('#name')[0].focus();
+					return;
+				}
+				if(api.my.consignee.update.DATA.tel.length < 1){
+					mui('#tel')[0].focus();
+					return;
+				}
+				if(api.my.consignee.update.DATA.addr.length < 1){
+					mui('#addr')[0].focus();
+					return;
+				}
+				
+				app.HMARTJsObj(api.my.consignee.update.DATA,'winLoad.update');
+			});
+		}
+	}
+	winLoad = {
+		init : function(){
+			app.checkLogin(1,'winLoad.checkLoginCallback');	
+		},
+		checkLoginCallback : function(data){
+			var json = eval('(' + data +')');
+			if(json.loginStatus == '1'){
+				mobile = json.mobile;
+				api.my.consignee.list.DATA.mobile = mobile;
+				api.my.consignee.update.DATA.mobile = mobile;
+				api.my.consignee.del.DATA.mobile = mobile;
+				api.my.consignee.defaults.DATA.mobile = mobile;
+				/* 加载数据 */
+				app.HMARTJsObj(api.my.consignee.list.DATA,'winLoad.listPost');
+			}
+		},
+		listPost : function(data){
+			api.my.consignee.list.param = eval('(' + data +')');
+			app.ajax(api.my.consignee.list,function(data){
+				var html = template('temp-list', data);
+				mui('#list')[0].innerHTML = html;
+			});
+		},
+		update : function(data){
+			api.my.consignee.update.param = eval('(' + data +')');
+			app.ajax(api.my.consignee.update,function(data){
+				app.toast('保存成功');
+				viewApi.back();
+				mui('.mui-pages')[0].classList.remove('f');//移除固定定位
+				app.HMARTJsObj(api.my.consignee.list.DATA,'winLoad.listPost');
+			},function(err){
+					if(err.result==2)	app.toast('最多可以管理8个收货地址，您的地址个数已达上限！');
+				});
+		},
+		defaults : function(data){
+			api.my.consignee.defaults.param = eval('(' + data +')');
+			app.ajax(api.my.consignee.defaults,function(data){
+				app.HMARTJsObj(api.my.consignee.list.DATA,'winLoad.listPost');
+			});
+		},
+		del : function(data){
+			api.my.consignee.del.param = eval('(' + data +')');
+			app.ajax(api.my.consignee.del,function(data){
+				app.HMARTJsObj(api.my.consignee.list.DATA,'winLoad.listPost');
+			});
+		}
+		
+	}
+	
+	function onARTJsObjReady(){ 
+		winLoad.init();
+		winBind.init();
+	}
+	
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.consignee.list.URL,{"result":"1","message":"加载成功","pageCount":1,"total":2,"data":[
+	{"id":1,"name":"刘学","tel":"17600819708","addr":"北京市东城区东北大街","defaults":true}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	,{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}
+	]});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.consignee.update.URL,{"result":"1","message":"加载成功"});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.consignee.del.URL,{"result":"1","message":"加载成功"});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.consignee.defaults.URL,{"result":"1","message":"加载成功"});
+	app.load.mock(function(){
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+	});
+</script>
+
+</body>
+</html>

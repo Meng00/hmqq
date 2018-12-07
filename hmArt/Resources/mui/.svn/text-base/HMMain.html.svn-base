@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link href="css/mui.css" rel="stylesheet"/>
+	<link href="css/style.css" rel="stylesheet"/>
+	<link href="css/swiper.css" rel="stylesheet">
+	<style>
+     		.recom_tit span {float: right;	font-size: 13px;}
+			.recom_tit span i{padding-left: 5px;}
+		
+     		.item-group {padding-top: 0.8rem;}
+			.item-group li {padding-bottom: 0rem;}
+			 p{ margin-bottom: 5px;}
+			 /*inline-block*/
+     		#gengduo {display: block;font-size: 14px;margin: 0 auto;padding:8px 0;width: 46%;background: -webkit-linear-gradient(#fff, #e8e8e8); /* Safari 5.1 - 6.0 */background: linear-gradient(#fff, #e8e8e8); /* 标准的语法 */border-radius: 20px;color: #2d2d2d;border: 1px solid #eee;}
+     		.banner .mui-slider-indicator {bottom: -2px;}
+			.tit{line-height: 50px;font-size: 16px;color: #e60012;text-align: center;background: url(images/home/tit_bg.png) no-repeat;background-size: 100% 100%;}
+			/*menu start*/
+			.mui-bar-tab .mui-tab-item.mui-active1 { color: #e60012; }
+			.mui-bar-tab .mui-tab-item.mui-active { color: #929292;}
+			.mui-grid-view.mui-grid-9{ background-color:#FFFFFF; border-top: 0px solid #eee; border-left: 0px solid #eee;padding: 5px 0px; }
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell { border-bottom: 0px solid #eee;  border-right: 0px solid #eee;  padding: 5px 0px; }
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell.mui-active { background-color:initial;}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell > a:not(.mui-btn) {padding: 0px;}
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {color: #000000;font-size: 12px; margin-top: 5px;}
+			.mui-newnav .mui-grid-9 img{ width: 35px !important;}
+			.mui-newnav .mui-table-view-cell{width: 20%;}
+			.navsquare{bottom: 4px;}
+			.navsquare .mui-active{background: #666 !important;}
+			.navsquare .mui-indicator{width: 5%; height: 2px; margin: 0 ; background: #ccc; border: none; border-radius: 0; -webkit-box-shadow: none; box-shadow: none;}
+			/*menu end*/
+			/*news start*/
+			.box {height: 45px; background: #fff; overflow: hidden; margin-top: 5px;padding-top:5px; }
+			.t_news {height: 19px; color: #666; background: #fff; padding-left: 10px; margin: 8px 0; overflow: hidden; position: relative; }
+			.t_news b {line-height: 19px; font-weight: bold; display: inline-block; }
+			.t_news b img{width: auto; height: 19px;} 
+			.news_li,
+			.swap {line-height: 19px; display: inline-block; position: absolute; top: 0; left: 72px; padding-left: 10px; }
+			.news_li a,
+			.swap a {line-height: 19px; display: block; margin: 0; padding: 0;
+			}
+			.news_li p,.swap p{display: block; width: 50%; margin-bottom: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #666; font-size: 12px; }
+			.swap {top: 19px; }
+			.newsmore{position: absolute; color: #000; margin-top: -24px; margin-right: 10px; right: 0; color: #01aef6; font-size: 12px; line-height: 19px; background: url(images/home/s_icon.png) no-repeat 100% 2px; background-size: auto auto; background-size: auto 14px; width: 3em; }
+			/*news end*/
+			/*推荐*/
+			.recom_feature{background: #fff;}
+			.recom_feature a{display: inline-block;height: 150px;padding: 10px 8px;}
+			.recom_feature a div{color: #2d2d2d;font-size: 16px;font-weight: bold;}
+			.recom_feature a span{color: #999;font-size: 14px;}
+			.recom_feature .fea_hlg{width: 100%;background: url(images/home/fea_hlg.png) no-repeat bottom right;background-size:  50% auto;border-bottom: 1px solid #E0E0E0;}
+			.recom_feature .fea_xpys{width: 47%;margin-right: 3%;background: url(images/home/fea_xpys.png) no-repeat bottom right;background-size: 50% auto;}
+			.recom_feature .fea_bzhg{width: 49%;background: url(images/home/fea_bzhg.png) no-repeat bottom right;background-size: 50% auto;border-left: 1px solid #E0E0E0;}
+			.recom_feature .fea_hyfl{width: 49%;background: url(images/home/fea_hyfl.png) no-repeat 90% 100%;background-size: 55% auto;border-left: 1px solid #E0E0E0;padding-top:0;padding-right:0;}
+			.recom_feature .fea_hyfl div{background: url(images/home/hot.png) no-repeat;background-size: 30px auto;background-position: 4.2em 5px;padding-top: 10px;}
+		
+			/*special list start*/
+			.zc-nav{font-size: 1.5rem;line-height: 4.5rem !important;}
+			.mui-segmented-control.mui-segmented-control-inverted{border-bottom: 1px solid #ddd;}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active { background: #e60012; color: #ffffff; border: none;}
+			.recom_list li{margin-bottom: 10px;}
+			.recom_list .recom_title{position: absolute; margin-top: -30px; padding-left: 10px; font-size: 15px; width: 100%; height: 30px; line-height: 30px; color: #ffffff; z-index: 3; }
+			.recom_list .recom_titlebg{width: 100%; height: 30px; position: absolute; margin-top: -30px; background: #000; opacity: .4; z-index: 2; }
+			.recom_list .recom_info{color: #999999; font-size: 12px; padding: 10px; border-bottom: 1px solid #ddd; }
+			.recom_list .recom_info span{ float: right;}
+			/*special list end*/
+			
+			header #sliderSegmentedControl2 .mui-control-item.mui-active { color: #ffffff; border-bottom: none;}
+			.hidden{display: none;}
+			.opacity{opacity: 0;}
+			@media only screen and (min-width: 240px) and (max-width: 350px) {
+				.news_li p,.swap p{width: 55%;}
+			}
+			@media only screen and (min-width: 350px) and (max-width: 400px) {
+				.news_li p,.swap p{width: 65%;}
+			}
+			@media only screen and (min-width: 400px){
+				.news_li p,.swap p{width: 75%;}
+			}
+     	</style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav top-style" style="padding-left: 0;padding-right: 0;">
+	<a href="hmqq-jsweb://localhost/mui/HMArtList.html?search=1" class="iconfont mui-icon mui-pull-left temp-nav-1" style="margin-left: 0px;">&#xe608;</a>
+	<h1 class="index_logo"><img src="images/index-logo.png"/></h1>
+	<a href="hmqq-jsweb://localhost/mui/member/HMPush_list.html" class="iconfont mui-icon mui-pull-right temp-nav-1" style="margin-right: 0px;">&#xe60c;<span class="mui-badge" style="display: none;"></span></a>
+
+	<div class="mui-icon mui-icon-arrowthinup scroll_init hidden"></div>
+</header>
+<div class="mui-content mui-scroll-wrapper" id="con">
+	<div class="mui-scroll" >
+		<div class="banner">
+			<div id="slider" class="mui-slider" >
+				<div class="mui-slider-group mui-slider-loop">
+					<div class="">
+						<img src="images/banner1.png" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--列表菜单 同步微信-->
+		<div class="mui-slider" style="padding-bottom: 15px;background: #fff;">
+			<div class="mui-slider-group  mui-newnav">
+				<!--第一页 nav-->
+				<div class="mui-slider-item">
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/HMArtList.html?id=100000">
+								<img class="mui-icon" src="images/home/nav01_.png"/>
+								<div class="mui-media-body">当代书画</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/HMArtList.html?id=110000">
+								<img class="mui-icon" src="images/home/nav02_.png" />
+								<div class="mui-media-body">西画</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/HMArtList.html?id=150000">
+								<img class="mui-icon" src="images/home/nav03_.png" />
+								<div class="mui-media-body">珠宝玉石</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/HMArtList.html?id=130000">
+								<img class="mui-icon" src="images/home/nav04_.png" />
+								<div class="mui-media-body">紫砂瓷器</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/HMArtList.html?id=120000">
+								<img class="mui-icon" src="images/home/nav05_.png" />
+								<div class="mui-media-body">文玩杂项</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/HMStore_1.html">
+								<img class="mui-icon" src="images/home/nav11_.png" />
+								<div class="mui-media-body">店铺排行</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<div class="jifenshop">
+								<img class="mui-icon" src="images/home/nav12_.png" />
+								<div class="mui-media-body">积分商城</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-app://GalleryCategory">
+								<img class="mui-icon" src="images/home/nav13_.png" />
+								<div class="mui-media-body">名家定制</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/HMArtList.html?type=4&point_time=20">
+								<img class="mui-icon" src="images/home/nav14_.png" />
+								<div class="mui-media-body">0元购</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+							<a href="hmqq-jsweb://localhost/mui/member/HMHtml.html?type=1&tit=购买须知">
+								<img class="mui-icon" src="images/home/nav15_.png" />
+								<div class="mui-media-body">购买须知</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!--翰墨头条-->
+		<div class="box">
+			<div class="t_news">
+				<b><img src="images/home/tticon.png" /></b>
+				<ul class="news_li news_area"></ul>
+				<ul class="swap"></ul>
+				<div class="newsmore">更多</div>
+			</div>
+		</div>
+		<script type="text/html" id="temp-news">
+			<a url="{{url}}" class="url" newsId="{{id}}" newsName="{{name}}">
+				<p>{{name}}</p>
+			</a>
+		</script>
+
+		<!--限时抢拍-->
+		<div class="limit" style="opacity: 0; height: 0;display:none;">
+		</div>
+		<a class="sendintegra" href="hmqq-jsweb://app.4008988518.com/art-interface/mui/integral/HMSpecialArtList.html"  style="margin-top: 5px;display: none;">
+			<img   src="images/sendintegra-home.jpg?v=2" width="100%" />
+		</a>
+		<!--为您推荐-->
+		<div class="tit">特色推荐</div>
+		<div class="recom_feature">
+			<a href="hmqq-mui://www.hlgart.com/pitaya/web/spot/HMHome.html" class="fea_ fea_hlg toURL">
+				<div>火龙果艺术品</div><span>365天即时买退&nbsp;&nbsp;玩赚艺术品</span>
+			</a><a href="hmqq-mui://www.hlgart.com/pitaya/web/presale/HMPresaleList.html" class="fea_ fea_xpys toURL">
+			<div>新品预售</div><span>没买到就亏大了！</span>
+		</a><a class="fea_ fea_hyfl">
+			<div>会员分销</div><span>人人当店主 分享赚高佣</span>
+		</a>
+		</div>
+
+		<!--推荐专场-->
+		<div class="recommended">
+		</div>
+
+		<!--精品推荐-->
+		<div class="boutique clearfix">
+		</div>
+	</div>
+</div>
+<!--分类图标-->
+<script type="text/html" id="homeiocn">
+	{{each obj as item i}}
+	{{if item.url == 'hmqq-app://IndustryNews'}}
+	<li>
+		<a href="hmqq-jsweb://localhost/mui/HMNews.html">
+			<img src="{{imagePath}}{{item.iocn}}" />
+			<p class="color-2d">艺术课堂</p>
+	</li>
+	{{else}}
+	<li>
+		<a href="{{item.url}}">
+			<img src="{{imagePath}}{{item.iocn}}" />
+			<p class="color-2d">{{item.name}}</p>
+		</a>
+	</li>
+	{{/if}}
+	{{/each}}
+</script>
+
+<!--banner-->
+<script type="text/html" id="adSlider" >
+	<div class="mui-slider-group mui-slider-loop">
+		{{each obj as ad i}}
+		{{if length == i}}
+		<div class="mui-slider-item mui-slider-item-duplicate">
+			{{if ad.type > 0}}
+			<a url="{{ad.url}}" class="ad">
+				<img src="{{imagePath}}{{ad.image}}" />
+			</a>
+			{{else}}
+			<img src="{{imagePath}}{{ad.image}}" />
+			{{/if}}
+		</div>
+		{{/if}}
+		{{/each}}
+		{{each obj as ad i}}
+		<div class="mui-slider-item">
+			{{if ad.type > 0}}
+			<a url="{{ad.url}}" class="ad">
+				<img src="{{imagePath}}{{ad.image}}" />
+			</a>
+			{{else}}
+			<img src="{{imagePath}}{{ad.image}}" />
+			{{/if}}
+		</div>
+		{{/each}}
+		{{each obj as ad i}}
+		{{if i == 0}}
+		<div class="mui-slider-item mui-slider-item-duplicate">
+			{{if ad.type > 0}}
+			<a url="{{ad.url}}" class="ad">
+				<img src="{{imagePath}}{{ad.image}}" />
+			</a>
+			{{else}}
+			<img src="{{imagePath}}{{ad.image}}" />
+			{{/if}}
+		</div>
+		{{/if}}
+		{{/each}}
+	</div>
+	<div class="mui-slider-indicator">
+		{{each obj as ad i}}
+		<div class="mui-indicator {{if i == 0}}mui-active{{/if}}" ></div>
+		{{/each}}
+	</div>
+</script>
+
+<script src="js/mui.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/mock-min.js"></script>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js" ></script>
+<script>
+			var currsign = "";//version+device
+			var seckillTime=0;
+			var cd = 1;
+			var cdInterval; 
+			var menu_num = 0;//第一次加载专场列表
+			var scroll_y = 0;//距离顶部距离
+			var menuInfo = mui('.menu_info')[0];
+			var sendIntegrall=mui('.sendintegra')[0]
+			var banner = mui('.banner')[0];
+//			var limit = mui('.limit')[0];
+			winLoad = {
+				init : function(){
+					api.sepcial.list.DATA.pageSize = 100;
+					api.sepcial.list.DATA.other.rec = 1;
+					api.sepcial.list.DATA.other.type = 1;
+					api.sepcial.list.DATA.other.classify_type1 = 1;//默认展示 推荐专场 主题拍 精品专场
+					
+					app.HMARTJsObj(api.main.search.DATA, 'winLoad.search');
+
+//					app.HMARTJsObj(api.main.homeiocn.DATA, 'winLoad.homeiocn');
+
+				//	app.HMARTJsObj(api.main.artRec.DATA, 'winLoad.artRec');
+					app.getHardwareInfo('winLoad.getHardwareInfo');
+					app.HMARTJsObj({}, 'winLoad.getSpecialArtList');
+					api.sysNews.list.DATA.pageIndex = 1;//艺术头条&翰墨头条
+					app.HMARTJsObj(api.sysNews.list.DATA,'winLoad.getNews');
+					api.other.sysVersion.DATA.device =  hmqq_device;
+					app.HMARTJsObj(api.other.sysVersion.DATA,'winLoad.getVersion');
+
+					/*固定专场菜单栏*/
+					var scroll = mui('#con').scroll();
+					document.querySelector('#con').addEventListener('scroll', function (e) { 
+						scroll_y = -scroll.y;
+						//返回顶部
+						if(scroll_y <80){
+							mui('.scroll_init')[0].classList.add('hidden');
+						}else{
+							mui('.scroll_init')[0].classList.remove('hidden');
+						}
+					}) 
+					mui('.scroll_init')[0].setAttribute('style', 'top:'+(document.body.scrollHeight-50)+'px');
+					mui('header').on('tap','.scroll_init',function(){
+					  	mui('#con').scroll().scrollTo(0,0,100);
+					});
+					mui('header').on('tap','.temp-nav-1',function(){
+					  var url = this.getAttribute('href');
+					  app.pushView(url)
+					});
+					mui('header').on('tap','.temp-nav-2',function(){
+					  var url = this.getAttribute('href');
+					  app.pushView(url)
+					});
+					mui('.recom_feature').on('tap','.fea_hyfl',function(){
+						app.checkLogin(1,'winLoad.toDistr');					  
+					});
+					mui('.recom_feature').on('tap', '.toURL', function() {
+						var url = this.getAttribute('href');
+						app.pushView(url);
+					});					
+					mui('.jifenshop')[0].addEventListener('tap',function(){
+						app.checkLogin(1,'winLoad.toIntegralShop');
+					});
+				},
+				search : function(data){
+					api.main.search.param = eval('(' + data +')');
+					app.ajax(api.main.search,function(data){
+						data.imagePath = config.HOST_IMG;
+						data.length = data.obj.length-1;
+ 						var html = template('adSlider', data);
+						mui('#slider')[0].innerHTML = html;
+						mui('#slider').slider({
+							interval: 3000 //自动轮播周期，若为0则不自动播放，默认为0;
+						});
+					});
+					mui("#slider").on("tap",".ad",function(){
+						var url = this.getAttribute("url");
+						app.pushView(url);
+					});
+				},
+				homeiocn : function(data){
+					api.main.homeiocn.param = eval('(' + data +')');
+					app.ajax(api.main.homeiocn,function(data){
+						data.imagePath = config.HOST_IMG;
+						var html = template('homeiocn', data);
+						mui('.homeiocn')[0].innerHTML = html;
+					});
+				},
+				getNews: function(data) {
+					api.sysNews.list.param = eval('(' + data +')');
+					app.ajax(api.sysNews.list,function(data){
+						if(data.data.length > 0){
+							mui('.news_area')[0].innerHTML = '';
+							mui(data.data).each(function(i,item){
+								var html = template('temp-news', item);
+								var div = document.createElement("li");
+						　　　　	div.innerHTML = html;
+						　　　　	mui('.news_area')[0].appendChild(div);
+							});
+						}
+						winLoad.toNews();
+						winLoad.initNews()
+					});
+				},
+				toNews :function(){
+					mui(".news_area").on("tap",".url",function(){
+						var url = this.getAttribute("url");
+						if(url){
+							app.pushView(url);
+						}else{
+							var newsName = this.getAttribute("newsName");
+							var newsId = this.getAttribute("newsId");
+							url = "hmqq-jsweb://localhost/mui/HMNews-content.html?newsId="+newsId+"&tit="+newsName;
+						}
+						app.pushView(url);
+					});
+				},
+				initNews :function(){
+					function n() {
+						t = parseInt(x.css('top'));
+						y.css('top', '19px');
+						x.animate({
+							top: t - 19 + 'px'
+						}, 'slow'); //19为每个li的高度
+						if(Math.abs(t) == h - 19) { //19为每个li的高度
+							y.animate({
+								top: '0px'
+							}, 'slow');
+							z = x;
+							x = y;
+							y = z;
+						}
+						setTimeout(n, 3000); //滚动间隔时间 现在是3秒
+					}
+					$(document).ready(function() {
+						$('.swap').html($('.news_li').html());
+						x = $('.news_li');
+						y = $('.swap');
+						h = $('.news_li li').length * 19; //19为每个li的高度
+						setTimeout(n, 3000); //滚动间隔时间 现在是3秒
+		
+					})
+					mui('.t_news').on('tap', '.newsmore', function() {
+						var url = 'hmqq-jsweb://localhost/mui/HMNews.html';
+						app.pushView(url);
+					});
+				},
+				getHardwareInfo :function(data){
+					var json = eval('(' + data +')');
+					api.push.getCount.DATA.deviceId = json.deviceId;
+					app.HMARTJsObj(api.push.getCount.DATA, 'winLoad.pushCount');
+				},
+				pushCount : function(data){
+					api.push.getCount.param = eval('(' + data +')');
+					app.ajax(api.push.getCount,function(data){
+						if(data.obj > 0){
+							mui('.mui-badge')[0].innerHTML = '';
+							mui('.mui-badge')[0].style.display = '';
+						}else{
+							mui('.mui-badge')[0].innerHTML = '';
+							mui('.mui-badge')[0].style.display = 'none';
+						}
+					});
+				},
+				getSpecialArtList: function(data) {
+				var obj = {
+					TYPE: "POST",
+					URL: "sp/search.htm",
+					DATA: {}
+				}
+				obj.param = eval('(' + data +')');
+				app.ajax(obj, function(data) {
+					if(data.result == 1 && data.obj.length > 0) {
+						mui('.sendintegra')[0].style.display = "block";
+					}
+				});
+			},
+				countdown : function(){
+					var i = parseInt(seckillTime) - parseInt(cd);
+					app.DateUtil.timer(i, function(data){
+						mui('#hh')[0].innerHTML = data.hh;
+						mui('#mm')[0].innerHTML = data.mm;
+						mui('#ss')[0].innerHTML = data.ss;
+					});
+					if(i == 0) cdInterval = null;
+					cd = cd + 1;
+				},toDistr: function(data){
+					app.HMARTJsObj(api.my.getLoginMobile.DATA,'winLoad.checkDistr');
+				},checkDistr : function(data){
+					api.my.getLoginMobile.param = eval('(' + data +')');
+					app.ajax(api.my.getLoginMobile,function(data){
+						if(data.result == '1'){
+							if(data.distributor){
+								app.pushView('hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMDistrEntrance.html');
+							}else{
+								app.pushView('hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMDistrAdd.html');
+							}
+						}
+					},function(err){
+						if(err.result==2)	app.pushView('hmqq-app://Login')
+					});
+				},toIntegralShop: function(data){
+					app.pushView('hmqq-mui://www.hlgart.com/pitaya/web/integral/HMIntegralShop.html');
+				},getVersion: function(data){
+					api.other.sysVersion.param = eval('(' + data +')');
+					app.ajax(api.other.sysVersion,function(data){
+						currsign = data.obj.device+'_'+data.obj.version;
+						loadJs(config.HOST+'mui/apppage/main_'+currsign+'.js')
+					})
+				}
+				
+			}
+			if(mui.os.ios){
+				mui('.mui-content')[0].classList.add('paddingb-46');
+			}
+			function onARTJsObjReady(){
+				mui('.mui-scroll-wrapper').scroll({
+					 deceleration:deceleration, //阻尼系数,系数越小滑动越灵敏
+					 indicators: true //是否显示滚动条
+				});
+				winLoad.init();
+				//HMARTJsObj.hideCtrlBar(1);
+				
+			}
+			
+			function pageRefresh(){
+//				app.HMARTJsObj(api.sepcial.list.DATA, 'winLoad.sepcial');
+//				app.HMARTJsObj(api.main.artRec.DATA, 'winLoad.artRec');
+				app.HMARTJsObj(api.push.getCount.DATA, 'winLoad.pushCount');
+			}
+			/** 友盟统计 **/
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "https://hm.baidu.com/hm.js?727f4b2bdb7ac787142f70edf45585fa";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+			/** 友盟统计 end**/
+			Mock.mock(config.HOST+config.MOCK_KEY+api.sepcial.list.URL,{"result":"1","message":"加载成功","pageCount":1,"total":7,"data":[{"id":1218,"image":"/hmqq/artSpecial/201707091319015_58924e77.jpg","name":"7.13 杂项专场","maxCount":100,"count":50,"browse":879,"remainTime":4016,"status":2,"time":"7/13 12:00—7/14 12:00"},{"id":1217,"image":"/hmqq/artSpecial/201707091318006_a6ad00bf.jpg","name":"7.13 西画专场","maxCount":100,"count":41,"browse":611,"remainTime":4016,"status":2,"time":"7/13 12:00—7/14 12:00"},{"id":1216,"image":"/hmqq/artSpecial/201707091317022_82c39b28.jpg","name":"7.13 书法专场","maxCount":100,"count":81,"browse":526,"remainTime":4016,"status":2,"time":"7/13 12:00—7/14 12:00"},{"id":1215,"image":"/hmqq/artSpecial/201707091314031_c286a320.jpg","name":"7.13 国画人物专场","maxCount":100,"count":59,"browse":434,"remainTime":4016,"status":2,"time":"7/13 12:00—7/14 12:00"},{"id":1214,"image":"/hmqq/artSpecial/201707091313034_3ee4fdb6.jpg","name":"7.13 国画花鸟专场","maxCount":100,"count":100,"browse":465,"remainTime":4016,"status":2,"time":"7/13 12:00—7/14 12:00"},{"id":1213,"image":"/hmqq/artSpecial/201707091312009_98d13374.jpg","name":"7.13 国画山水专场","maxCount":100,"count":89,"browse":852,"remainTime":4016,"status":2,"time":"7/13 12:00—7/14 12:00"},{"id":1328,"image":"/hmqq/artSpecial/201707131756044_8f111aab.jpg","name":"7.13 菩提心——结缘专场","maxCount":50,"count":7,"browse":123,"remainTime":32815,"status":2,"time":"7/13 20:00—7/14 20:00"}]});
+			Mock.mock(config.HOST+config.MOCK_KEY+api.main.artRec.URL,{"message":"加载成功","obj":[{"id":17681,"image":"/hmqq/artwork-1-70/201705251020022_7a23c339-wh.jpg","artName":"寿山石芙蓉冻年年有余（孤品）","artSize":"约2.1x1.7x6.2CM","ownerName":"麒缘轩","type":1,"price":"1300","auctionStatus":-1},{"id":17706,"image":"/hmqq/artwork-1-719/201705251532007_109cd950-wh.JPG","artName":"18K金镶嵌红色翡翠戒指","artSize":"宝石尺寸 10*11毫米","ownerName":"晶石缘珠宝店","type":1,"price":"3200","auctionStatus":-1},{"id":17711,"image":"/hmqq/artwork-1-25/201705251540053_d72abddb-wh.jpg","artName":"智圆行方砚－宋代歙砚风格典范，民国时期标志性款式！","artSize":"约12x12x3，五寸砚","ownerName":"如道","type":1,"price":"129","remainTime":59273,"auctionStatus":0},{"id":17727,"image":"/hmqq/artwork-1-25/201705251601023_3af7ca81-wh.jpg","artName":"89放漏大容量金墨汁100克","artSize":"100克/瓶","ownerName":"如道","type":1,"price":"89","remainTime":145673,"auctionStatus":0},{"id":12800,"image":"/hmqq/artwork-0-0/201703151727033_fe037cd9-wh.jpg","artName":"风景三 （布面油画-风景）","artSize":"D：78cm","ownerName":"翰墨千秋","type":1,"price":"400","auctionStatus":-1},{"id":1025,"image":"/hmqq/artwork-0-0/201611141653046_e8a6be95-wh.jpg","artName":"川波岸柳春全回 （纸本水彩）","artSize":"32x45cm","ownerName":"翰墨千秋","type":1,"price":"300","auctionStatus":-1},{"id":2306,"image":"/hmqq/artwork-0-0/201611151729047_94db109d-wh.jpg","artName":"星空(布面油画-带内框）","artSize":"50x40cm","ownerName":"翰墨千秋","type":1,"price":"300","auctionStatus":-1},{"id":8962,"image":"/hmqq/artwork-0-0/201701061453053_ec4dd961-wh.jpg","artName":"绒花女人系列十（布面油画 人物）","artSize":"70x70cm","ownerName":"翰墨千秋","type":1,"price":"750","auctionStatus":-1},{"id":11815,"image":"/hmqq/artwork-0-0/201703021736030_e2634aed-wh.jpg","artName":"将进酒 （水墨纸本 书法 有破损）","artSize":"69x216cm","ownerName":"翰墨千秋","type":0,"price":"1000","auctionStatus":-1},{"id":5117,"image":"/hmqq/artwork-0-0/201612031204054_d4bbb4d4-wh.jpg","artName":"唐云来  临王铎一首 （水墨纸本）","artSize":"68x136cm","ownerName":"翰墨千秋","type":0,"price":"1700","auctionStatus":-1},{"id":17515,"image":"/hmqq/artwork-1-671/201705241455017_c3b53dee-wh.jpg","artName":"珍禽迎春  花鸟   （水墨纸本）","artSize":"135x68cm","ownerName":"小鹿书画","type":1,"price":"400","auctionStatus":-1},{"id":12701,"image":"/hmqq/artwork-0-0/201703141520032_9f00fa94-wh.jpg","artName":"盛春 （水墨纸本 花鸟 ）","artSize":"137x69cm","ownerName":"翰墨千秋","type":0,"price":"300","auctionStatus":-1},{"id":9777,"image":"/hmqq/artwork-0-0/201701161731018_d1796db7-wh.jpg","artName":"云海苍茫 （水墨纸本）","artSize":"82x180cm","ownerName":"翰墨千秋","type":0,"price":"600","auctionStatus":-1},{"id":9781,"image":"/hmqq/artwork-0-0/201701161733046_cbdd266a-wh.jpg","artName":"亭泉木叶秋云飞 （水墨纸本）","artSize":"82x180cm","ownerName":"翰墨千秋","type":0,"price":"500","auctionStatus":-1},{"id":17478,"image":"/hmqq/artwork-1-675/201705240938040_e875c4e6-wh.jpg","artName":"松下论道图  （水墨纸本）","artSize":"96x35cm","ownerName":"艺购画廊","type":1,"price":"200","auctionStatus":-1},{"id":17480,"image":"/hmqq/artwork-1-675/201705240941055_85f70b4b-wh.jpg","artName":"云水禅心（水墨纸本）","artSize":"96x35cm","ownerName":"艺购画廊","type":1,"price":"200","auctionStatus":-1},{"id":17453,"image":"/hmqq/artwork-1-670/201705240905026_c20987ca-wh.jpg","artName":"舍得 （水墨纸本）","artSize":"70x176cm","ownerName":"豆蔻年华","type":1,"price":"180","auctionStatus":-1},{"id":17461,"image":"/hmqq/artwork-1-670/201705240911056_94dfb83f-wh.jpg","artName":"雄风万里（水墨纸本）","artSize":"108x260cm","ownerName":"豆蔻年华","type":1,"price":"180","auctionStatus":-1}],"result":"1"});
+			Mock.mock(config.HOST+config.MOCK_KEY+api.main.search.URL,{"result":"1","message":"加载成功","obj":[{"title":"大赛报名","image":"/art/advert/201603071726048_81b8de1c.jpg","type":3,"url":"http://app.4008988518.com/art-interface/h5/activityVoting/list2.html"},{"title":"时间","image":"/art/advert/201603071727039_faa25bfa.jpg","type":0,"url":""},{"title":"联系我们","image":"/art/advert/201603071730028_073544b9.jpg","type":3,"url":"http://app.4008988518.com/art-interface/h5/activityVoting/list.html?randNum=43"},{"title":"抽奖登录","image":"/art/advert/201603071731011_2909693e.jpg","type":3,"url":"http://app.4008988518.com/art-interface/h5/lottery/index.html"},{"title":"战略联盟导航页","image":"/art/advert/201603071807045_3be6b008.jpg","type":1,"url":"AllianceGroup"},{"title":"展会","image":"/art/advert/201603081508052_03448a1b.jpg","type":1,"url":"AllianceGroup"}]});
+			Mock.mock(config.HOST+config.MOCK_KEY+api.main.seckill.URL,{"result":"1","message":"加载成功","obj":{"countdown":318,"seckill":1,"array":[{"id":1,"seckillPrice":"90","fixedPrice":"100","artName":"千山叠翠 （水墨纸本 有破损）","artSize":"68x70cm","image":"/hmqq/artwork-0-0/201612061525018_369b65b2-wh.jpg","type":0},{"id":2,"seckillPrice":"90","fixedPrice":"100","artName":"青田石对章（同料）","artSize":"25x25x80mmx2方","image":"/hmqq/artwork-0-0/201612061607003_a35cf6c5-wh.jpg","type":0},{"id":3,"seckillPrice":"90","fixedPrice":"100","artName":"春山积翠 （水墨纸本）","artSize":"68x70cm","image":"/hmqq/artwork-0-0/201612061604034_1fc80770-wh.jpg","type":0},{"id":5,"seckillPrice":"90","fixedPrice":"100","artName":"一江春水 （水墨纸本）","artSize":"42x42cm","image":"/hmqq/artwork-0-0/201612061610035_eaf02a1b-wh.jpg","type":0},{"id":6,"seckillPrice":"90","fixedPrice":"100","artName":"清岚松韵 （水墨纸本）","artSize":"68x70cm","image":"/hmqq/artwork-0-0/201612061610005_4670ce76-wh.jpg","type":0}]}});
+			Mock.mock(config.HOST+config.MOCK_KEY+api.main.homeiocn.URL,{"result":"1","message":"加载成功","obj":[{"iocn":"/hmqq/homeiocn/icon1.png","name":"当代书画","url":"hmqq-jsweb://localhost/mui/HMArtList.html?id=100000"},{"iocn":"/hmqq/homeiocn/icon2.png","name":"西画","url":"hmqq-jsweb://localhost/mui/HMArtList.html?id=110000"},{"iocn":"/hmqq/homeiocn/icon3.png","name":"文玩杂项","url":"hmqq-jsweb://localhost/mui/HMArtList.html?id=120000"},{"iocn":"/hmqq/homeiocn/icon5.png","name":"紫砂瓷器","url":"hmqq-jsweb://localhost/mui/HMArtList.html?id=130000"},{"iocn":"/hmqq/homeiocn/icon7.png","name":"木器根雕","url":"hmqq-jsweb://localhost/mui/HMArtList.html?id=140000"},{"iocn":"/hmqq/homeiocn/icon4.png","name":"珠宝玉石","url":"hmqq-jsweb://localhost/mui/HMArtList.html?id=150000"},{"iocn":"/hmqq/homeiocn/icon8.png","name":"艺术名家","url":"hmqq-app://ArtistList"},{"iocn":"/hmqq/homeiocn/icon9.png","name":"名家定制","url":"hmqq-app://GalleryCategory"},{"iocn":"/hmqq/homeiocn/icon10.png","name":"最新通告","url":"hmqq-app://IndustryNews"},{"iocn":"/hmqq/homeiocn/icon11.png","name":"购买须知","url":"hmqq-jsweb://localhost/mui/member/HMHtml.html?type=1&tit=购买须知"}]});
+			Mock.mock(config.HOST+config.MOCK_KEY+api.push.getCount.URL,{"result":"1","message":"加载成功","obj":9});
+			Mock.mock(config.HOST+config.MOCK_KEY+api.sysNews.list.URL,{"result":"1","message":"加载成功","pageCount":5,"total":48,"data":[{"id":57,"image":"/hmqq/systemNews/201707141136039_72d32ca2.png","name":"“地”“好水”“翠得好”翡翠地子知多少？","createTime":"2017.07.14","title":""},{"id":56,"image":"/hmqq/systemNews/201707140954049_d4e289e2.jpg","name":"“文艺复兴三杰”之拉斐尔素描作品，正在展出","createTime":"2017.07.14","title":""},{"id":55,"image":"/hmqq/systemNews/201707131435013_93de8004.png","name":"翡翠想买怕入坑？进来了解透了再下手","createTime":"2017.07.13","title":""},{"id":54,"image":"/hmqq/systemNews/201707131537058_e4e30842.jpg","name":"台北故宫博物院放大招！7万+国宝大图免费下","createTime":"2017.07.13","title":""},{"id":53,"image":"/hmqq/systemNews/201707131244022_251f24f7.png","name":"微信新版首页上线啦，新增功能看这里！","createTime":"2017.07.13","title":""},{"id":52,"image":"/hmqq/systemNews/201707121644038_a6fb5d49.jpg","name":"无底价？0元起拍？艺术佳品抢拍啦！","createTime":"2017.07.12","title":""},{"id":51,"image":"/hmqq/systemNews/201707041408006_572cbb63.png","name":"7月翰墨千秋店主销售奖励政策！","createTime":"2017.07.04","title":""},{"id":50,"image":"/hmqq/systemNews/201707041409015_665239af.png","name":"7月会员下单大返现活动开始啦！","createTime":"2017.07.04","title":""},{"id":49,"image":"/hmqq/systemNews/201707031336018_634a6c55.png","name":"冲泡白茶用什么茶具","createTime":"2017.07.03","title":""},{"id":48,"image":"/hmqq/systemNews/201706261053001_d3b18a45.jpg","name":"翰墨千秋与新华电脑学校达成品牌合作，签约仪式在京举行","createTime":"2017.06.26","title":""}]});
+			app.load.mock();
+</script>
+</body>
+</html>

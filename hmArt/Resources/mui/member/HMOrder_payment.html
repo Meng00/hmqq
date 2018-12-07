@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>确认定单</title>
+    <link href="../css/mui.css" rel="stylesheet"/> 
+    <link href="../css/style.css" rel="stylesheet"/>
+    <style>
+		.bg_f4{background:#f4f4f4 !important;}
+    		/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 5px;
+		}
+		.mui-table-view-cell:first-child::after {
+		    left: 5px 5px 0px 5px;
+   			left: 0px;
+		}
+	    .mui-table-view-cell {
+	    		padding: 10px 5px;
+	    }
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 80px;
+		}
+		.tit {
+		    /*color: #8f8f94;*/font-size: 14px;
+		}
+		.mui-table-view-chevron .mui-table-view-cell > a:not(.mui-btn){margin-right: -15px;}
+		.order_detail .mui-table-view .mui-media-body .line2{display: -webkit-box;overflow: hidden;text-overflow: ellipsis;word-break: break-all;-webkit-box-orient: vertical;-webkit-line-clamp: 2; padding-right: 5px;color: #333333;font-size: 1.4rem;overflow: hidden;/*width: 100%;position: relative;*/line-height: 1.8rem; white-space: normal;}
+    		.payinfo {
+    			padding-top:0px !important;
+    		}
+    </style>
+</head>
+<body>
+<div class="mui-content">
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">订单支付</h1>		
+	</header>
+	<div class="kind_btn_b order_pay">
+		<button type="reset" class="mui-btn">支付金额<span class="needpay">￥--</span>
+		<button type="submit" class="mui-btn create_ayment">确认支付
+	</div>
+	<div class="mui-content confirm paddingb-46" id="payinfo" style="">
+		
+	</div>
+	<!-- modal -->
+	<div id="listModal" class="mui-modal">
+		<header class="mui-bar mui-bar-nav top-style">
+			<a class="mui-icon mui-icon-arrowleft mui-pull-left" href="#listModal"></a>
+			<h1 class="mui-title color-2d">选择收货地址</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" style="top: 0px;">
+			<a href="#addModal">
+				<button type="button" class="mui-btn mui-btn-success btn8_red mui-icon mui-icon-plus">新增加收货地址</button>
+			</a>
+			<div class="mui-scroll" id="list" style="padding-bottom: 60px;">
+				
+			</div>
+		</div>
+	</div>
+	<div id="addModal" class="mui-modal">
+		<header class="mui-bar mui-bar-nav top-style">
+			<a class="mui-icon mui-icon-arrowleft mui-pull-left add_back" href="#addModal"></a>
+			<h1 class="mui-title color-2d">新增收货地址</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" style="top: 0px;background:#fff;">
+			<div class="mui-scroll">
+			<div class="add_list" id="address" style="padding-bottom: 100px;">
+				<p class="mui-input-row">
+					<label>收货人：</label>
+					<input type="text" id="name">
+				</p>
+				<p class="mui-input-row">
+					<label>联系电话：</label>
+					<input type="tel" id="tel">
+				</p>
+				<div class="xx_addr">
+					<span class="xx_tit">详细地址：</span>
+					<div class="addr_txt">					
+						<textarea rows="5" id="addr" placeholder="输入所在省份、地区街道、楼牌号等"></textarea>
+					</div>
+				</div>
+				<button type="button" class="mui-btn mui-btn-success btn8_red margint-41" id="addSubmit">保存</button>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="temp-info">
+	<div class="mui-content confirm paddingb-46">
+	<p class="confirm_time">支付剩余时间：<span id="hh">00</span> : <span id="mm">30</span> : <span id="ss">00</span></p>
+	<div class="limit_group auction_group order_detail">
+		<ul class="mui-table-view mui-table-view-chevron list2">
+			<li class="mui-table-view-cell mui-media h60 clearfix" id="selectedAddr" style="padding:11px;">
+				<a  href="#listModal" class="mui-navigate-right">
+				<div class="mui-media-body clearfix">
+					<span class="mui-media-object mui-pull-left mui-icon color-e60012 iconfont" style="font-size: 24px;">&#xe615;</span>
+					{{if obj.consignee != null}}
+						<p class='mui-ellipsis tit'>{{obj.consignee.name}}<span>{{obj.consignee.tel}}</span></p>
+						<p class="line2">收货地址：{{obj.consignee.addr}}</p>
+					{{else}}
+						<p style="line-height: 42px; color: #ff0000;">请选择收货地址</p>
+					{{/if}}
+				</div>
+				<i class="mui-pull-right"></i>
+				</a>
+			</li>
+		</ul>
+		</div>
+{{each obj.data as group i}}
+<ul id="group_{{i}}" class="mui-table-view">
+	<li class="mui-table-view-cell mui-media">
+		<div class="mui-media-body">
+			<span {{if group.type == 1}}shopId="{{group.shopId}}"{{/if}} class='mui-ellipsis tit color_2d2d2d icon-22'>
+				{{group.shopName}}
+				<span class="color-e60012"></span>
+			</span>
+		</div>
+	</li>
+	{{each group.orderList as order}}
+	<li orderId="{{order.orderId}}" class="order_id mui-table-view-cell paddingb-0">
+		<div class="mui-media-object mui-pull-left">
+			<img class="mui-media-object mui-pull-left" src="{{imagePath}}{{order.image}}" onerror="onerror=null;src='images/150.jpg'"/>
+		</div>
+		<div class="mui-media-body pay_order_group">
+			<div class="pay_con clearfix paddingt-0">
+				<div class="limit_txt auction_txt">
+					<p class="p1 line_1">{{order.artName}}</p>
+					<p class="p2">作者<em>{{order.artist}}</em></p>
+					<p class="p2">尺寸<em>{{order.artSize}}</em></p>
+					<p class="p3"><span>￥{{order.price}}</span></p>
+				</div>
+			</div>
+		</div>
+	</li>
+	
+	{{/each}}
+	<li class="mui-table-view-cell mui-media">
+		<div class="mui-media-body pay_order_group" style="text-align: right;">
+			<span class='mui-ellipsis tit'>
+				共{{group.orderList.length}}件作品&nbsp;合计：￥{{group.price}}
+				<span class="color-e60012"></span>
+			</span>
+		</div>
+	</li>
+</ul>
+<ul class="mui-table-view mui-table-view-chevron">
+	<li class="mui-table-view-cell mui-media" style="padding: 0 10px;">
+		<div class="mui-media-body">
+			<p class='mui-ellipsis tit lineh-50'><font color="#2d2d2d">运费</font>
+				<span class="color-e60012" style="float: right;">{{if group.freight==0}}包邮{{else}}￥{{group.freight}}{{/if}}</span>
+			</p>					
+		</div>
+	</li>
+</ul>
+{{/each}}
+		<div class="limit_group over_hidd auction_group shop_colle install_group order_list paddingb-0">
+		<ul class="mui-table-view mui-table-view-chevron list3">
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>优惠券
+						<span class="color-e60012">{{if obj.voucher != null}}-￥{{obj.voucher.price}}{{else}}￥0{{/if}}</span></p>					
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>订单总金额<span class="color-e60012">￥{{obj.amount}}</span></p>					
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix invoice0" style="display: none;">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>开具发票</p>
+				</div>
+				<div class="che_r mui-checkbox margintb-0">
+					<input type="checkbox" id="invoice" class="color_06ce02" value="0"/></input>							
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix invoice" style="display: none;">
+				<!--<p class='mui-ellipsis tit lineh-50'>买家留言</p>-->
+				<div class="mui-input-row mui-ellipsis tit lineh-50">
+					<span>发票抬头：</span>
+					<input id="invoiceTitle" type="text" placeholder="请输入姓名或公司抬头" class=" border_none margin-0 padding-0">
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix h36" style="display: none;">
+				<p class='mui-ellipsis tit color-e60012 font-12'>{{obj.invoiceRemark}}</p>				
+			</li>
+		</ul>
+		</div>
+		<div class="limit_group over_hidd auction_group shop_colle install_group order_list paddingt-5">
+		<p class="mes_tit">选择支付方式</p>
+		<ul class="mui-table-view mui-table-view-chevron pay_type">
+			<li class="mui-table-view-cell mui-media clearfix" value="2" style="display: none;">
+				<div class="mui-media-body" >
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf1_icon.png" alt="" />银行卡支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_2" type="radio" name="type"/>						
+					<lable for="ok1"></lable>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix" value="1">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf2_icon.png" alt="" />支付宝支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_1" type="radio" name="type" checked />							
+					<lable for="ok2"></lable>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix" value="3">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf3_icon.png" alt="" />微信支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_3" type="radio" name="type"/>							
+					<lable for="ok3"></lable>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix" value="4">
+				<div class="mui-media-body">
+					<p class='mui-ellipsis tit lineh-30'><img src="../images/zf4_icon.png" alt="" />线下支付</p>
+				</div>
+				<div class="che_r mui-checkbox mui-radio">
+					<input id="radio_4" type="radio" name="type"/>						
+					<lable for="ok4"></lable>
+				</div>
+			</li>
+		</ul>
+		</div>
+</div>
+</script>
+<script type="text/html" id="temp-addr">
+	<a  href="#listModal" class="mui-navigate-right">
+	<div class="mui-media-body">
+		<span class="mui-media-object mui-pull-left mui-icon mui-icon-map color-e60012"></span>
+		<p class='mui-ellipsis tit'>{{name}}<span>{{tel}}</span></p>
+		<p class='mui-ellipsis'>收货地址：{{addr}}</p>
+	</div>
+	<i class="mui-pull-right"></i>
+	</a>
+</script>
+<script type="text/html" id="temp-list">
+	{{each data as item i}}
+		<div class="addr_list sel_addr callback" data-item="{{item |toString}}">
+			<p class="names">{{item.name}}<span>{{item.tel}}</span></p>
+			<p>
+				 {{if item.defaults}}<span class="color-e60012">[默认地址]</span>{{/if}}
+				收货地址：{{item.addr}}
+			</p>
+		</div>
+	{{/each}}
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	
+	if(mui.os.ios){
+		mui('#payinfo')[0].classList.add('payinfo');
+	}else if(mui.os.android){
+		mui('.mui-scroll-wrapper')[0].style.top = '44px';
+		mui('.mui-scroll-wrapper')[1].style.top = '44px';
+	}
+	var seckillTime ,cdInterval;
+	var winLoad = {
+		init : function(){
+			//初始化单页view
+			app.checkLogin(1,'winLoad.checkLoginCallback');	
+		},
+		checkLoginCallback : function(data){
+			var json = eval('(' + data +')');
+			if(json.loginStatus == '1'){
+				api.my.order.prePayment.DATA.mobile = json.mobile;
+				api.my.order.createPayment.DATA.mobile = json.mobile;
+				api.my.consignee.update.DATA.mobile = json.mobile;
+				api.my.consignee.list.DATA.mobile = json.mobile;
+				
+				if(typeof(HMARTJsObj) == "undefined"){
+					appParams = {};
+					appParams.orderIds = "8";
+				} 
+				api.my.order.createPayment.DATA.orderIds = appParams.orderIds;
+				api.my.order.prePayment.DATA.orderIds = appParams.orderIds;
+				/* 加载数据 */
+				app.HMARTJsObj(api.my.order.prePayment.DATA,'winLoad.prePayment');
+				app.HMARTJsObj(api.my.consignee.list.DATA, 'winLoad.addr.list');
+			}
+		},
+		prePayment : function(data){
+			api.my.order.prePayment.param = eval('(' + data +')');
+			app.ajax(api.my.order.prePayment,function(data){
+				var html = template('temp-info', data);
+				mui('#payinfo')[0].innerHTML = html;
+				mui('.needpay')[0].innerHTML = '￥'+data.obj.needPay;
+				cd = 1;
+				seckillTime = data.obj.remainTime;
+				winLoad.countdown();
+				cdInterval = setInterval(winLoad.countdown,1000);
+				
+				if(data.obj.voucher != null) {
+					api.my.order.createPayment.DATA.voucherId = data.obj.voucher.id;
+				}
+				if(data.obj.consignee != null) {
+					api.my.order.createPayment.DATA.consigneeId = data.obj.consignee.id;
+				}
+				mui('.create_ayment')[0].addEventListener('tap',function(){
+				winLoad.blur();
+					winLoad.createPayment();
+				});
+				
+				mui('.pay_type').on('tap','li',function(){
+				winLoad.blur();
+					mui('.pay_type input').each(function(i,item){
+						this.removeAttribute('checked');
+					});
+					var type = this.getAttribute('value');
+					mui('#radio_'+type)[0].setAttribute('checked','checked'); 
+					api.my.order.createPayment.DATA.type = type;
+				});
+				var cheboxs = document.getElementById('invoice');
+				cheboxs.addEventListener('change',function(){
+					if(this.checked){
+					    mui('.invoice')[0].style.display = '';
+						mui('.needpay')[0].innerHTML = '￥'+(Number(data.obj.needPay)+Number(data.obj.invoiceAmount));
+						mui('#invoice')[0].value = 1;
+					}else{
+						mui('.invoice')[0].style.display = 'none';
+						mui('.needpay')[0].innerHTML = '￥'+data.obj.needPay;
+						mui('#invoice')[0].value = 0;
+					}
+				},false);
+				mui('.invoice01').on('tap','#invoice',function(){
+				winLoad.blur();
+					var v = mui('#invoice')[0].value;
+					if(v == 0){
+						mui('.invoice')[0].style.display = '';
+						mui('.needpay')[0].innerHTML = '￥'+(Number(data.obj.needPay)+Number(data.obj.invoiceAmount));
+						mui('#invoice')[0].value = 1;
+						setTimeout(function(){
+							mui('#invoice')[0].checked = true;
+						},1000);
+					}else{
+						mui('.invoice')[0].style.display = 'none';
+						mui('.needpay')[0].innerHTML = '￥'+data.obj.needPay;
+						mui('#invoice')[0].value = 0;
+						setTimeout(function(){
+							mui('#invoice')[0].checked = false;
+						},1000);
+					}
+//					if(mui('#invoice')[0].checked){
+//						//mui('#invoice')[0].checked = true;
+//					}else{
+//						//mui('#invoice')[0].checked = true;
+//						
+//					}
+				}); 
+			});
+		},
+		createPayment : function(){
+			 if(api.my.order.createPayment.DATA.consigneeId.length < 1){
+			 	app.toast('请选择收货地址');
+			 	return;
+			 }
+			if(mui('#invoice')[0].checked){
+			 	api.my.order.createPayment.DATA.invoice = true;
+			 	if(mui('#invoiceTitle')[0].value.length < 1){
+			 		app.toast('请输入发票抬头');
+			 		mui('#invoiceTitle')[0].focus();
+			 		return ;
+			 	}
+			 	api.my.order.createPayment.DATA.invoiceTitle = mui('#invoiceTitle')[0].value;
+			 }else{
+			 	api.my.order.createPayment.DATA.invoice = false;
+			 }
+			/* 加载数据 */
+			app.HMARTJsObj(api.my.order.createPayment.DATA,'winLoad.toPay');
+		},
+		toPay :function(data){
+			api.my.order.createPayment.param = eval('(' + data +')');
+			app.ajax(api.my.order.createPayment,function(data){
+				if(data.obj.isPaySuccess == true){
+					app.toast('支付成功，请前往个人中心查看详情。');
+					mui.back();
+					//HMARTJsObj.popToRootView();
+				}else{
+					app.loadding.show();
+					if(data.obj.payType == 2||data.obj.payType==5||data.obj.payType==1){
+						HMARTJsObj.toPayData(data.obj.payType, data.obj.data);
+					}else{
+						HMARTJsObj.toPayData(data.obj.payType, JSON.stringify(data.obj.data));
+					}
+					api.my.wxJsPayStatus.DATA.paySerialNo = data.obj.paySerialNo;
+					setTimeout("app.HMARTJsObj(api.my.wxJsPayStatus.DATA,'winLoad.wxJsPayStatus')",5000);				
+				}
+			});
+		},
+		wxJsPayStatus: function(data){
+			api.my.wxJsPayStatus.param = eval('(' + data +')');
+			app.ajax2(api.my.wxJsPayStatus,function(data){
+				if(data.result==1){
+						if(data.obj.status == 2){//1 :重复调用2：提示支付成功 其他：提示支付失败
+							app.confirm.init({
+								message :  '支付成功',
+								btnArray : ['确认'],
+								callback : function(i){
+									mui.back();
+								}
+							});
+						}else if(data.obj.status == 1){									
+							setTimeout("app.HMARTJsObj(api.my.wxJsPayStatus.DATA,'winLoad.wxJsPayStatus')",1000);
+						}else{
+							app.confirm.init({
+								message :  '支付失败',
+								btnArray : ['确认'],
+								callback : function(i){
+//									mui.back();
+								}
+							});
+						}
+				}
+			},function(){},false)
+		},
+		countdown : function(){
+			var i = parseInt(seckillTime) - parseInt(cd);
+			app.DateUtil.timer(i, function(data){
+				mui('#hh')[0].innerHTML = data.hh;
+				mui('#mm')[0].innerHTML = data.mm;
+				mui('#ss')[0].innerHTML = data.ss;
+			});
+			if(i == 0) cdInterval = null;
+			cd = cd + 1;
+		},
+		addr : {
+			list : function(data){
+				api.my.consignee.list.param = eval('(' + data +')');
+				app.ajax(api.my.consignee.list,function(data){
+					var html = template('temp-list', data);
+					mui('#list')[0].innerHTML = html;
+				});
+			},
+			update : function(data){
+				api.my.consignee.update.param = eval('(' + data +')');
+				app.ajax(api.my.consignee.update,function(data){
+					var consignee = {};
+					consignee.id = data.obj;
+					consignee.name = api.my.consignee.update.DATA.name;
+					consignee.tel = api.my.consignee.update.DATA.tel;
+					consignee.addr = api.my.consignee.update.DATA.addr;
+					
+					api.my.order.createPayment.DATA.consigneeId = consignee.id;
+					mui('#selectedAddr')[0].innerHTML = template('temp-addr', consignee);
+
+					app.HMARTJsObj(api.my.consignee.list.DATA, 'winLoad.addr.list');
+					mui("#listModal")[0].classList.remove('mui-active');
+					mui("#addModal")[0].classList.remove('mui-active');
+					mui("#name")[0].value = '';
+					mui("#tel")[0].value = '';
+					mui("#addr")[0].value = '';
+				},function(err){
+					if(err.result==2)	app.toast('最多可以管理8个收货地址，您的地址个数已达上限！')
+				});
+			}
+		},blur: function(){
+			mui('input').each(function(i,itme){
+				this.blur();
+			});
+			mui('textarea').each(function(i,itme){
+				this.blur();
+			});
+		}
+	}
+	
+	//app通知
+	function onARTJsObjReady(){
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+		winLoad.init();
+		mui('#list').on("tap",".callback",function(){
+			winLoad.blur();
+			var item = this.getAttribute("data-item");
+			var consignee = JSON.parse(item);
+			api.my.order.createPayment.DATA.consigneeId = consignee.id;
+			mui('#selectedAddr')[0].innerHTML = template('temp-addr', consignee);
+			mui("#listModal")[0].classList.remove('mui-active');
+		});
+
+		mui('body').on('tap','.add_back',function(){
+			mui('#name')[0].blur();
+			mui('#tel')[0].blur();
+		mui('#addr')[0].blur();
+		});
+		mui('body').on("tap","#addSubmit",function(){
+		winLoad.blur();
+			var address = mui("#address")[0].getAttribute("data-address");
+			if(address){ // 修改
+				address = JSON.parse(address);
+				api.my.consignee.update.DATA.id = address.id;
+			}
+			api.my.consignee.update.DATA.name = mui("#name")[0].value;
+			api.my.consignee.update.DATA.tel = mui("#tel")[0].value;
+			api.my.consignee.update.DATA.addr = mui("#addr")[0].value;
+			
+			if(api.my.consignee.update.DATA.name.length < 1){
+				mui('#name')[0].focus();
+				return;
+			}
+			if(api.my.consignee.update.DATA.tel.length < 1){
+				mui('#tel')[0].focus();
+				return;
+			}
+			if(api.my.consignee.update.DATA.addr.length < 1){
+				mui('#addr')[0].focus();
+				return;
+			}
+			app.HMARTJsObj(api.my.consignee.update.DATA,'winLoad.addr.update');
+		});
+	}
+	
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.prePayment.URL,{"result":"1","message":"加载成功","obj":{"consignee":{"id":58,"name":"刘学","tel":"17600819708","addr":"北京市东城区东四北大街"},"data":[{"freight":0.0,"groupId":0,"invoice":false,"invoiceAmount":1420.0,"orderIds":"144,143,142","orderList":[{"artName":"老虎","artSize":"68x68cm","artist":"李白","freight":0.0,"image":"/hmqq/artwork-0-0/201611091339036_e494f349-wh.jpg","merge_freight":false,"orderId":"144","orderStatus":1,"orderStatusCH":"待支付","ownerId":120,"price":200.0,"refund":0,"remainTime":1309,"serialNum":"1611151112410120","sign":false},{"artName":"秋景图","artSize":"75*160","artist":"张翊","freight":0.0,"image":"/hmqq/artwork-0-0/201611071631003_80e9d815-wh.jpg","merge_freight":false,"orderId":"143","orderStatus":1,"orderStatusCH":"待支付","ownerId":100,"price":8000.0,"refund":0,"remainTime":1193,"serialNum":"1611151110450100","sign":false},{"artName":"七律长征","artSize":"69x238cm","artist":"师忠民","freight":0.0,"image":"/hmqq/artwork-0-0/201610241330043_3b283873-wh.jpg","merge_freight":false,"orderId":"142","orderStatus":1,"orderStatusCH":"待支付","ownerId":45,"price":150.0,"refund":0,"remainTime":1184,"serialNum":"1611151110360045","sign":false}],"ownerId":"0","paySerial":"","price":8350.0,"remainTime":1184,"shopId":"0","shopName":"翰墨千秋","status":0,"totalAmount":8350.0,"type":0}],"amount":8350.0,"needPay":8350.0,"invoiceAmount":1420.0,"invoiceRemark":"开具发票需收17%的税点","remainTime":1184}});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.consignee.list.URL,{"result":"1","message":"加载成功","pageCount":1,"total":2,"data":[{"id":1,"name":"刘学","tel":"17600819708","addr":"北京市东城区东北大街","defaults":true},{"id":2,"name":"完善","tel":"17612344321","addr":"天津市","defaults":false}]});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.consignee.update.URL,{"result":"1","message":"加载成功"});
+	app.load.mock(function(){});
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>保证金明细</title>
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link href="../css/style.css" rel="stylesheet"/>
+     <style>
+		/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 5px;
+		}
+		/** 四周边距 **/
+	   .mui-table-view-cell::after {
+		    left: 5px;
+		}
+	    .mui-table-view-cell {
+	    		padding: 5px;
+	    }
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 120px;
+		}
+		.mui-table-view .store_img {
+		    height: auto;
+		    max-width: 80px;
+		}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav bg_white kind_sea">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">保证金明细</h1>
+	</header>
+	<!--下拉刷新容器-->
+	<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<ul id="scroll1" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+				
+			</ul>
+		</div>
+	</div>
+<script type="text/html" id="temp-list">
+        <div class="mui-table">
+            <div class="mui-table-cell mui-col-xs-8">
+                <h4 class="mui-ellipsis">
+                	{{if type == 1}}+{{else}}-{{/if}}{{deposit}}
+                </h4>
+                <p class="mui-h6 mui-ellipsis">{{remark}}</p>
+            </div>
+            <div class="mui-table-cell mui-col-xs-4 mui-text-right">
+                <span class="mui-h5">{{createDate}}</span>
+            </div>
+        </div>
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+	<script>
+		var winLoad = {
+			init: function() {
+				//初始化上下拉动组建
+				mui.init({
+					pullRefresh: winLoad.pullRefresh
+				});
+				api.my.deposit.user.DATA.pageIndex = 1;
+				app.HMARTJsObj(api.my.deposit.user.DATA,'winLoad.initData');
+			},
+			pullRefresh: {
+				indicators: false,
+				container: "#refreshContainer",
+				down: { //下拉刷新数据
+		      		callback: function() {
+						api.my.deposit.user.DATA.pageIndex = 1;
+						app.HMARTJsObj(api.my.deposit.user.DATA,'winLoad.initData');
+						setTimeout(function(){
+							mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+						}, 40000);
+					}
+				},
+				up: { //上拉加载数据
+					height:70,//可选.默认50.触发上拉加载拖动距离
+		      		contentrefresh: '正在加载...',
+					callback: function() {
+						api.my.deposit.user.DATA.pageIndex += 1;
+						app.HMARTJsObj(api.my.deposit.user.DATA,'winLoad.nextData');
+						setTimeout(function(){
+							mui('#refreshContainer').pullRefresh().endPullupToRefresh();
+						}, 40000);
+					}
+				}
+			},
+			initData: function(data) {
+				api.my.deposit.user.param = eval('(' + data +')');
+				app.ajax(api.my.deposit.user,function(data){
+					if(data.data.length > 0){
+						mui('#scroll1')[0].innerHTML = '';
+						mui(data.data).each(function(i,item){
+							item.image = data.imagePath + item.image;
+							var html = template('temp-list', item);
+							var div = document.createElement("li");
+							div.className = 'mui-table-view-cell';
+					　　　　	div.innerHTML = html;
+					　　　　	mui('#scroll1')[0].appendChild(div);
+						});
+					}
+					//结束下拉刷新
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+					if(data.pageCount > 1){
+						mui('#refreshContainer').pullRefresh().refresh(true);
+					}else{
+						//mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+					}
+				});
+			},
+			nextData: function(data) {
+				api.my.deposit.user.param = eval('(' + data +')');
+				app.ajax(api.my.deposit.user,function(data){
+					if(data.data.length > 0){
+						mui(data.data).each(function(i,item){
+							item.image = data.imagePath + item.image;
+							var html = template('temp-list', item);
+							var div = document.createElement("li");
+							div.className = 'mui-table-view-cell';
+					　　　　	div.innerHTML = html;
+					　　　　	mui('#scroll1')[0].appendChild(div);
+						});
+					}
+					var isEnd = false;
+					if(data.pageCount < api.my.deposit.user.DATA.pageIndex){
+						isEnd = true;
+					}
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh(isEnd);
+				});
+			}
+		};
+		
+		function onARTJsObjReady() {
+			winLoad.init();
+		}
+		Mock.mock(config.HOST+config.MOCK_KEY+api.my.deposit.user.URL,{"result":"1","message":"加载成功","pageCount":10,"total":11,"data":[{"deposit":500,"type":1,"createDate":"2016-10-29","remark":"充值"},{"deposit":500,"type":2,"createDate":"2016-12-09","remark":"提现"}]});
+		app.load.mock(function(){});
+	</script>
+</body>
+
+</html>

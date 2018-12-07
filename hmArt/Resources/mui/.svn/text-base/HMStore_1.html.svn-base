@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>翰墨千秋</title>
+    <link href="css/mui.css" rel="stylesheet"/> 
+    <link href="css/style.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="css/icons-extra.css" />
+	
+	<style>
+		header.kind_sea .mui-input-row{left: 0;width: 100%;}
+		input[type="search"] { border-radius: 0;}
+		.auction_1220 .sea_btn { color: #2D2D2D;font-size: 1.3rem;}
+		.headerDP{
+			height: 88px !important;
+		}
+		.mui-table-view-cell.mui-active {
+			background-color:initial;
+		}
+		.basic_information .logo img{ width: 40px;border-radius: 50px;border: 1px #B6B6B6 solid;}
+		.logo{margin-top: 0px;}
+		.art_info div{color: #666;}
+		.shop_info{margin-bottom: 2px;line-height: 18px;}
+		.shop_info.p1{font-size: 15px!important;}
+		.star_list{margin-bottom: 5px;line-height: 18px;}
+		.star_list span { color: #ffc322; font-size: 1.4rem;}
+		.shop_title {
+			color:#666;font-size:1.2rem;margin-bottom: 0px;line-height: 20px;
+		}
+		.shop_title span{
+			margin: 0 15px;
+		}
+		.information_r{
+			margin-left: 50px;
+		}
+		.collection_r em {
+		    font-size: 1.5rem;
+		    color: #F25C5C;
+		}
+		.collection_r span {
+		    color: #00baf7;
+		    font-size: 14px;
+		}
+		.collection_r {
+		    background: #FFFFFF none repeat scroll 0 0;
+		    color: #00baf7;
+		    display: inline-block;
+		    padding: 12px 5px;
+		    position: absolute;
+		    right: 0;
+		    top: 0px;
+		}
+		.mui-table-view-cell .content{font-size: 14px;color: #666666;line-height: 20px;padding: 0px 10px;}
+	</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style paddinglr-0 kind_sea auction_1220 Store_1221 headerDP">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">店铺排行</h1>
+		<div class="clearfix pos_rel borderb_1 border_lr" style="margin: 0 5px; margin-top: 44px;">
+			<div class="mui-input-row" style="overflow: visible;">
+				<input id="search1" type="search" class="mui-input-clear" placeholder="请输入店铺名称" style="height: 35px;padding: 0px 0px;font-size: 1.3rem; padding-left: 1rem !important;">
+			</div>
+			<span id="search" class="sea_btn" style="right: 45px;"><i class="border_r"></i>搜索</span>
+		</div>
+	</header>
+	<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top: 44px;">
+		<div class="mui-scroll">
+			<div class="list">
+				
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/html" id="temp-list">
+	{{each data as shop i}}
+	<div class="basic_information clearfix" shopId="{{shop.shopId}}" name="{{shop.name}}" sellerId="{{shop.sellerId}}" style="padding: 5px 10px;">
+		<div class="logo shop_info"><img src="{{imagePath}}{{shop.logo}}"/></div>
+		<div class="information_r">
+			<p class="p1 mui-ellipsis line_1 shop_info">{{shop.name}}</p>
+			{{if shop.margin > 0}}
+			<img src="images/margin.png" width="16px" style="float: left;margin-top: 1px;margin-right: 5px;"/>
+			{{/if}}
+			<span style="color: #00baf7;font-size: 1.2rem;float: left;">实名认证</span>
+			<span class="collection_r">
+				<span class="toShop" shopId="{{shop.shopId}}" name="{{shop.name}}" sellerId="{{shop.sellerId}}">进入店铺</span>
+			</span>
+		</div>
+	</div>
+	<ul class="mui-table-view">
+		<li class="mui-table-view-cell art_info" style="padding: 5px 0px;">
+			{{if shop.content}}
+			<div class="content mui-ellipsis-2">
+				<span style="">{{shop.content}}</span>
+			</div>
+			{{/if}}
+			<ul class="mui-table-view mui-grid-view">
+		    {{each shop.awoArray as owner j}}
+				<li class="mui-table-view-cell mui-media mui-col-xs-4" ownerId="{{owner.ownerId}}">
+		            <a href="#">
+		            		<div style="border: 1px #F6F6F6 solid;">
+		                <img class="mui-media-object" src="{{imagePath}}{{owner.image}}" style="border-bottom: 1px #F6F6F6 solid;">
+		                <div class="mui-media-body" style="margin: 3px 2px;font-size: 13px;">{{owner.artName}}</div>
+		                </div>
+		            </a>
+				</li>
+			{{/each}}
+			</ul>
+		</li>
+	</ul>
+	<div class="paddingtb-5"></div>
+	{{/each}}
+</script>
+<script src="js/mui.js"></script>
+<script src="js/app.js?v=2"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/mock-min.js"></script>
+<script>
+	
+	winBind = {
+		init: function(){
+			mui('#search')[0].addEventListener("tap",function(){
+				api.store.shop.search.DATA.other.keywork = mui("#search1")[0].value;
+				api.store.shop.search.DATA.pageIndex = 1;
+				mui('.list')[0].innerHTML = '';
+				app.HMARTJsObj(api.store.shop.search.DATA,'winLoad.list');
+				mui('#pullrefresh').pullRefresh().scrollTo(0,1,300);
+			});
+		},
+		toDetail: function(){
+			mui('.mui-grid-view').on('tap','li',function(){
+			 	var ownerId = this.getAttribute('ownerId');
+				var url = 'hmqq-jsweb://localhost/mui/HMArtInfo.html?ownerId='+ownerId;
+				if(typeof(appParams) != "undefined" && appParams != null && appParams.sellerId){
+					url = url+'&sellerId='+appParams.sellerId;
+				} 
+				app.pushView(url);
+			});
+			mui('.collection_r').on("tap",".toShop",function(){
+				var shopId = this.getAttribute('shopId');
+				var sellerId = this.getAttribute('sellerId');
+				var name = this.getAttribute('name');
+				var url = 'hmqq-jsweb://localhost/mui/HMStoreInfo.html?sellerId='+sellerId+'&shopId='+shopId+'&name='+name;
+				app.pushView(url);
+			});
+		}
+	}
+	
+	winLoad = {
+			init : function(){
+				api.store.shop.search.DATA.pageIndex = 1;
+				app.HMARTJsObj(api.store.shop.search.DATA,'winLoad.list');
+				mui.init({
+					pullRefresh: {
+						container: '#pullrefresh',
+						down: {
+							callback: function() {
+								api.store.shop.search.DATA.pageIndex = 1;
+								mui('.list')[0].innerHTML = '';
+								app.HMARTJsObj(api.store.shop.search.DATA,'winLoad.list');
+							}
+						},
+						up: {
+							contentrefresh: '正在加载...',
+							callback: winLoad.pullupRefresh
+						}
+					}
+				});
+			},
+			pullupRefresh: function(){
+				api.store.shop.search.DATA.pageIndex ++;
+				app.HMARTJsObj(api.store.shop.search.DATA,'winLoad.list');
+			},
+			list: function(data){
+				api.store.shop.search.param = eval('(' + data +')');
+				app.ajax(api.store.shop.search,function(data){
+					var html = template('temp-list', data);
+					mui('.list')[0].innerHTML += html;
+					winBind.toDetail();
+					if(api.store.shop.search.DATA.pageIndex == 1){
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					}else{
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((data.pageCount <= api.store.shop.search.DATA.pageIndex));
+					}
+				});
+			}
+		}
+	
+	function onARTJsObjReady() {
+		mui('.mui-segmented-control').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+		winLoad.init();
+		winBind.init();
+	}
+	
+	Mock.mock(config.HOST+config.MOCK_KEY+api.store.shop.search.URL,{"data":[{"content":"中华阁中华阁中华阁中华阁中华阁中华阁","shopId":722,"sellerId":723,"name":"中华阁","logo":"/hmqq/shop/201705231739031_9bb37e5e-wh.jpg","starLevel":"5","fans":1,"turnover":1,"margin":0,"lable":["西画"],"awoArray":[{"ownerId":17427,"image":"/hmqq/artwork-1-723/201705231753044_85ea603d-wh.jpg","artName":"麦田"},{"ownerId":17428,"image":"/hmqq/artwork-1-723/201705231804024_00b7fd45-wh.jpg","artName":"图书馆自习女孩"},{"ownerId":17430,"image":"/hmqq/artwork-1-723/201705231821014_79f35aeb-wh.jpg","artName":"夜巡"}]},{"shopId":728,"sellerId":729,"name":"皓白艺术俱乐部","logo":"/hmqq/joinapply/201705241535044_c4acdd10-wh.jpg","starLevel":"5","fans":1,"turnover":0,"margin":0,"lable":["当代书画","西画"],"awoArray":[{"ownerId":17590,"image":"/hmqq/artwork-1-729/201705241656008_4a230225-wh.jpeg","artName":"《山乡春光》"},{"ownerId":17580,"image":"/hmqq/artwork-1-729/201705241635004_c26b3e65-wh.jpeg","artName":"《家》"},{"ownerId":17569,"image":"/hmqq/artwork-1-729/201705241551055_b6cfecac-wh.jpeg","artName":"《夜暮鸟归林》"}]},{"shopId":747,"sellerId":748,"name":"暮然","logo":"/hmqq/joinapply/201705251432046_c1c47fe0-wh.jpg","starLevel":"5","fans":0,"turnover":0,"margin":0,"lable":["西画"],"awoArray":[{"ownerId":17719,"image":"/hmqq/artwork-1-748/201705251548032_fffd4133-wh.jpg","artName":"你的名字"},{"ownerId":17697,"image":"/hmqq/artwork-1-748/201705251514002_1b7166c8-wh.jpg","artName":"桂林写生系列1"},{"ownerId":17733,"image":"/hmqq/artwork-1-748/201705251612013_5067f10e-wh.jpg","artName":"林深有人家2"}]},{"shopId":1,"sellerId":101,"name":"洁好庐手作","logo":"/hmqq/shop/201612011740032_97e32dfb-wh.jpg","starLevel":"5","fans":8,"turnover":10,"margin":0,"lable":["当代书画","西画","杂项","紫砂瓷器","木器根雕","珠宝玉石"],"awoArray":[]},{"shopId":4,"sellerId":17,"name":"刀画尚品堂","logo":"/hmqq/shop/201612140955003_b46c8e2d-wh.jpg","starLevel":"5","fans":4,"turnover":0,"margin":0,"lable":["当代书画","西画","杂项","紫砂瓷器","木器根雕","珠宝玉石"],"awoArray":[]},{"shopId":10,"sellerId":9,"name":"艺年华","logo":"/hmqq/shop/201612021034025_d13422b1-wh.jpg","starLevel":"5","fans":2,"turnover":1,"margin":0,"lable":["当代书画","西画","杂项","紫砂瓷器","木器根雕","珠宝玉石"],"awoArray":[]},{"shopId":17,"sellerId":5,"name":"雅趣阁","logo":"/hmqq/shop/201612021029026_caba30a0-wh.jpg","starLevel":"5","fans":2,"turnover":0,"margin":0,"lable":["当代书画","西画","杂项","紫砂瓷器","木器根雕","珠宝玉石"],"awoArray":[]},{"shopId":20,"sellerId":104,"name":"七宝斋精品字画","logo":"/hmqq/shop/201611171647047_b8eb73d5-wh.png","starLevel":"5","fans":6,"turnover":3,"margin":0,"lable":["当代书画","西画","杂项","紫砂瓷器","木器根雕","珠宝玉石"],"awoArray":[]},{"shopId":22,"sellerId":13,"name":"兴国书画","logo":"/hmqq/shop/201611141140047_bf43161e-wh.jpg","starLevel":"5","fans":3,"turnover":3,"margin":0,"lable":["当代书画"],"awoArray":[]},{"shopId":23,"sellerId":105,"name":"翰墨堂","logo":"/hmqq/shop/201611141154009_d16e5a67-wh.jpg","starLevel":"5","fans":4,"turnover":0,"margin":0,"lable":["当代书画","西画","紫砂瓷器"],"awoArray":[]}],"message":"加载成功","pageCount":65,"result":"1","total":649});
+	app.load.mock();
+</script>
+</html>

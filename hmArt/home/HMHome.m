@@ -8,7 +8,7 @@
 
 #import "HMHome.h"
 
-@interface HMHome ()
+@interface HMHome ()<UIWebViewDelegate>
 
 @end
 
@@ -19,6 +19,8 @@
     
     [self.agentWeb.scrollView setShowsVerticalScrollIndicator:NO];
     self.agentWeb.scrollView.bounces = NO;
+    self.agentWeb.delegate = self;
+    
     
     CGRect agentFrame = self.agentWeb.frame;
     if(self.tabBarController.tabBar.hidden == NO){

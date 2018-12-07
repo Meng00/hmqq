@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>拍卖_竞买预展</title>
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+		/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 5px;
+		}
+		
+		/** 四周边距 **/
+	   .mui-table-view-cell::after {
+		    left: 5px;
+		}
+	    .mui-table-view-cell a{color:#2d2d2d !important;}
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 130px;
+		}
+		span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+		}
+		.mui-bar-nav ~ .mui-content{padding-top: 146px;}
+		p {
+			margin-bottom: 0px;
+		}
+		.kind_sea.auction_1220 .mui-title{right: 10px;}
+		
+		
+		.mui-bar~.mui-content .mui-fullscreen {
+				top: 44px;
+				height: auto;
+			}
+			.mui-pull-top-tips {
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				margin-left: -25px;
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+				z-index: 1000;
+			}
+			.mui-bar~.mui-pull-top-tips {
+				top: 46px;
+			}
+			/*.mui-pull-top-wrapper {
+				width: 42px;
+				height: 42px;
+				display: block;
+				text-align: center;
+				background-color: #efeff4;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				background-clip: padding-box;
+				box-shadow: 0 4px 10px #bbb;
+				overflow: hidden;
+			}*/
+			.mui-pull-top-tips.mui-transitioning {
+				-webkit-transition-duration: 200ms;
+				transition-duration: 200ms;
+			}
+			.mui-pull-bottom-tips {
+				text-align: center;
+				/*background-color: #efeff4;*/
+				font-size: 15px;
+				line-height: 40px;
+				color: #777;
+			}
+			.mui-pull-top-canvas {
+				overflow: hidden;
+				background-color: #fafafa;
+				border-radius: 40px;
+				box-shadow: 0 4px 10px #bbb;
+				width: 40px;
+				height: 40px;
+				margin: 0 auto;
+			}
+			.mui-pull-top-canvas canvas {
+				width: 40px;
+			}
+			.hidden{display: none;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav top-style paddinglr-0 kind_sea auction_1220" style="height:124px;border-bottom: none;">
+			<!--搜索条-->
+			<div class="clearfix pos_rel bdb_1" style="padding-left: 0;padding-right: 10px;">
+				<a class="mui-action-back mui-icon mui-icon-back mui-pull-left margin-0"></a>
+				<div class="mui-title mui-input-row" style="overflow: visible;right: 40px;">
+					<input type="search" id="search1" class="mui-input-clear" placeholder="请输入作品名称、艺术家名" style="height: 36px;padding-right: 0 !important;" readonly="readonly">
+				</div>
+				<a href="#" class="iconfont mui-icon mui-pull-right search_0">&#xe609;</a>
+			</div>
+			<!--<div class="paddingl-15 clearfix pos_rel borderb_1">
+				<a href="#" class="iconfont mui-icon mui-pull-left search_0">&#xe609;</a>
+				<div class="mui-title mui-input-row" style="left: 55px; overflow: visible;">
+					<input type="search" id="search1" class="mui-input-clear" placeholder="请输入作品名称、艺术家名" style="height: 36px;">
+				</div>
+				<span class="sea_btn" id="search"><i class="border_r"></i>搜索</span>
+			</div>-->
+			<div class="mui-icon mui-icon-arrowthinup scroll_init hidden"></div>
+			<!--正在竞买Tab栏-->
+			<div id="sliderSegmentedControl" class="mui-segmented-control mui-segmented-control-inverted bg_white" style="top:0;">
+				<a class="mui-control-item mui-active" href="#item1mobile" data-type='1'>正在竞买</a>
+				<a class="mui-control-item" href="#item2mobile" data-type='2'>竞买预展</a>
+				<a class="mui-control-item" href="#item3mobile" data-type='3' style="opacity: 0; width: 0;">历史竞买</a>
+			</div>
+			<!--综合 Tab栏-->
+			<ul class="tab_sec clearfix pos_rel">
+				<li index="1"><a class="active">综合</a></li>
+				<li index="2"><a href="#topPopover">价格<em class="order"></em></a></li>
+				<li index="3"><a href="#topPopover2">浏览次数<em class="order"></em></a></li>
+				<li index="4"><a>最新上线</a></li>
+				<li id="classfiy" index="5" class=""><a>分类</a>
+					<!--分类横列表-->	
+					<div class="mui-slider mui-fullscreen auction_tab" style="display: none;">
+						<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted classify_tab">
+							<div class="mui-scroll limit_top bg_f4">
+								<p class="mui-control-item"><a code="" class="active">全部</a></p>
+								<p class="mui-control-item"><a code="100000">当代书画</a></p>
+								<p class="mui-control-item"><a code="110000">西画</a></p>
+								<p class="mui-control-item"><a code="120000">杂项</a></p>
+								<p class="mui-control-item"><a code="130000">紫砂瓷器</a></p>
+								<p class="mui-control-item"><a code="150000">珠宝玉石</a></p>
+							</div>
+						</div>
+					</div>
+					<!--分类横列表end-->
+				</li>
+			</ul>
+		<!--综合 Tab栏end-->
+		</header>
+		
+		<!--价格弹窗-->
+		<div id="topPopover" class="mui-popover store_pop fixed_pop">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" orderBy="desc">
+							从高到低
+						</li>
+						<li class="mui-table-view-cell" orderBy="asc">
+							从低到高
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="topPopover2" class="mui-popover store_pop fixed_pop">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" orderBy="desc">
+							从高到低
+						</li>
+						<li class="mui-table-view-cell" orderBy="asc">
+							从低到高
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--价格弹窗end-->
+		
+		<div class="mui-content mui-scroll-wrapper" id="con">
+			<div class="mui-scroll">
+				<!--<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>-->
+				<!--<div class="mui-slider-group">-->
+					<div id="item1mobile" class="mui-control-content mui-active">
+						<div class="pull mui-scroll-wrapper" id="wrapper1">
+							<div class="mui-scroll">
+								<ul class="boutique_list mui-table-view pull-scroll" id="scroll1">
+									
+								</ul>
+							</div>
+							<!--<div class="mui-scroll-up-msg">加载数据..</div>-->	
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-control-content">
+						<div class="pull mui-scroll-wrapper" id="wrapper2">
+						  <div class="mui-scroll">
+								<ul id="scroll2" class="pull-scroll">
+									
+								</ul>
+						  </div>
+						</div>
+					</div>
+					<div id="item3mobile" class="mui-control-content">
+						<div class="pull mui-scroll-wrapper" id="wrapper3">
+							<div class="mui-scroll" id="">
+								<ul id="scroll3" class="pull-scroll">
+									
+								</ul>
+							</div>
+						</div>
+					</div>  
+				<!--</div>-->
+			</div>
+		</div>
+	</body>
+<script type="text/html" id="temp-auction-01">
+	{{each data as item i}}
+		<li ownerId="{{item.ownerId}}" class="clearfix boutique_item">
+			<div class="boutique_img"><!--src="" -->
+				<img src="{{imagePath}}{{item.image}}"  onerror="onerror=null;src='images/150.jpg'"/>
+				{{if item.status == 0}}<span>距离开拍<i class="timer" time={{item.remainTime}}>{{item.remainTime |timer}}</i></span>{{/if}}
+				{{if item.status == 1}}<span class="boutique_red">距离结束<i class="timer" time={{item.remainTime}}>{{item.remainTime |timer}}</i></span>{{/if}}
+			</div>
+			<div class="boutique_txt no_after">
+				<p class="p1 line_1 paddingr-40">{{item.artName}}
+					{{if item.type == 0}}<span>自营</span>{{/if}}
+					<!--{{if item.type != 0}}<span>商家</span>{{/if}}-->
+				</p>
+				<p class="p01">作者<span>{{item.artist}}</span></p>
+				<p class="p2 line_1">尺寸<em>{{item.artSize}}</em></p>
+				{{if item.status == 0}}<p class="p3">起拍价<span>￥{{item.price}}</span></p>{{/if}}
+				{{if item.status == 1}}<p class="p3">起拍价<span>￥{{item.price}}</span><em class="right_6">{{item.auctionNumber}}次</em></p>{{/if}}
+			</div>
+			<!--<p class="boutique_tit"><em>{{item.hits}}</em><strong><i class="iconfont">&#xe62c;</i>{{item.attention}}</strong></p>-->
+		</li>
+		{{/each}}
+</script>
+
+<script type="text/html" id="temp-auction-03">
+	{{each data as item i}}
+		<ul class="mui-table-view">
+			<li ownerId="{{item.ownerId}}" class="mui-table-view-cell mui-media">
+				<div class="mui-media-object mui-pull-left boutique_img">
+					<!--src="{{imagePath}}{{item.image}}" -->
+					<img class="mui-media-object mui-pull-left" src="{{imagePath}}{{item.image}}" onerror="onerror=null;src='images/150.jpg'"/>
+					{{if item.status == 0}}<span>距离开拍<i class="timer" time={{item.remainTime}}>{{item.remainTime |timer}}</i></span>{{/if}}
+					{{if item.status == 1}}<span class="boutique_red">距离结束<i class="timer" time={{item.remainTime}}>{{item.remainTime |timer}}</i></span>{{/if}}
+				</div>
+				<div class="mui-media-body">
+					<div class="limit_txt auction_txt auction_ing">
+						<p class="p1 line_1 paddingr-40">{{item.artName}}
+							{{if item.type == 0}}<span>自营</span>{{/if}}
+							<!--{{if item.type != 0}}<span>商家</span>{{/if}}-->
+						</p>
+						<p class="p2">作者<em>{{item.artist}}</em></p>
+						<p class="p2">尺寸<em>{{item.artSize}}</em></p>
+						<p class="p3">
+							{{if item.status == 0}}起拍价<span>￥{{item.price}}</span>{{/if}}
+							{{if item.status == 1}}当前价<span>￥{{item.price}}</span><em>{{item.auctionNumber}}次</em>{{/if}}
+							{{if item.status == 2}}一口价<span>￥{{item.price}}</span>{{/if}}
+							{{if item.status == 4}}成交金额<span>￥{{item.price}}</span>{{/if}}
+						</p>	
+						{{if item.status == 4}}<p class="p2">{{item.saleDate}}<em></em></p>{{/if}}
+					</div>
+				</div>
+			</li>
+		</ul>
+	{{/each}}
+</script>
+	<script src="js/mui.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/mock-min.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template-ext.js"></script>
+	<script src="js/mui.pullToRefresh.js"></script>
+	<script src="js/mui.pullToRefresh.material.js"></script>
+	<script>
+		if(mui.os.ios){
+			mui('.mui-content')[0].classList.add('paddingt_146');
+		}else{
+			mui('.mui-content')[0].classList.add('paddingt_126');
+		}
+		winBind = {
+			init : function(){
+				winBind.onMobile();
+				mui('header').on('tap','.mui-icon-clear',function(){
+					api.store.search.DATA.other.keywork = mui('#search1')[0].value;
+					winLoad.initData();
+				});
+				var scroll = mui('#wrapper1').scroll();
+				document.querySelector('#wrapper1').addEventListener('scroll', function (e) { 
+					scroll_y = -scroll.y;	
+					if(scroll_y < 50){
+						mui('.scroll_init')[0].classList.add('hidden');
+					}else{
+						mui('.scroll_init')[0].classList.remove('hidden');
+					}
+				})
+				var scroll2 = mui('#wrapper2').scroll();
+				document.querySelector('#wrapper2').addEventListener('scroll', function (e) { 
+					scroll_y = -scroll2.y;	
+					if(scroll_y < 50){
+						mui('.scroll_init')[0].classList.add('hidden');
+					}else{
+						mui('.scroll_init')[0].classList.remove('hidden');
+					}
+				})
+				mui('.scroll_init')[0].setAttribute('style', 'top:'+(document.body.scrollHeight-80)+'px');
+			},
+			onMobile : function(){
+				mui('.tab_sec').on('tap','li',function(){
+					api.store.search.DATA.other.keywork = mui('#search1')[0].value;
+					var index = this.getAttribute('index');
+					if(index == 1 || index == 4 ){
+
+						mui('.tab_sec')[0].querySelector('.active').classList.remove('active');
+						this.firstChild.classList.add('active');
+						api.store.search.DATA.other.sort = index-1;
+						api.store.search.DATA.other.order = '';
+						winLoad.initData();
+						mui('.order')[0].className = 'order';
+						mui('.order')[1].className = 'order';
+					}else if(index == 5){
+						if(this.querySelector('.mui-slider').style.display == 'none'){
+							this.classList.add('bg_f4');
+							this.querySelector('.mui-slider').style.display = '';
+						}else{
+							this.classList.remove('bg_f4');
+							this.querySelector('.mui-slider').style.display = 'none';
+						}
+					}
+				});
+				mui('#topPopover').on('tap','li',function(){
+					mui('#topPopover')[0].classList.remove('mui-active');
+					mui('#topPopover')[0].style.display = 'none';
+					mui('.mui-backdrop')[0].remove();
+					mui('.tab_sec')[0].querySelector('.active').classList.remove('active');
+					mui('.order')[0].parentNode.classList.add('active');
+					var orderBy = this.getAttribute('orderBy');
+					if(orderBy == 'desc'){
+						mui('.order')[0].className = 'order dot_bottom';
+					}else {
+						mui('.order')[0].className = 'order dot_top';
+					}
+					mui('.order')[1].className = 'order';
+					api.store.search.DATA.other.sort = 1;
+					api.store.search.DATA.other.order = orderBy;
+					winLoad.initData();
+				});
+				mui('#topPopover2').on('tap','li',function(){
+					mui('#topPopover2')[0].classList.remove('mui-active');
+					mui('#topPopover2')[0].style.display = 'none';
+					mui('.mui-backdrop')[0].remove();
+					mui('.tab_sec')[0].querySelector('.active').classList.remove('active');
+					mui('.order')[1].parentNode.classList.add('active');
+					var orderBy = this.getAttribute('orderBy');
+					if(orderBy == 'desc'){
+						mui('.order')[1].className = 'order dot_bottom';
+					}else {
+						mui('.order')[1].className = 'order dot_top';
+					}
+					mui('.order')[0].className = 'order';
+					api.store.search.DATA.other.sort = 2;
+					api.store.search.DATA.other.order = orderBy;
+					winLoad.initData();
+				});
+//				mui('#search')[0].addEventListener('tap',function(){
+//					api.store.search.DATA.other.keywork = mui('#search1')[0].value;
+//					if(mui('.limit_top')[0].querySelector('.active')){
+//						var code = mui('.limit_top')[0].querySelector('.active').getAttribute('code');
+//						api.store.search.DATA.other.classifyCode = (code==null?'':code);
+//					} 
+//					winLoad.initData();
+//				});
+			},
+			toArtInfo: function(){
+				mui('.pull ul').off('tap');
+				mui('.pull ul').on('tap','li',function(){
+				 	var ownerId = this.getAttribute('ownerId');
+					var url = 'hmqq-jsweb://localhost/mui/HMArtInfo.html?ownerId='+ownerId;
+					app.pushView(url);
+				});
+				app.DateUtil.initCountdown();
+			}
+		}
+		
+		winLoad = {
+			init : function(){
+				/* 容器最小高度 */
+				mui('.mui-control-content').each(function(){
+					this.style.minHeight = window.innerHeight - 126+"px";// - 50 
+				});
+				//循环初始化所有下拉刷新，上拉加载。
+				mui.each(document.querySelectorAll('.pull .mui-scroll'), function(index, pullRefreshEl) {
+					mui(pullRefreshEl).pullToRefresh({
+						down: {
+							callback: false
+						},
+						up: {
+							contentinit: '',
+							contentdown: '',
+							callback: function() {
+								var self = this;
+								var ul = self.element.querySelector('.pull-scroll');
+								var pageIndex = ul.getAttribute('pageIndex');
+								var type = ul.getAttribute('data-type');
+//								alert(type+" "+pageIndex);
+								api.store.search.DATA.pageIndex = (Number(pageIndex)|| 1) +1; //下一页
+								api.store.search.DATA.other.type = type;
+								pageIndex = api.store.search.DATA.pageIndex;
+//								alert(JSON.stringify(api.store.search.DATA));
+								winLoad.pullScroll = function(data){
+									api.store.search.param = eval('(' + data +')');
+									app.ajax(api.store.search,function(data){
+										var isEnd = false;
+										if(data.data.length > 0){
+											//alert(type);
+											if(pageIndex == 1){
+												ul.innerHTML = '';
+											}
+											var div = document.createElement("div");
+										　　if(type == 3 || type == 2){
+												div.innerHTML = template('temp-auction-03', data);
+											}else{
+												div.innerHTML = template('temp-auction-01', data);
+											}
+											ul.appendChild(div);
+											ul.setAttribute('pageIndex', pageIndex);
+											//mui('#search')[0].innerHTML = +type+":"+ul.id+":"+pageIndex;
+											winBind.toArtInfo();
+										}else isEnd = true;
+										self.endPullUpToRefresh();
+									});
+								}
+								app.HMARTJsObj(api.store.search.DATA,'winLoad.pullScroll');
+								setTimeout(function() {
+									self.endPullUpToRefresh();
+								}, 30000);
+							}
+						}
+					});
+				});
+				/* 加载模块 */
+				api.store.search.DATA.other.type = 1;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction1');
+				api.store.search.DATA.other.type = 2;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction2');
+				api.store.search.DATA.other.type = 3;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction3');
+				app.HMARTJsObj(api.store.classfiy.DATA,'winLoad.classfiy');
+			},
+			initData : function(){
+				mui("#scroll1")[0].setAttribute('pageIndex', 0);
+				mui("#scroll2")[0].setAttribute('pageIndex', 0);
+				mui("#scroll3")[0].setAttribute('pageIndex', 0);
+//				mui('#wrapper1').pullRefresh().refresh(true);
+//				mui('#wrapper2').pullRefresh().refresh(true);
+//				mui('#wrapper3').pullRefresh().refresh(true);
+				mui('#wrapper1').scroll().scrollTo(0,0,100);//
+				mui('#wrapper2').scroll().scrollTo(0,0,100);//
+				mui('#wrapper3').scroll().scrollTo(0,0,100);//
+				
+				api.store.search.DATA.pageIndex = 1;
+				api.store.search.DATA.other.type = 1;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction1');
+				api.store.search.DATA.other.type = 2;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction2');
+				api.store.search.DATA.other.type = 3;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction3');
+				
+			},
+			auction1 : function(data){ /* 1 － 正在竞拍 */
+				api.store.search.param = eval('(' + data +')');
+				app.ajax(api.store.search,function(data){
+					var html = template('temp-auction-01', data);
+					mui('#scroll1')[0].innerHTML = '';
+					var div = document.createElement("div");
+			　　　　	div.innerHTML = html;
+			　　　　	mui('#scroll1')[0].appendChild(div);
+					mui("#scroll1")[0].setAttribute('pageIndex', 1);
+					mui("#scroll1")[0].setAttribute('data-type', 1);
+					winBind.toArtInfo();
+				});
+				mui('header').on('tap','.scroll_init',function(){
+				  	mui('#wrapper1').scroll().scrollTo(0,0,100);//
+				}) 
+			},
+			auction2 : function(data){ /* 2 － 竞买预展 */
+				api.store.search.param = eval('(' + data +')');
+				app.ajax(api.store.search,function(data){
+					var html = template('temp-auction-03', data);
+					mui('#scroll2')[0].innerHTML = '';
+					var div = document.createElement("div");
+			　　　　	div.innerHTML = html;
+			　　　　	mui('#scroll2')[0].appendChild(div);
+					mui("#scroll2")[0].setAttribute('pageIndex', 1);
+					mui("#scroll2")[0].setAttribute('data-type', 2);
+//					mui('#wrapper2').scroll().scrollTo(0,0,100);//
+					winBind.toArtInfo();
+				});
+				
+				mui('header').on('tap','.scroll_init',function(){
+				  	mui('#wrapper2').scroll().scrollTo(0,0,100);//
+				}) 
+			},
+			auction3 : function(data){ /* 3 － 历史竞买 */
+				api.store.search.param = eval('(' + data +')');
+				app.ajax(api.store.search,function(data){
+					var html = template('temp-auction-03', data);
+					mui('#scroll3')[0].innerHTML = '';
+					var div = document.createElement("div");
+			　　　　	div.innerHTML = html;
+			　　　　	mui('#scroll3')[0].appendChild(div);
+					mui("#scroll3")[0].setAttribute('pageIndex', 1);
+					mui("#scroll3")[0].setAttribute('data-type', 3);
+					//mui('#wrapper3').scroll().scrollTo(0,0,100);//
+					winBind.toArtInfo();
+				});
+			},
+			classfiy : function(data){
+				api.store.classfiy.param = eval('(' + data +')');
+				app.ajax(api.store.classfiy,function(data){
+					
+					var limit_top = mui('.limit_top')[0];
+					limit_top.innerHTML = '';
+					var p0 = document.createElement('p');
+					p0.classList.add('mui-control-item');
+					p0.innerHTML = '<a class="active">全部</a>';
+					limit_top.appendChild(p0);
+					
+					mui.each(data.obj, function(i,item){
+						var p = document.createElement('p');
+						p.classList.add('mui-control-item');
+						p.innerHTML = '<a code="'+this.id+'" class="">'+this.name+'</a>';
+						limit_top.appendChild(p);
+					});
+					
+					mui('.limit_top').on('tap','p',function(){
+						var a = this.firstChild;
+						var code = a.getAttribute('code');
+						if(limit_top.querySelector('.active')) limit_top.querySelector('.active').classList.remove('active');
+						a.classList.add('active');
+												
+						api.store.search.DATA.other.keywork = mui('#search1')[0].value;
+						api.store.search.DATA.other.classifyCode = (code==null?'':code);
+						winLoad.initData();
+					});
+				});
+			}
+		}
+		
+		function onARTJsObjReady() {
+			mui('.mui-scroll-wrapper').scroll({
+				 deceleration:deceleration, //阻尼系数,系数越小滑动越灵敏
+				 indicators: false //是否显示滚动条
+			});
+			mui('body')[0].addEventListener('touchend',function(){
+				document.activeElement.blur();
+//				var bg = mui('#classfiy')[0];
+//				bg.querySelector('.mui-slider').style.display = 'none';
+//				bg.classList.remove('bg_f4');
+			});
+			winLoad.init();
+			winBind.init();
+			mui('body').on('tap','.search_0',function(){
+				var active = mui('#sliderSegmentedControl .mui-active')[0];
+				var type = active.getAttribute('data-type');
+				var tit = '艺术品列表';
+				if(type == 1) tit = '正在竞买';
+				else if(type == 2) tit = '竞买预展';
+				else if(type == 3) tit = '历史竞买';
+				var url = 'hmqq-jsweb://localhost/mui/HMArtList.html?search=1&type='+type+'&tit='+tit;
+				app.pushView(url);
+			});
+			
+			mui('body').on('tap','#search1',function(){
+				var active = mui('#sliderSegmentedControl .mui-active')[0];
+				var type = active.getAttribute('data-type');
+				var tit = '艺术品列表';
+				if(type == 1) tit = '正在竞买';
+				else if(type == 2) tit = '竞买预展';
+				else if(type == 3) tit = '历史竞买';
+				var url = 'hmqq-jsweb://localhost/mui/HMArtList.html?search=1&type='+type+'&tit='+tit;
+				app.pushView(url);
+			});
+		}
+		function pageRefresh(){
+			if(typeof(pageIndex) == "undefined"){
+				loadding = false;
+				api.store.search.DATA.pageIndex = 1;
+				api.store.search.DATA.other.type = 1;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction1');
+				api.store.search.DATA.other.type = 2;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction2');
+				api.store.search.DATA.other.type = 3;
+				app.HMARTJsObj(api.store.search.DATA,'winLoad.auction3');
+				loadding = true;
+			}else{
+				delete pageIndex;
+			}
+		}
+		/* 模拟数据 启动 */
+		//Mock.mock(config.HOST+config.MOCK_KEY+api.store.search.URL,{"result":"1","message":"加载成功","pageCount":1,"total":3,"data":[{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4},{"ownerId":11,"artName":"煙雨江南","image":"/hmqq/artwork-0-1/201610051606048_e67e7024-wh.jpg","artSize":"39x54","artist":"李清宇","hits":0,"attention":0,"type":0,"status":1,"price":"120","remainTime":2906003,"auctionNumber":6},{"ownerId":6,"artName":"唐诗","image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artSize":"70x137cm","artist":"师忠民","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4374803,"auctionNumber":0},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4},{"ownerId":6,"artName":"唐诗","image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artSize":"70x137cm","artist":"师忠民","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4374803,"auctionNumber":0}]});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.search.URL,{"result":"1","message":"加载成功","pageCount":3,"total":3,"data":[{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"800000","remainTime":0,"auctionNumber":4},{"ownerId":11,"artName":"煙雨江南","image":"/hmqq/artwork-0-1/201610051606048_e67e7024-wh.jpg","artSize":"39x54","artist":"李清宇","hits":0,"attention":0,"type":0,"status":1,"price":"120","remainTime":2906003,"auctionNumber":6},{"ownerId":6,"artName":"唐诗","image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artSize":"70x137cm","artist":"师忠民","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4374803,"auctionNumber":0},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":1,"price":"80","remainTime":4288403,"auctionNumber":4}]});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.classfiy.URL,{"result":"1","message":"加载成功","obj":[{"id":100000,"name":"当代书画","chiled":[{"id":100100,"name":"山水"},{"id":100300,"name":"花鸟"},{"id":100400,"name":"人物"},{"id":100500,"name":"动物"},{"id":100200,"name":"书法"},{"id":100600,"name":"工笔"}]},{"id":110000,"name":"西画","chiled":[{"id":110100,"name":"风景"},{"id":110200,"name":"人物"},{"id":110300,"name":"动物"},{"id":110400,"name":"静物"},{"id":110500,"name":"抽象"},{"id":110600,"name":"漆画"}]},{"id":120000,"name":"杂项","chiled":[{"id":120100,"name":"文房四宝"},{"id":120200,"name":"邮币票证"},{"id":120300,"name":"古籍文献"}]},{"id":130000,"name":"紫砂瓷器","chiled":[{"id":130100,"name":"紫砂"},{"id":130200,"name":"瓷器"}]},{"id":140000,"name":"木器根雕","chiled":[{"id":140100,"name":"家具"},{"id":140200,"name":"手串"},{"id":140300,"name":"把件"}]},{"id":150000,"name":"珠宝玉石","chiled":[{"id":150100,"name":"翡翠"},{"id":150200,"name":"和田玉"},{"id":150300,"name":"琥珀蜜蜡"},{"id":150400,"name":"水晶"},{"id":150500,"name":"玛瑙"},{"id":150600,"name":"绿松"}]}]});
+		app.load.mock(function(){});
+	</script>
+</html>

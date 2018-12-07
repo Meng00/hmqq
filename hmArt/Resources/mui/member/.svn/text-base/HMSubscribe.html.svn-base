@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>拍卖提醒</title>
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link href="../css/style.css" rel="stylesheet"/>
+     <style>
+		/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 5px;
+		}
+		/** 四周边距 **/
+	   .mui-table-view-cell::after {
+		    left: 5px;
+		}
+	    .mui-table-view-cell {
+	    		padding: 5px;
+	    }
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 120px;
+		}
+		.mui-table-view .store_img {
+		    height: auto;
+		    max-width: 80px;
+		}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav bg_white kind_sea">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">拍卖提醒</h1>
+		<a class="mui-icon-right-nav mui-pull-right paddingtb-10 font-14" type="1">编辑</a>
+	</header>
+	<!--下拉刷新容器-->
+	<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" id="scroll1">
+			<!--<div class="news_area">
+				
+			</div>-->
+		</div>
+	</div>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+	<script>
+		var currsign="";
+		var winLoad = {
+			init: function() {								
+				api.other.sysVersion.DATA.device =  hmqq_device;
+				app.HMARTJsObj(api.other.sysVersion.DATA,'winLoad.getVersion');
+			},
+			pullRefresh: {
+				indicators: false,
+				container: "#refreshContainer",
+				down: { //下拉刷新数据
+		      		callback: function() {
+		      			if(mui('.mui-pull-right')[0].getAttribute('type') == 0){
+							mui('.mui-pull-right')[0].setAttribute('type','1');
+							mui('.mui-pull-right')[0].innerHTML = '编辑';
+							winLoad.swipeout(0);
+						}
+						api.my.subscribe.artwork.DATA.pageIndex = 1;
+						app.HMARTJsObj(api.my.subscribe.artwork.DATA,'winLoad.initData');
+						setTimeout(function(){
+							mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+						}, 40000);
+					}
+				},
+				up: { //上拉加载数据
+					height:70,//可选.默认50.触发上拉加载拖动距离
+		      		contentrefresh: '正在加载...',
+					callback: function() {
+						if(mui('.mui-pull-right')[0].getAttribute('type') == 0){
+							mui('.mui-pull-right')[0].setAttribute('type','1');
+							mui('.mui-pull-right')[0].innerHTML = '编辑';
+							winLoad.swipeout(0);
+						}
+						api.my.subscribe.artwork.DATA.pageIndex += 1;
+						app.HMARTJsObj(api.my.subscribe.artwork.DATA,'winLoad.nextData');
+						setTimeout(function(){
+							mui('#refreshContainer').pullRefresh().endPullupToRefresh();
+						}, 40000);
+					}
+				}
+			},
+			initData: function(data) {
+				api.my.subscribe.artwork.param = eval('(' + data +')');
+				app.ajax(api.my.subscribe.artwork,function(data){
+					if(data.data.length > 0){
+						mui('#scroll1')[0].innerHTML = '';
+						mui.get(config.HOST+'mui/apppage/subscribe_'+currsign+'.html',function(html){
+							var render = template.compile(html);
+							var arthtml = render(data);
+							var div = document.createElement("div");
+					　　　　	div.innerHTML = arthtml;
+					　　　　	mui('#scroll1')[0].appendChild(div);
+							winLoad.toArtInfo();
+						})						
+					}					
+					//结束下拉刷新
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+					if(data.pageCount > 1){
+						mui('#refreshContainer').pullRefresh().refresh(true);
+					}else{
+						//mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+					}
+				});
+			},
+			nextData: function(data) {
+				api.my.subscribe.artwork.param = eval('(' + data +')');
+				app.ajax(api.my.subscribe.artwork,function(data){
+					if(data.data.length > 0){
+						mui.get(config.HOST+'mui/apppage/subscribe_'+currsign+'.html',function(html){
+							var render = template.compile(html);
+							var arthtml = render(data);
+							var div = document.createElement("div");
+					　　　　	div.innerHTML = arthtml;
+					　　　　	mui('#scroll1')[0].appendChild(div);
+							winLoad.toArtInfo();
+						})						
+					}
+					var isEnd = false;
+					if(data.pageCount < api.my.subscribe.artwork.DATA.pageIndex){
+						isEnd = true;
+					}
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh(isEnd);
+				});
+			},
+			toArtInfo: function(){
+				app.DateUtil.initCountdown();
+				mui('#scroll1 ul').on('tap','li',function(){
+					var ownerId = this.getAttribute('ownerId');
+					var url = 'hmqq-jsweb://localhost/mui/HMArtInfo.html?ownerId='+ownerId;
+					app.pushView(url);
+				});
+				mui('#scroll1 ul').on("tap",".delOwner",function(event){
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					app.confirm.init({
+						message :  '确认删除？',
+						btnArray : ['取消','确认'],
+						callback : function(i){
+							if(i == 1){
+								var ownerId = elem.getAttribute('ownerId');
+								api.my.subscribe.cancelArt.DATA.ownerId = ownerId;
+								app.HMARTJsObj(api.my.subscribe.cancelArt.DATA,'winLoad.delOwner');
+								li.parentNode.removeChild(li);
+							}else{
+								setTimeout(function() {
+									mui.swipeoutClose(li);
+								}, 0);
+							}
+						}
+					});
+				});
+				
+			},
+			delOwner : function(data){
+				api.my.subscribe.cancelArt.param = eval('(' + data +')');
+				app.ajax(api.my.subscribe.cancelArt,function(data){
+					//alert('删除成功');
+				});
+			},
+			swipeout :function(type){
+				mui.each(mui('.mui-table-view-cell'),function(i,item){
+					if(type == 1){
+						mui.swipeoutOpen(this,'right');
+					}else{
+						mui.swipeoutClose(this);
+					}
+				});
+			},
+			getVersion: function(data){
+				api.other.sysVersion.param = eval('(' + data +')');
+				app.ajax(api.other.sysVersion,function(data){
+					currsign = data.obj.device+'_'+data.obj.version;
+					//初始化上下拉动组建
+					mui.init({
+						pullRefresh: winLoad.pullRefresh
+					});
+					api.my.subscribe.artwork.DATA.pageIndex = 1;
+					app.HMARTJsObj(api.my.subscribe.artwork.DATA,'winLoad.initData');
+				})
+			}
+		};
+		
+		function onARTJsObjReady() {
+			mui('.mui-pull-right')[0].addEventListener('tap',function(){
+				var type = this.getAttribute('type');
+				winLoad.swipeout(type);
+				if(type == 1){
+					this.setAttribute('type','0');
+					this.innerHTML = '取消';
+				}else{
+					this.setAttribute('type','1');
+					this.innerHTML = '编辑';
+				}
+			});
+			winLoad.init();
+		}
+		
+		Mock.mock(config.HOST+config.MOCK_KEY+api.my.subscribe.artwork.URL,{"result":"1","message":"加载成功","pageCount":10,"total":11,"data":[{"ownerId":12,"artName":"佳句","image":"/hmqq/artwork-0-1/201610051609000_567d71d3-wh.jpg","artSize":"68x68","artist":"马跃然","hits":0,"attention":0,"type":0,"status":3},{"ownerId":11,"artName":"煙雨江南","image":"/hmqq/artwork-0-1/201610051606048_e67e7024-wh.jpg","artSize":"39x54","artist":"李清宇","hits":0,"attention":0,"type":0,"status":2,"price":"60"},{"ownerId":10,"artName":"唐诗","image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artSize":"70x137cm","artist":"师忠民","hits":0,"attention":0,"type":1,"status":3},{"ownerId":9,"artName":"战国红桶珠配饰","image":"/hmqq/artwork-0-1/201610051611007_9b8ba91f-wh.jpg","artSize":"27x13x13mm 重7.5g","artist":"佚名","hits":0,"attention":0,"type":0,"status":0,"price":"0","remainTime":236704},{"ownerId":8,"artName":"佳句","image":"/hmqq/artwork-0-1/201610051609000_567d71d3-wh.jpg","artSize":"68x68","artist":"马跃然","hits":0,"attention":0,"type":0,"status":3},{"ownerId":7,"artName":"煙雨江南","image":"/hmqq/artwork-0-1/201610051606048_e67e7024-wh.jpg","artSize":"39x54","artist":"李清宇","hits":0,"attention":0,"type":0,"status":2,"price":"60"},{"ownerId":6,"artName":"唐诗","image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artSize":"70x137cm","artist":"师忠民","hits":0,"attention":0,"type":1,"status":3},{"ownerId":5,"artName":"年年有余","image":"/hmqq/artwork-1-26/201610051601016_d36e635a-wh.jpg","artSize":"66x132cm","artist":"李双彩","hits":0,"attention":0,"type":1,"status":4,"price":"200","saleDate":"2016年10月07日 12:00:00"},{"ownerId":4,"artName":"金沙石手链","image":"/hmqq/artwork-0-1/201610031639007_1b57a3d7-wh.jpg","artSize":"直径6mm","artist":"不详","hits":0,"attention":0,"type":0,"status":1,"price":"0","remainTime":63904,"auctionNumber":0},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":4,"price":"300","saleDate":"2016年10月03日 16:34:50"}]});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.my.subscribe.cancelArt.URL,{"result":"1","message":"加载成功"});
+		app.load.mock(function(){});
+	</script>
+</body>
+
+</html>

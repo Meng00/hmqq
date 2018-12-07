@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>店铺</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/>
+	<style>
+		.recom_tit span {
+			float: right;
+			font-size: 13px;
+		}
+		.recom_tit span i{
+			padding-left: 5px;
+		}
+		
+		
+	</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-back mui-pull-left"></a>
+		<h1 class="mui-title color-2d">专场列表</h1>
+	</header>
+	<div class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll"  id="list">
+			<div class="recom_group">
+				<ol class="recom_list">
+					
+				</ol>
+			</div>
+		 
+		</div>
+	</div>
+</body>
+<script type="text/html" id="temp-list">
+	{{each data as item i}}
+		<li class="clearfix recom_item sepcial" sepcialId="{{item.id}}" sepcialName="{{item.name}}">
+			<p class="recom_tit">
+				【{{item.name}}】
+				{{if item.status == 1}} <span style="color: green;">距离开拍<i class="timer" time={{item.remainTime}}>{{item.remainTime |timer}}</i></span>{{/if}}
+				{{if item.status == 2}} <span style="color: red;">距离结束<i class="timer" time={{item.remainTime}}>{{item.remainTime |timer}}</i></span>{{/if}}
+			</p>
+			<img src="{{imagePath}}{{item.image}}"/>
+			<div class="recom_txt"><span>作品数量:{{item.count}}件</span><span>围观：{{item.browse}}人</span><!--<span>分享</span>--></div>
+		</li>
+	{{/each}}
+</script>	
+<script src="js/mui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/mock-min.js"></script>
+<script>
+	
+	winBind = {
+		init: function(){
+			
+		},
+		toArt :function(){
+			mui("ol").on("tap",".sepcial",function(){
+				var sepcialId = this.getAttribute('sepcialId');
+				var sepcialName = this.getAttribute('sepcialName');
+				var url = 'hmqq-jsweb://localhost/mui/HMSepcialList.html?sepcialId='+sepcialId+'&tit='+sepcialName;
+				app.pushView(url);
+			});
+			app.DateUtil.initCountdown();
+		}
+	}
+	
+	winLoad = {
+			init : function(){
+				/* 加载数据 */
+				app.HMARTJsObj(api.sepcial.list.DATA,'winLoad.list');
+				app.scroll.init({
+					scrollDom : mui('.mui-scroll-wrapper')[0], // 滚动容器
+					up: function(target){
+						api.sepcial.list.DATA.pageIndex += 1; //下一页
+						app.HMARTJsObj(api.sepcial.list.DATA,'winLoad.pullUp');
+					}
+				});
+			},
+			pullUp : function(data){
+				api.sepcial.list.param = eval('(' + data +')');
+				app.ajax(api.sepcial.list,function(data){
+					if(data.data.length > 0){
+						mui('.recom_list')[0].innerHTML += template('temp-list', data);
+						if(data.pageCount > api.sepcial.list.DATA.pageIndex){
+							mui(".mui-scroll-wrapper")[0].setAttribute("up",'true');
+						}
+						
+						winBind.toArt();
+					}
+				});
+			},
+			list : function(data){
+				api.sepcial.list.param = eval('(' + data +')');
+				app.ajax(api.sepcial.list,function(data){
+					var html = template('temp-list', data);
+					mui('.recom_list')[0].innerHTML = html;
+					if(data.pageCount > 1){
+						//启用上拉加载 
+						mui(".mui-scroll-wrapper")[0].setAttribute('up', 'true');
+					}
+					
+					winBind.toArt();
+				});
+			}
+		}
+	
+	function onARTJsObjReady() {
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+		if(typeof(appParams) != "undefined" && appParams != null){
+			if(appParams.classify_type2){
+				api.sepcial.list.DATA.other.classify_type2 = parseInt(appParams.classify_type2);
+			}
+			if(appParams.type){
+				api.sepcial.list.DATA.other.type = parseInt(appParams.type);
+			}
+			if(appParams.point_time){
+				api.sepcial.list.DATA.other.point_time = parseInt(appParams.point_time);
+			}
+			if(appParams.seller_id){
+				api.sepcial.list.DATA.other.seller_id = appParams.seller_id;
+			}
+		}
+		
+		winLoad.init();
+	}
+	
+	Mock.mock(config.HOST+config.MOCK_KEY+api.sepcial.list.URL,{"data":[{"id":1376,"image":"/hmqq/artSpecial/201707161310001_de4536cf.jpg","name":"7.22 文玩杂项专场","maxCount":100,"count":46,"browse":227,"remainTime":86181,"status":2,"time":"7/22 12:00—7/23 12:00"},{"id":1377,"image":"/hmqq/artSpecial/201707161311053_315d5fa4.jpg","name":"7.22 西画专场","maxCount":100,"count":43,"browse":253,"remainTime":86181,"status":2,"time":"7/22 12:00—7/23 12:00"},{"id":1378,"image":"/hmqq/artSpecial/201707161312059_246e6744.jpg","name":"7.22 国画山水专场","maxCount":100,"count":76,"browse":804,"remainTime":86180,"status":2,"time":"7/22 12:00—7/23 12:00"},{"id":1379,"image":"/hmqq/artSpecial/201707161315010_12ad1fcf.jpg","name":"7.22 国画花鸟专场","maxCount":100,"count":98,"browse":457,"remainTime":86180,"status":2,"time":"7/22 12:00—7/23 12:00"},{"id":1380,"image":"/hmqq/artSpecial/201707161315048_fb48b30f.jpg","name":"7.22 国画人物专场","maxCount":100,"count":71,"browse":300,"remainTime":86180,"status":2,"time":"7/22 12:00—7/23 12:00"},{"id":1381,"image":"/hmqq/artSpecial/201707191040016_3054f045.jpg","name":"7.22 书法专场","maxCount":100,"count":81,"browse":320,"remainTime":86179,"status":2,"time":"7/22 12:00—7/23 12:00"}],"message":"加载成功","pageCount":1,"result":"1","total":6});
+	app.load.mock();
+</script>
+</html>

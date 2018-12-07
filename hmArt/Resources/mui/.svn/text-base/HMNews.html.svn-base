@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>翰墨头条</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/>
+     <style>
+     	.news_area_div {
+		    background: #fff none repeat scroll 0 0;
+		    margin-top: 1px;
+		    padding: 5px 10px;
+		}
+		.news_area{background: #f4f4f4;}
+		.news_area div{border-bottom: 1px solid #dddddd;}
+		.news_area div a{display: inline-block;width: 100%;}
+		.news_tit{margin-bottom: 0;}
+		.news_tit span{color:#2d2d2d}
+		
+		.scroll_init {
+			position: absolute !important;
+			top: 440px;
+			right: 25px;
+			border: 1px solid #c3bfbf;
+		    border-radius: 50%;
+		    padding: 5px !important;
+		    background: #fff;
+		    box-shadow: 0px 0px 15px #bbb1b1;
+		    opacity: .9;
+		}
+		
+		.mui-icon-arrowthinup:before {
+			content: '\e584';
+			font-weight: bold;
+			color: #868282;
+		}
+		.hidden{display: none;}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav bg_white kind_sea">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">翰墨头条</h1>
+		<div class="mui-icon mui-icon-arrowthinup scroll_init"></div>
+	</header>
+	<!--下拉刷新容器-->
+	<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<div class="news_area">
+				
+			</div>
+		</div>
+	</div>
+	<script type="text/html" id="temp-list">
+		<a url="{{url}}" class="url" newsId="{{id}}" newsName="{{name}}">
+		<p><img src="{{image}}"/></p>
+		<p class="news_tit">
+			<span>{{name}}</span>
+			<strong>{{createTime}}</strong>
+		</p>	
+		</a>
+	</script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template-ext.js"></script>
+	<script src="js/mock-min.js"></script>
+	<script>
+		var winLoad = {
+			init: function() {
+				//初始化上下拉动组建
+				mui.init({
+					pullRefresh: winLoad.pullRefresh
+				});
+				api.sysNews.list.DATA.pageIndex = 1;
+				app.HMARTJsObj(api.sysNews.list.DATA,'winLoad.initData');
+				//绑定事件
+				//winBind.init();
+				var scroll = mui('#refreshContainer').scroll();
+				document.querySelector('#refreshContainer').addEventListener('scroll', function (e) { 
+					scroll_y = -scroll.y;		
+					if(scroll_y <80){
+						mui('.scroll_init')[0].classList.add('hidden');
+					}else{
+						mui('.scroll_init')[0].classList.remove('hidden');
+					}
+				})
+				mui('.scroll_init')[0].setAttribute('style', 'top:'+(document.body.scrollHeight-80)+'px');
+				mui('header').on('tap','.scroll_init',function(){
+				  	mui('#refreshContainer').scroll().scrollTo(0,0,100);
+				}) 
+			},
+			pullRefresh: {
+				indicators: false,
+				container: "#refreshContainer",
+				down: { //下拉刷新数据
+		      		callback: function() {
+						api.sysNews.list.DATA.pageIndex = 1;
+						app.HMARTJsObj(api.sysNews.list.DATA,'winLoad.initData');
+						setTimeout(function(){
+							mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+						}, 40000);
+					}
+				},
+				up: { //上拉加载数据
+					//height:70,//可选.默认50.触发上拉加载拖动距离
+		      		contentnomore:'',
+					callback: function() {
+						api.sysNews.list.DATA.pageIndex += 1;
+						app.HMARTJsObj(api.sysNews.list.DATA,'winLoad.nextData');
+						setTimeout(function(){
+							mui('#refreshContainer').pullRefresh().endPullupToRefresh(isEnd);
+						}, 40000);
+					}
+				}
+			},
+			initData: function(data) {
+				api.sysNews.list.param = eval('(' + data +')');
+				app.ajax(api.sysNews.list,function(data){
+					if(data.data.length > 0){
+						mui('.news_area')[0].innerHTML = '';
+						mui(data.data).each(function(i,item){
+							item.image = data.imagePath + item.image;
+							var html = template('temp-list', item);
+							var div = document.createElement("div");
+					　　　　	div.innerHTML = html;
+					　　　　	mui('.news_area')[0].appendChild(div);
+						});
+					}
+					winLoad.toNews();
+					//结束下拉刷新
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+					if(data.pageCount > 1){
+						mui('#refreshContainer').pullRefresh().refresh(true);
+					}else{
+						//mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+					}
+				});
+			},
+			nextData: function(data) {
+				api.sysNews.list.param = eval('(' + data +')');
+				app.ajax(api.sysNews.list,function(data){
+					if(data.data.length > 0){
+						mui(data.data).each(function(i,item){
+							item.image = data.imagePath + item.image;
+							var html = template('temp-list', item);
+							var div = document.createElement("div");
+					　　　　	div.innerHTML = html;
+					　　　　	mui('.news_area')[0].appendChild(div);
+						});
+					}
+					winLoad.toNews();
+					var isEnd = false;
+					if(data.pageCount < api.sysNews.list.DATA.pageIndex){
+						isEnd = true;
+					}
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh(isEnd);
+				});
+			},
+			toNews :function(){
+				mui(".news_area").on("tap",".url",function(){
+					var url = this.getAttribute("url");
+					if(url){
+						app.pushView(url);
+					}else{
+						var newsName = this.getAttribute("newsName");
+						var newsId = this.getAttribute("newsId");
+						url = "hmqq-jsweb://localhost/mui/HMNews-content.html?newsId="+newsId+"&newsName="+newsName;
+					}
+					app.pushView(url);
+				});
+			}
+		};
+		
+		function onARTJsObjReady() {
+			winLoad.init();
+		}
+		
+		Mock.mock(config.HOST+config.MOCK_KEY+api.sysNews.list.URL,{"result":"1","message":"加载成功","pageCount":1,"total":3,"data":[{"id":1,"url":"hmqq-app://IndustryNews","image":"/art/advert/201610191514053_78626edb.jpg","name":"您了解珠串吗？了解珠串情缘吗？","createTime":"2016.00.00","title":"【翰墨千秋】"},{"id":2,"image":"/art/advert/201611111002031_6b2ca454.jpg","name":"您了解珠串吗？了解珠串情缘吗？","createTime":"2016.00.00","title":"【翰墨千秋】"},{"id":3,"image":"/art/advert/201611141120046_48541165.jpg","name":"您了解珠串吗？了解珠串情缘吗？","createTime":"2016.00.00","title":"【翰墨千秋】"}]});
+		app.load.mock(function(){});
+	</script>
+</body>
+
+</html>

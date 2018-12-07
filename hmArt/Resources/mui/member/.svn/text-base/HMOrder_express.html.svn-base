@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>物流详情</title>
+	<link href="../css/Logistics.css" type="text/css" rel="stylesheet" />
+     <link href="../css/mui.css" rel="stylesheet"/>
+     <link href="../css/style.css" rel="stylesheet"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">物流详情</h1>
+	</header>
+	
+	<div class="mui-content">
+		<div class="Logistics_box paddingb-0 info">
+			
+			
+		</div>	
+	</div>
+
+<script type="text/html" id="temp-detial">
+	<div class="margin_top paddingtb-10 paddingl-15">
+		<p>支付时间：<em>{{payTime}}</em></p>
+		<p>物流公司：<em>{{expressCompany}}</em></p>
+		<p>快递单号：<em>{{expressNumber}}</em></p>
+	</div>
+	<div class="mui-table-view list1">
+		<div class="history clearfix">
+			<div class="history-date">
+				<ul class="clearfix">
+					{{each data as obj}}
+					<li>
+						<dl>
+							<dt>{{obj.context}}
+							<div>
+								<span>{{obj.time}}</span>
+							</div>
+							</dt>
+						</dl>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+	</div>
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	winBind = {
+		init : function(){
+			
+		}
+	}
+		
+	winLoad = {
+		init : function(){
+			app.HMARTJsObj(api.my.order.queryExpress.DATA,'winLoad.detial'); 
+		},
+		detial : function(data){
+			api.my.order.queryExpress.param = eval('(' + data +')');
+			app.ajax(api.my.order.queryExpress,function(data){
+				var html = template('temp-detial', data.obj);
+				mui('.info')[0].innerHTML = html;
+				
+			});
+		}
+	}
+
+	function onARTJsObjReady() {
+		if(typeof(HMARTJsObj) == "undefined"){
+			appParams = {};
+			appParams.groupId = "1";
+		} 
+		api.my.order.queryExpress.DATA.groupId = appParams.groupId;
+		winLoad.init();
+		winBind.init();
+	}
+	
+	/* 模拟数据 启动 */
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.queryExpress.URL,{"result":"1","message":"加载成功","obj":{"data":[{"time":"2017-02-14 00:59:07","ftime":"2017-02-14 00:59:07","context":"[天津中转部] [天津市] 快件离开 [天津中转部]已发往[金华中转部]"},{"time":"2017-02-14 00:56:24","ftime":"2017-02-14 00:56:24","context":"[天津中转部] [天津市] 快件到达 [天津中转部]"},{"time":"2017-02-13 19:16:55","ftime":"2017-02-13 19:16:55","context":"[武清城外] [天津市] 快件离开 [武清城外]已发往[天津中转部]"},{"time":"2017-02-13 15:50:16","ftime":"2017-02-13 15:50:16","context":"[武清城外] [天津市] [武清城外]的翰墨千秋已收件 电话:15710248009"},{"time":"2017-02-13 14:26:09","context":"你的订单已出库"},{"time":"2017-02-13 13:31:27","context":"您的订单正在处理"}],"payTime":"2017-02-13 13:23:21","expressCompany":"中通快递","expressNumber":"762976976383"}});
+	app.load.mock(function(){});
+</script>
+</body>
+</html>

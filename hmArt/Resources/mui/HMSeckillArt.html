@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>商品详情页</title>
+     <link rel="stylesheet" href="css/swiper.css">
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link rel="stylesheet" type="text/css" href="css/icons-extra.css" />
+     <link href="css/style.css" rel="stylesheet"/>    
+     <link href="css/previewimage.css" rel="stylesheet"/> 
+     <style>
+     	.Description_txt .p1{-webkit-line-clamp:20;}
+     	.Description_txt .p2 em {
+		    color: #666;
+		    text-decoration: line-through;
+		}
+     	.mui-slider .mui-slider-group .mui-slider-item img{width: auto;}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style Art_1220">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<!--商品详情栏-->
+			<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted bg_white mui-title color-2d">
+				<a class="mui-control-item mui-active" data-type='1'>商品</a>
+				<a class="mui-control-item artconent" data-type='2'>详情</a>
+			</div>
+		<a class="iconfont mui-icon mui-pull-right" style="font-size: 20px; padding-top: 14px;">&#xe60d;</a>
+	</header>
+	<nav class="mui-bar mui-bar-tab xq_b" style="display: none;">
+		
+	</nav>
+	<div class="mui-content" style="padding-bottom: 50px;" id="detail"></div>
+</body>
+
+<script type="text/html" id="temp-nav">
+		<!--/** 立即购买 **/-->
+		<div class="kind_btn_b mui-row xq_b clearfix bg_white">
+			<div class="mui-col-xs-5 clearfix border_none">
+				<span class="tel">
+					<em class="mui-icon iconfont" style="font-size: 18px; margin-top: -7px;">&#xe613;</em>
+						联系客服
+				</span>
+				<span>
+					<em class="color-e60012 iconfont shoucang" favorited="{{favorited|0}}" style="font-size: 22px; margin-top: 2px;">
+						{{if favorited}}
+							&#xe601;
+						{{else}}
+							&#xe602;
+						{{/if}}
+					</em>
+					收藏
+				</span>
+			</div>	
+			<div class="mui-col-xs-7">
+				{{if status == 1 && saleStatus == 0}}
+					<button type="reset" class="mui-btn ljgm" style="width: 100%;background: #e92333 none repeat scroll 0 0; top: 0;">立即购买
+				{{else}}
+					<button type="reset" class="mui-btn bg-gray" style="width: 100%;background: #e92333 none repeat scroll 0 0; top: 0;">立即购买
+				{{/if}} 
+			</div>
+		</div>
+</script>
+<script type="text/html" id="temp-detail">
+	<div class="banner bordertb_1">
+		<div id="slider" class="mui-slider">
+			<div class="mui-slider-group mui-slider-loop">
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="{{imagePath}}{{detailImages.split(',')[detailImages.split(',').length-1]}}"  onerror="onerror=null;src='images/150.jpg'"/>
+					</a>
+				</div>
+				{{each detailImages.split(',') as detailImages i}}
+				<div class="mui-slider-item">
+					<a href="#">
+						<img src="{{imagePath}}{{detailImages}}" data-preview-src="{{imagePath}}{{image.split(',')[i]}}" data-preview-group="1"/>
+					</a>
+				</div>
+				{{/each}}
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="{{imagePath}}{{detailImages.split(',')[0]}}" />
+					</a>
+				</div>
+			</div>
+			<div class="mui-slider-indicator">
+				{{each detailImages.split(',') as imgs i}}
+				<div class="mui-indicator {{if i == 0}}mui-active{{/if}}"></div>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+	<div class="over_hidd Description">
+		<ol class="Description_1">
+			<li style="padding-bottom: 1px;">
+				<div class="Description_txt" style="padding-right: 0px;">
+					<p class="p1" style="padding-right: 64px;">{{artName}}
+						<!--{{if type==0}}<strong class="right_zy"></strong>{{/if}}-->
+						{{if type==1}}<strong class="right_sj"></strong>{{/if}}
+					</p>
+					<!--秒杀价-->
+					<p class="p2"><span>￥{{seckillPrice}}</span><em>￥{{originalPrice}}</em></p>
+					<p class="p3" style="margin-bottom: 1px;">
+						<div class="Basic_situation clearfix">
+							<p>运费<span>{{if freight == 0}}包邮{{else}}￥{{freight}}{{/if}}</span></p>
+							<p>发货地<span>{{dispatch}}</span></p>
+						</div>
+					</p>
+				</div>
+				<div class="txt_r">
+					<!--已被购买提示-->
+					{{if saleStatus > 0}}<p class="have_buying"></p>{{/if}}
+				</div>
+				{{if advantage != null}}
+				<p class="advantage">
+					{{each advantage as adv}}
+					<span>{{adv}}</span>
+					{{/each}}
+				</p>
+				{{/if}}
+			</li>
+			<li class="Basic_situation clearfix">
+				<p>作者:<span>{{artist}}</span></p>
+				<p>年代:<span>{{artCreateTime}}</span></p>
+				<p>尺寸:<span>{{artSize}}</span></p>
+				<p>编号:<span>{{code}}</span></p>
+			</li>
+			{{if shop != null}}
+			<li class="price clearfix trading">
+				<a class="mui-navigate-right">
+				<div class="clearfix">
+					<img src="{{imagePath}}{{shop.logo}}" />
+					<div class="trading_txt">
+						<p class="p1 mui-ellipsis line_1">{{shop.name}}</p>
+						<p class="star_list">
+							{{if shop.starLevel == 5}}
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+							{{else if shop.starLevel == 4}}
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+							{{else if shop.starLevel == 3}}
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+							{{else if shop.starLevel == 2}}
+								<span class="mui-icon iconfont">&#xe603;</span>
+								<span class="mui-icon iconfont">&#xe603;</span>
+							{{else if shop.starLevel == 1}}
+								<span class="mui-icon iconfont">&#xe603;</span>
+							{{/if}}
+						</p>
+					</div>
+				</div>
+				</a>
+			</li>
+			{{/if}}
+		</ol>
+	</div>
+	<ul class="mui-table-view">
+		<li class="mui-table-view-cell artconent">
+			<a class="mui-navigate-right font-14">
+				图文详情
+			</a>
+		</li>
+		<li class="mui-table-view-cell jmxz">
+			<a class="mui-navigate-right font-14">
+				购买须知
+			</a>
+		</li>
+	</ul>
+</script>
+<script src="js/mui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/mock-min.js"></script>
+<script src="js/mui.zoom.js"></script>
+<script src="js/mui.previewimage.js"></script>
+<script>
+		winBind = {
+			init : function(){
+				mui("body").off("tap",".ljgm");
+				mui("body").on("tap",".ljgm",function(){
+					app.checkLogin(1,'winLoad.createOder');
+				});
+				mui("body").off("tap",".shoucang");
+				mui("body").on("tap",".shoucang",function(){
+					app.HMARTJsObj(api.my.favorite.stowArt.DATA,'winLoad.shoucang');
+				});
+			}
+		}
+		
+		winLoad = {
+			init : function(){
+				/* 加载数据 */
+				app.HMARTJsObj(api.seckill.detail.DATA,'winLoad.detail'); 
+			},
+			detail : function(data){
+				api.seckill.detail.param = eval('(' + data +')');
+				app.ajax(api.seckill.detail,function(data){
+					data.obj.imagePath = data.imagePath;
+					var html = template('temp-detail', data.obj);
+					mui('#detail')[0].innerHTML = html;
+					// 初始化 轮播主键
+					mui('.mui-slider').slider({interval:5000});
+					// 初始化图片效果
+					mui.previewImage();
+					
+					if(data.obj.saleStatus == 0 ){
+						var navhtml = template('temp-nav', data.obj);
+						mui('nav')[0].innerHTML = navhtml;
+						mui('nav')[0].style.display=""; 
+					}else{
+						mui('nav')[0].innerHTML = '';
+						mui('nav')[0].style.display="none"; 
+					}
+					
+					if(typeof(refresh) == "undefined" || refresh == false){
+						mui("body").on("tap",".mui-pull-right",function(){
+							var image = data.obj.imagePath + data.obj.listImage;
+							app.fenxing(data.obj.artName, data.obj.artist+'的作品《'+data.obj.artName+'》正在艺术交易中心APP展示销售，敬请关注！', image, 1, data.obj.ownerId,1);
+						});
+						
+						mui("body").on("tap",".tel",function(){
+							app.phoneCallByApp();
+						});
+						
+						mui("body").on("tap",".artconent",function(){
+							setTimeout(function(){
+								mui('.artconent')[0].classList.remove('mui-active');
+								mui('.artconent')[0].parentNode.querySelector('.mui-control-item').classList.add('mui-active');
+							},0);
+							var url = 'hmqq-jsweb://localhost/mui/HMArtInfo-content.html?ownerId='+data.obj.ownerId+'&tit='+data.obj.artName;
+							app.pushView(url);
+						});
+						mui("body").on("tap",".jmxz",function(){
+							var url = 'hmqq-jsweb://localhost/mui/member/HMHtml.html?type=1&tit=购买须知';
+							app.pushView(url);
+						});
+						if(data.obj.shop != null){
+							mui("body").on("tap",".trading",function(){
+								var shopId = data.obj.shop.shopId;
+								var sellerId = data.obj.shop.sellerId;
+								var name = data.obj.shop.name;
+								var url = 'hmqq-jsweb://localhost/mui/HMStoreInfo.html?sellerId='+sellerId+'&shopId='+shopId+'&name='+name;
+								app.pushView(url);
+							});
+						}
+					}
+				});
+			},
+			createOder : function(data){
+				var json = eval('(' + data +')');
+				if(json.loginStatus == '1'){
+					app.confirm.init({
+						message :  '确认购买？',
+						btnArray : ['取消','确认'],
+						callback : function(i){
+							if(i == 1){
+								api.store.createOder.DATA.mobile = json.mobile;
+								app.HMARTJsObj(api.store.createOder.DATA,'winLoad.createOderPost'); 
+							}
+						}
+					});
+				}
+			},
+			createOderPost : function(data){
+				api.store.createOder.param = eval('(' + data +')');
+				app.ajax(api.store.createOder,function(data){
+					var url = 'hmqq-jsweb://localhost/mui/member/HMOrder_payment.html?orderIds='+data.obj;
+					app.pushView(url);
+				}, function(data){
+					app.toast(data.message);
+					app.HMARTJsObj(api.store.detail.DATA,'winLoad.detail'); 
+				});
+			},
+			shoucang : function(data){
+				api.my.favorite.stowArt.param = eval('(' + data +')');
+				app.ajax(api.my.favorite.stowArt,function(data){
+					var favorited = mui('.shoucang')[0].getAttribute('favorited');
+					if(favorited == 1){
+						mui('.shoucang')[0].setAttribute('favorited','0');
+						mui('.shoucang')[0].innerHTML = '&#xe602';
+						app.toast('取消成功');
+					}else{
+						mui('.shoucang')[0].setAttribute('favorited','1');
+						app.toast('收藏成功');
+						mui('.shoucang')[0].innerHTML = '&#xe601';
+					}
+				});
+			},
+			countdown : function(){
+				var i = parseInt(seckillTime) - parseInt(cd);
+				app.DateUtil.timer(i, function(data){
+					var hms = data.hh+":"+data.mm+":"+data.ss;
+					mui('#remainTime')[0].innerHTML = hms;
+				});
+				if(i == 0) cdInterval = null;
+				cd = cd + 1;
+			}
+		}
+		function onARTJsObjReady() {
+			if(typeof(HMARTJsObj) == "undefined"){
+				appParams = {};
+				appParams.seckillId = 1;
+			} 
+			api.seckill.detail.DATA.seckillId = appParams.seckillId;
+			api.store.createOder.DATA.type = 2;
+			api.store.createOder.DATA.id = appParams.seckillId;
+			//api.my.favorite.stowArt.DATA.ownerId =  appParams.ownerId;
+			winLoad.init();
+			winBind.init();
+		}
+		
+		function pageRefresh(){
+			winLoad.init();
+			winBind.init();
+		}
+		/* 模拟数据 启动 */
+		
+		Mock.mock(config.HOST+config.MOCK_KEY+api.seckill.detail.URL,{"result":"1","message":"加载成功","obj":{"ownerId":5378,"code":"161206125378","hits":2,"attention":0,"freight":"0","dispatch":"天津","artName":"佛中堂（三） （水墨纸本 有修补）","listImage":"/hmqq/artwork-0-0/201612061254050_827cb2a2-wh.jpg","image":"/hmqq/artwork-0-0/201612061254052_44bf9d36.jpg","detailImages":"/hmqq/artwork-0-0/201612061254052_44bf9d36-wh.jpg","artSize":"136x68cm  136x33cmx2","artist":"林东升","artCreateTime":"2016年","favorited":false,"type":0,"advantage":["正品保障","24小时发货"],"status":1,"saleStatus":0,"originalPrice":"100","seckillPrice":"80","seckill":2,"countdown":399}});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.my.favorite.stowArt.URL,{"result":"1","message":"加载成功"});
+		app.load.mock(function(){});
+	
+</script>
+</html>

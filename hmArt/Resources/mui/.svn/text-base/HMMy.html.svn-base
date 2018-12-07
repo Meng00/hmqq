@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的</title>
+     <link href="css/mui.css" rel="stylesheet"/>
+     <link rel="stylesheet" type="text/css" href="css/icons-extra.css" />
+     <link href="css/style.css" rel="stylesheet"/>    
+	<style>
+		.top-style a .My_num {
+		    font-size: 10px;
+		    top: 6px;
+		    padding: 4px;
+		    margin-left: -8px;
+		}
+		/*header.my-top{padding-top: 0px; border-top: 0;}*/
+		.version {
+		    color: #999999;
+		    font-size: 15px;
+		    font-style: normal;
+		    margin-right: 15px;
+		}
+		
+		.mui-table-view-cell > a:not(.mui-btn) {
+		    white-space: normal;
+		}
+		.mui-bar-tab .mui-tab-item.mui-active1 {
+		    color: #e60012;
+		}
+		.mui-bar-tab .mui-tab-item.mui-active {
+		    color: #929292;
+		}
+		
+		.install_group .mui-table-view-cell {
+		    color: #2d2d2d;
+		    font-size: 1.3rem;
+		    height: 40px;
+		    line-height: 40px;
+		    padding: 0 10px;
+		}
+		
+		.list-item { box-shadow: 0 0px 0px #555555;}
+		.my_page .my_4item {padding-top: 0.5rem;}
+		.my_page .my_4item p {margin-bottom: 2px;}
+		
+		.mui-grid-view.mui-grid-9{ background-color:#FFFFFF; border-top: 0px solid #eee; border-left: 0px solid #eee; margin-top: 10px;}
+		.mui-grid-view.mui-grid-9 .mui-table-view-cell { border-bottom: 0px solid #eee;  border-right: 0px solid #eee;  padding: 10px 15px; }
+		.mui-grid-view.mui-grid-9 .mui-table-view-cell > a:not(.mui-btn) {padding: 0; }
+		.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {color: #000000;font-size: 12px; margin-top: 10px;}
+		.mui-grid-9 img{ width: 30px; padding-top: 5px; }
+	</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style my-top paddinglr-0">
+		<div style="position: relative;">
+		<a class="mui-btn mui-btn-blue mui-btn-link mui-pull-left" style="position: absolute;color: #FFF;left: 10px;">设置</a>
+		<!--<a class="mui-icon mui-pull-left mui-icon-gear mui-icon-left-nav" style="position: absolute;left: 10px; "></a>-->
+		<h1 class="my_icon clearfix">
+			<a>
+				<!--<strong class="mui-icon-extra iconfont">&#xe617;</strong>-->
+				<!--<strong class="mui-icon-extra mui-icon-extra-heart"></strong>-->
+				<img src="images/my_notset.png"/>
+			</a>
+			<p class="mui-text-center name">登录/注册</p>
+		</h1>
+		<a href="hmqq-jsweb://localhost/mui/member/HMPush_list.html" class="iconfont mui-icon mui-pull-right" style="position: absolute; right: 10px; top: 0;">&#xe60c;<span class="mui-badge bg_white color-e60012 My_num" style="display: none;"></span></a>
+		<em class="vip"><!--升级VIP--></em>
+		</div>
+	</header>
+	
+	<div class="mui-content mui-scroll-wrapper paddingt-116">
+		<div class="mui-scroll">
+		<div class="install_group my_page">
+			<ul class="mui-table-view list1">
+			<li href="hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMOrder_list.html?type=0&tit=全部订单" class="mui-table-view-cell clearfix">
+				<a id="head" class="mui-navigate-right">
+					我的订单
+					<span class="mui-pull-right right-999">查看全部订单</span>
+					<i class="mui-pull-right"></i>
+				</a>
+			</li>
+			</ul>
+		</div>
+		<!--列表4项-->
+		<div class="bg_white list-item my_page">
+			<ul class="item-group over_hidd my_4item" style="border-top: 0.5px #c8c7cc solid;padding-top: 10px;">
+				<li href="hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMOrder_unpaid.html">
+					<span class="mui-icon-extra mui-icon-extra-gold">
+						<em class="em1" style="display: none;"></em>
+					</span>
+					<p>待付款</p>
+				</li>
+				<li href="hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMOrder_list.html?type=2&tit=待发货">
+					<span class="mui-icon-extra mui-icon-extra-gift">
+						<em class="em2" style="display: none;"></em>
+					</span>
+					<p>待发货</p>
+				</li>
+				<li href="hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMOrder_list.html?type=3&tit=待签收">
+					<span class="mui-icon-extra mui-icon-extra-express" style="font-size: 2.8rem;">
+						<em class="em3" style="display: none;"></em>
+					</span>
+					<p style="line-height: 2rem;">待收货</p>
+				</li>
+				<li href="hmqq-jsweb://localhost/mui/member/HMOrderRefund_list.html">
+					<span class="mui-icon-extra mui-icon-extra-prech">
+						<em class="em4" style="display: none;"></em>
+					</span>
+					<p>退款/退货</p>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="list-item">
+			<ul class="mui-table-view mui-grid-view mui-grid-9 myUl">
+				<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-jsweb://localhost/mui/member/HMDeposit.html">
+					<img class="mui-icon" src="images/mb_3.png" />
+					<div class="mui-media-body">保证金</div>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-jsweb://localhost/mui/member/HMCoupons.html">
+                    <img class="mui-icon" src="images/mb_4.png" />
+                    <div class="mui-media-body">优惠券</div>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-jsweb://localhost/mui/member/HMFavorite.html">
+					<img class="mui-icon" src="images/mb_5.png"/>
+					<div class="mui-media-body">我的收藏</div>
+	            </li>
+	            <!--<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-remote://mui/bbs/HMFocus.html" >
+                    <img class="mui-icon" src="images/mb_6.png" />
+                    <div class="mui-media-body">我的关注</div>
+	            </li>
+		       <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-remote://mui/bbs/HMEdit.html?v=1" >
+					<img class="mui-icon" src="images/mb_6.png" />
+					<div class="mui-media-body">我的发布</div>
+	            </li>-->
+	            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="remote://mui/HMStoreMap.html" >
+					<img class="mui-icon" src="images/mb_9.png" />
+					<div class="mui-media-body">周边店铺</div>
+	            </li>
+	           	<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-app://Feedback" >
+                    <img class="mui-icon" src="images/mb_10.png" />
+                    <div class="mui-media-body">意见反馈</div>
+	            </li>
+	            <li class="seller mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-remote://mui/HMJoinApply_1.html">
+                    <img class="mui-icon" src="images/mb_8.png" />
+                    <div class="mui-media-body">卖家中心</div>
+	            </li>
+	            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="hmqq-mui://www.hlgart.com/pitaya/web/integral/HMMyExchangeList.html">
+                    <img class="mui-icon" src="images/nav_yq.png" />
+                    <div class="mui-media-body">我的兑换</div>
+	            </li>
+	            <li class="distr mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="">
+                    <img class="mui-icon" src="images/nav_fx.png" />
+                    <div class="mui-media-body">分销入口</div>
+	            </li>
+	            <!--<li class="seller mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="remote://mui/HMJoinApply_app.html">
+                    <img class="mui-icon" src="images/mb_8.png" />
+                    <div class="mui-media-body">加盟商</div>
+	            </li>-->
+		    </ul> 
+		</div>
+		
+		<div class="limit_group auction_group install_group paddingt-5">
+		<ul class="mui-table-view list1">
+			<!-- <li class="mui-table-view-cell clearfix" href="hmqq-app://AuctOrders">
+				<a class="mui-navigate-right">老版竞买订单				
+				<i class="mui-pull-right update mui-pull-right head"></i></a>
+			</li> -->
+			<li class="mui-table-view-cell clearfix" href="hmqq-jsweb://localhost/mui/member/HMHtml.html?type=3&tit=关于我们">
+				<a class="mui-navigate-right">关于我们				
+				<i class="mui-pull-right update mui-pull-right head"></i></a>
+			</li>	
+			<li class="mui-table-view-cell clearfix" href="tel">
+				<a class="mui-navigate-right">联系客服				
+				<i class="mui-pull-right update mui-pull-right head"></i></a>
+			</li>
+			<li class="mui-table-view-cell version_li">
+				<a class="mui-navigate-right">当前版本 <i class="mui-pull-right version"></i></a>
+			</li>
+		</ul>
+		</div>
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/mock-min.js"></script>
+<script>
+	
+	if(mui.os.ios){
+   		mui('.mui-content')[0].className = mui('.mui-content')[0].className + ' paddingt-138';
+   	}
+	var currsign = "";
+	var winLoad = {
+		init :function(){
+			winLoad.checkLogin();
+			HMARTJsObj.getAppInfo('winLoad.getAppInfo');
+			app.getHardwareInfo('winLoad.getHardwareInfo');
+			mui('ul').off('tap');
+			mui('ul').on('tap','li',function(){
+				var href = this.getAttribute('href');
+				if(href == 'tel'){
+					app.phoneCallByApp();
+				}else{
+					if(mobile){
+						app.pushView(href);
+					}else{
+						winLoad.checkLogin();
+					}
+				}
+			});
+			mui('.mui-pull-left')[0].addEventListener('tap',function(){
+				if(mobile){
+					var url = 'hmqq-jsweb://localhost/mui/member/HMSetting.html';
+					app.pushView(url);
+				}else{
+					winLoad.checkLogin();
+				}
+			});
+			mui('.name')[0].addEventListener('tap',function(){
+				if(mobile){
+					
+				}else{
+					winLoad.checkLogin();
+				}
+			});
+//			mui('.vip')[0].addEventListener('tap',function(){
+//				if(mobile){
+//					var url = 'hmqq-jsweb://localhost/mui/member/HMDeposit.html';
+//					app.pushView(url);
+//				}else{
+//					winLoad.checkLogin();
+//				}
+//			});
+			api.other.sysVersion.DATA.device =  hmqq_device;
+			app.HMARTJsObj(api.other.sysVersion.DATA,'winLoad.getVersion');
+
+		}
+		,checkLogin :function(){
+			app.checkLogin(1,'winLoad.checkLoginCallback');
+		},
+		getLoginMobile : function(data){ 
+			api.my.getLoginMobile.param = eval('(' + data +')');
+			app.ajax(api.my.getLoginMobile,function(data){
+				if(data.result == '1'){
+					if(data.seller){
+						mui('.seller')[0].setAttribute('href','hmqq-remote://mui/seller/HMHome.html');
+					}
+//					if(data.photo){
+//						mui('#photo')[0].setAttribute('src',config.HOST_IMG+data.photo);
+//					}
+					if(data.distributor){
+						mui('.distr')[0].setAttribute('href','hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMDistrEntrance.html');
+					}else{
+						mui('.distr')[0].setAttribute('href','hmqq-mui://app.4008988518.com/art-interface/mui/distr/HMDistrAdd.html');
+					}
+				}
+			});
+		},
+		checkLoginCallback : function (data){
+	   		var json = eval('(' + data +')');
+	   		if(json.loginStatus == '1'){
+				mobile = json.mobile;
+				vip = 0;
+				mui('.name')[0].innerHTML = json.mobile;
+				if(json.vip == 1){
+					vip = 1;
+					mui('.vip')[0].innerHTML = 'VIP';
+				}
+				app.HMARTJsObj(api.my.getCount.DATA,'winLoad.getCount');
+				app.HMARTJsObj(api.my.getLoginMobile.DATA,'winLoad.getLoginMobile');
+			}	 
+		},
+		getAppInfo: function(data){
+			var json = eval('(' + data +')');
+	   		api.other.appVersion.cuurVer = json.version;
+	   		mui('.version')[0].innerHTML = 'V'+json.version;
+	   		if(mui.os.ios){
+	   			api.other.appVersion.DATA.type = 0;
+	   		}else api.other.appVersion.DATA.type = 1;
+	   		app.HMARTJsObj(api.other.appVersion.DATA,'winLoad.appVersion'); 
+		},
+		getCount : function(data){
+			api.my.getCount.param = eval('(' + data +')');
+			app.ajax(api.my.getCount,function(data){
+				if(data.result == '1'){
+					mui('.em1')[0].style.display = 'none';
+					mui('.em2')[0].style.display = 'none';
+					mui('.em3')[0].style.display = 'none';
+					mui('.em4')[0].style.display = 'none';
+					
+					 if(data.obj.count1>0){
+					 	mui('.em1')[0].style.display = '';
+					 }if(data.obj.count2>0){
+					 	mui('.em2')[0].style.display = '';
+					 }if(data.obj.count3>0){
+					 	mui('.em3')[0].style.display = '';
+					 }if(data.obj.count4>0){
+					 	mui('.em4')[0].style.display = '';
+					 }
+				}
+			});
+		},
+		getHardwareInfo :function(data){
+			var json = eval('(' + data +')');
+			api.push.getCount.DATA.deviceId = json.deviceId;
+			app.HMARTJsObj(api.push.getCount.DATA, 'winLoad.pushCount');
+		},
+		pushCount : function(data){
+			api.push.getCount.param = eval('(' + data +')');
+			app.ajax(api.push.getCount,function(data){
+				if(data.obj > 0){
+					mui('.mui-badge')[0].innerHTML = '';
+					mui('.mui-badge')[0].style.display = '';
+				}
+			});
+		},
+		appVersion : function(data){
+			api.other.appVersion.param = eval('(' + data +')');
+			app.ajax(api.other.appVersion,function(data){
+				if(data.result == '1'){
+					if(api.other.appVersion.cuurVer != data.obj.version){
+						mui('.version_li')[0].setAttribute('href','hmqq-http://active.clewm.net/ASNpFv?qrurl=c3.cli.im%2FASNpFv&gtype=1&scant=1&uname=30%2A%2A%2A%2A%40qq.com&uuid=57872d7b69e1570c574c230c&token=243395d047eeabb7851488a810a95d46');
+					}
+				}
+			});
+		},
+		getVersion: function(data){
+			api.other.sysVersion.param = eval('(' + data +')');
+			app.ajax(api.other.sysVersion,function(data){
+				currsign = data.obj.device+'_'+data.obj.version;
+				loadJs(config.HOST+'mui/apppage/my_'+currsign+'.js')
+			})
+		}
+	}
+    //app通知
+	function onARTJsObjReady(){
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:deceleration, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+		mobile = null;
+		mui('.name')[0].innerHTML = '登录/注册';
+//		mui('.vip')[0].innerHTML = '升级VIP';
+		winLoad.init();
+		loadding = false;
+	}
+   	
+   	function pageRefresh(){
+		mobile = null;
+		mui('.name')[0].innerHTML = '登录/注册';
+//		mui('.vip')[0].innerHTML = '升级VIP';
+		HMARTJsObj.checkLogin(0,'winLoad.checkLoginCallback');
+	}
+   	
+   	Mock.mock(config.HOST+config.MOCK_KEY+api.my.getCount.URL,{"result":"1","message":"加载成功","obj":{}});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.push.getCount.URL,{"result":"1","message":"加载成功","obj":9});
+	app.load.mock(function(){});
+</script>
+
+
+</body>
+</html>

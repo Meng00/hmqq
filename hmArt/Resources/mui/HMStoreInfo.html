@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>店铺详情</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/> 
+     <style>
+     	/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 5px;
+		}
+	    /** 四周边距 **/
+	   .mui-table-view-cell::after {
+		    left: 5px;
+		}
+	    .mui-table-view-cell {
+	    padding: 5px;
+	    }
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 120px;
+		}
+		.mui-backdrop {
+		    display: block !important;
+		}
+     	#gengduo.mui-btn-block {display: block;font-size: 14px;margin:10px auto 0px;
+			padding:8px 0;width: 46%;background: -webkit-linear-gradient(#fff, #e8e8e8); /* Safari 5.1 - 6.0 */background: linear-gradient(#fff, #e8e8e8); /* 标准的语法 */border-radius: 20px;color: #2d2d2d;border: 1px solid #eee;}
+    	
+    		.information_r .p1 { margin-bottom: 0px; }
+		.star_list{ margin-bottom: 0px;}
+		.basic_information { padding: 10px 10px 2px; }
+		.basic_information .p3 { margin-top: 10px;}
+		
+		.detail_coupons>div:last-child{margin-left:0;}
+		.detail_coupons>div{width:49% !important; margin-bottom:5px;}
+		.detail_coupons>div:nth-child(odd){ margin-right:2% !important;}
+		.coupons_txt{padding-top: 15px;padding-bottom: 0; padding-left: 15px;}
+		.coupons_txt p{margin-bottom: 5px;}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav bg_white kind_sea store_1220">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<div class="mui-title search_0">
+			<input type="search" class="mui-input-clear" placeholder="请输入作品名称、艺术家名" readonly="readonly">	
+		</div>
+		<a class="iconfont mui-icon mui-pull-right" href="#topPopover">&#xe609;</a>
+		
+	</header>
+	<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover store_pop">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell search_0">
+							<span class="iconfont">&#xe600;</span>搜索
+						</li>
+						<li class="mui-table-view-cell fengxing">
+							<span class="iconfont">&#xe60d;</span>分享
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	<!--右上角弹出菜单end-->
+	<div class="mui-content">
+		<img src="images/shop_details.jpg" class="w_100"/>
+		<div class="basic_information clearfix">
+			
+		</div>
+		<ul class="mui-row nav_s margint-5">
+			<li class="mui-col-xs-3 active">最新动态</li>
+			<li class="mui-col-xs-3">新品上线</li>
+			<li class="mui-col-xs-3">全部宝贝</li>
+			<li class="mui-col-xs-3">店铺简介</li>
+		</ul>
+		<div class="announcement bordertb_1" style="display: none;">
+			<!--<span>店铺<em>公告</em></span><span>最新作品上线，送礼收藏首先</span>-->
+		</div>
+		<div id="vflist" class="detail_coupons bordertb_1 clearfix" style="display: none;">
+			
+		</div>
+		<!--专场推荐-->
+		<div id="zctj" class="boutique clearfix" style="display: none;">
+			<h2>
+				<span class="border_none">专场推荐</span>			
+				<a class="sepcial_more" style="display: none;">更多>></a>
+			</h2>
+			<div class="recom_group">
+				<ol class="recom_list">
+					
+				</ol>
+			</div>
+		</div>
+		<!--店长推荐-->
+		<div id="dztj" class="boutique clearfix" style="display: none;">
+			<h2>
+				<span class="border_none">店长推荐</span>			
+				<a class="more">更多>></a>
+			</h2>
+			<div class="list1">
+				
+			</div>
+		</div>
+		<div class="banner">
+			<div id="slider" class="mui-slider" >
+				
+			</div>
+		</div>
+		<!--最新上架-->
+		<div class="boutique clearfix">
+			<h2>
+				<span class="border_none">最新上架</span>			
+				<a class="more0">更多>></a>
+			</h2>
+			<div class="list">
+				
+			</div>
+		</div>
+	</div>
+	<script type="text/html" id="temp-shop">
+		<div class="logo shop_info"><img src="{{imagePath}}{{logo}}" onerror=""onerror="onerror=null;src='images/150.jpg'"/></div>
+		<div class="information_r">
+			<p class="p1 mui-ellipsis line_1 shop_info">{{name}}</p>
+			<p class="star_list"><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span></p>
+			{{if margin != null && margin > 0}}
+			<p class="" style="color:#666;font-size:1.2rem;margin-bottom: 0px;">保证金<span>￥{{margin}}</span></p>
+			{{/if}}
+			<span class="collection_r">
+				<em class="iconfont shoucang" favorited="{{favorited|0}}">
+					{{if favorited}}
+						&#xe601;
+					{{else}}
+						&#xe602;
+					{{/if}}
+				</em><span class="turnover">{{fans}}</span>
+			</span>
+			
+		</div>
+		<p class="p3">总销量<span>{{turnover}}件</span>商家作品<span>{{count}}件</span></p>
+	</script>
+	<script type="text/html" id="temp-vf">
+		{{each obj as vf}}
+		<div id="{{vf.id}}" class="coupons_r clearfix">
+			<div class="coupons_txt">
+				<p>￥<em>{{vf.price}}</em></p>
+				<p>满{{vf.expens}}使用</p>
+				<p>{{vf.time}}</p>
+			</div>
+			<span class="coupons_btn">立即领取</span>
+		</div>
+		{{/each}}
+	</script>
+	
+<script type="text/html" id="adSlider" >
+	<div class="mui-slider-group mui-slider-loop">
+        {{each obj as ad i}}
+            {{if length == i}}
+                <div class="mui-slider-item mui-slider-item-duplicate">
+                {{if ad.type > 0}}
+	                <a url="{{ad.url}}" class="ad">
+	                		<img src="{{imagePath}}{{ad.image}}" />
+	                </a>
+            		{{else}}
+            			<img src="{{imagePath}}{{ad.image}}" />
+            		{{/if}}
+            		</div>
+        		{{/if}}
+        {{/each}}
+		{{each obj as ad i}}
+			<div class="mui-slider-item">
+            {{if ad.type > 0}}
+                <a url="{{ad.url}}" class="ad">
+                    <img src="{{imagePath}}{{ad.image}}" />
+                </a>
+            {{else}}
+                <img src="{{imagePath}}{{ad.image}}" />
+            {{/if}}
+            </div>
+		{{/each}}
+        {{each obj as ad i}}
+            {{if i == 0}}
+                <div class="mui-slider-item mui-slider-item-duplicate">
+	                {{if ad.type > 0}}
+	                <a url="{{ad.url}}" class="ad">
+	                		<img src="{{imagePath}}{{ad.image}}" />
+	                </a>
+	                {{else}}
+                			<img src="{{imagePath}}{{ad.image}}" />
+                		{{/if}}
+                </div>
+            {{/if}}
+        {{/each}}
+	</div>
+	<!--<div class="mui-slider-indicator">
+		{{each obj as ad i}}
+			<div class="mui-indicator {{if i == 0}}mui-active{{/if}}" ></div>
+		{{/each}}
+	</div>-->
+</script>		
+	<script src="js/mui.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template-ext.js"></script>
+	<script src="js/mock-min.js"></script>
+	<script>
+		var currsign = "";//版本信息
+		winLoad = {
+			init : function(){
+				api.main.search.DATA.adPos = '004';
+				app.HMARTJsObj(api.main.search.DATA, 'winLoad.search');
+				/* 加载数据 */
+				app.HMARTJsObj(api.store.shop.detail.DATA,'winLoad.shop');
+				app.HMARTJsObj(api.vf.list.DATA,'winLoad.vfList');
+				api.other.sysVersion.DATA.device =  hmqq_device;
+				app.HMARTJsObj(api.other.sysVersion.DATA,'winLoad.getVersion');
+				//app.DateUtil.initCountdown();
+			},
+			shop : function(data){
+				api.store.shop.detail.param = eval('(' + data +')');
+				app.ajax(api.store.shop.detail,function(data){
+					data.obj.imagePath = config.HOST_IMG;
+					var html = template('temp-shop', data.obj);
+					mui('.basic_information')[0].innerHTML = html;
+					winLoad.toArtInfo();
+					mui('body').on('tap','.search_0',function(){
+						if(mui('#topPopover').length>0)mui('#topPopover')[0].classList.remove('mui-active');
+						if(mui('.mui-backdrop').length>0)mui('.mui-backdrop')[0].remove();
+						var url = 'hmqq-jsweb://localhost/mui/HMArtList.html?search=1&sellerId='+appParams.sellerId+'&tit='+data.obj.name;
+						app.pushView(url);
+					});
+					mui("body").on("tap",".fengxing",function(){
+						mui('#topPopover')[0].classList.remove('mui-active');
+						mui('.mui-backdrop')[0].remove();
+						var image = data.obj.imagePath + data.obj.logo;
+						app.fenxing(data.obj.name, '海量艺术品，真品保证！', image, 2, data.obj.shopId);
+					});
+					mui('body').on('tap','.more',function(){
+						var url = 'hmqq-jsweb://localhost/mui/HMArtList.html?index=3&sellerId='+appParams.sellerId+'&tit='+data.obj.name;
+						app.pushView(url);
+					});
+					mui('body').on('tap','.more0',function(){
+						var url = 'hmqq-jsweb://localhost/mui/HMArtList.html?index=4&sellerId='+appParams.sellerId+'&tit='+data.obj.name;
+						app.pushView(url);
+					});
+					mui('.shoucang')[0].addEventListener('tap', function(){
+						app.HMARTJsObj(api.my.favorite.stowShop.DATA,'winLoad.shoucang'); 
+					});
+					mui('.basic_information').on('tap','.shop_info',function(){
+						var url = 'hmqq-jsweb://localhost/mui/HMStore-content.html?shopId='+appParams.shopId+'&tit='+data.obj.name;
+						app.pushView(url);
+					});
+					if(data.obj.news){
+						mui('.announcement')[0].innerHTML = '<span>店铺<em>公告</em></span><span>'+data.obj.news.title+'</span>';
+						mui('.announcement')[0].style.display = '';
+					}
+					mui('.mui-content').on('tap','.announcement',function(){
+						var url = 'hmqq-jsweb://localhost/mui/HMStoreNews.html?shopId='+appParams.shopId;
+						app.pushView(url);
+					});
+					mui('.mui-col-xs-3').each(function(i){
+						var url = '';
+						if(i == 0) url = 'hmqq-jsweb://localhost/mui/HMStoreNews.html?shopId='+appParams.shopId;
+						else if(i == 1){
+							url = 'hmqq-jsweb://localhost/mui/HMArtList.html?index=1&sellerId='+appParams.sellerId+'&tit='+data.obj.name;
+						}
+						else if(i == 2){
+							url = 'hmqq-jsweb://localhost/mui/HMArtList.html?index=2&sellerId='+appParams.sellerId+'&tit='+data.obj.name;
+						}
+						else if(i == 3)  url = 'hmqq-jsweb://localhost/mui/HMStore-content.html?shopId='+appParams.shopId+'&tit='+data.obj.name;
+						this.addEventListener('tap', function(){
+							app.pushView(url);
+						});
+					});
+				});
+			},			
+			shoucang : function(data){
+				api.my.favorite.stowShop.param = eval('(' + data +')');
+				app.ajax(api.my.favorite.stowShop,function(data){
+					var favorited = mui('.shoucang')[0].getAttribute('favorited');
+					var turnover = mui('.turnover')[0].innerHTML;
+					if(favorited == 1){
+						mui('.shoucang')[0].setAttribute('favorited','0');
+						mui('.shoucang')[0].innerHTML = '&#xe602';
+						mui('.turnover')[0].innerHTML = (Number(turnover)-1);
+						app.toast('取消成功');
+					}else{
+						mui('.shoucang')[0].setAttribute('favorited','1');
+						app.toast('收藏成功');
+						mui('.shoucang')[0].innerHTML = '&#xe601';
+						mui('.turnover')[0].innerHTML = (Number(turnover)+1);
+					}
+					
+				});
+			},
+			toArtInfo: function(){
+				app.DateUtil.initCountdown();
+				mui('.list ul').on('tap','li',function(){
+				 	var ownerId = this.getAttribute('ownerId');
+					var url = 'hmqq-jsweb://localhost/mui/HMArtInfo.html?ownerId='+ownerId;
+					if(typeof(appParams) != "undefined" && appParams != null && appParams.sellerId){
+						url = url+'&sellerId='+appParams.sellerId;
+					} 
+					app.pushView(url);
+				});
+			},
+			vfList : function(data){
+				api.vf.list.param = eval('(' + data +')');
+				app.ajax(api.vf.list,function(data){
+					if(data.obj.length > 0){
+						var html = template('temp-vf', data);
+						mui('#vflist')[0].innerHTML = html;
+						mui('#vflist')[0].style.display = '';
+						
+						mui('#vflist').on('tap','.coupons_r',function(){
+							var id = this.id;
+							api.vf.get.DATA.id = id;
+							app.HMARTJsObj(api.vf.get.DATA,'winLoad.vfGet');
+						});
+					}
+				});
+			},
+			vfGet :function(data){
+				api.vf.get.param = eval('(' + data +')');
+				app.ajax(api.vf.get,function(data){
+					app.toast('领取成功，支付时自动抵扣');
+				},function(data){
+					app.toast(data.message);
+				});
+			},
+			search : function(data){
+				api.main.search.param = eval('(' + data +')');
+				app.ajax(api.main.search,function(data){
+					data.imagePath = config.HOST_IMG;
+					data.length = data.obj.length-1;
+					var html = template('adSlider', data);
+					mui('#slider')[0].innerHTML = html;
+					setTimeout(function(){
+						mui('#slider').slider({
+							interval: 1000 //自动轮播周期，若为0则不自动播放，默认为0;
+						});
+					},1000);
+				});
+				mui("#slider").on("tap",".ad",function(){
+					var url = this.getAttribute("url");
+					app.pushView(url);
+				});
+			},getVersion: function(data){
+				api.other.sysVersion.param = eval('(' + data +')');
+		        app.ajax(api.other.sysVersion,function(data){
+		        	currsign = data.obj.device+'_'+data.obj.version;
+		        	loadJs(config.HOST+'mui/apppage/storeinfo_'+currsign+'.js');
+		        })
+			}
+		}
+	
+		function onARTJsObjReady(){
+			mui('.mui-scroll-wrapper').scroll({
+				 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+				 indicators: true //是否显示滚动条
+			});
+			mui('body')[0].addEventListener('touchend',function(){
+				document.activeElement.blur();
+			});
+			if(typeof(HMARTJsObj) == "undefined"){
+				appParams = {};
+				appParams.shopId = 1;
+				appParams.sellerId = 1;
+			}
+			api.store.shop.detail.DATA.shopId = appParams.shopId;
+			api.my.favorite.stowShop.DATA.shopId = appParams.shopId;
+			api.store.shop.homeArt.DATA.sellerId = appParams.sellerId;
+			api.vf.list.DATA.sellerId = appParams.sellerId;
+			
+			api.sepcial.list.DATA.other.seller_id = appParams.sellerId;
+			api.sepcial.list.DATA.pageSize = 6;
+			
+			winLoad.init();
+		}
+		/* 模拟数据 启动 */
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.shop.homeArt.URL,{"result":"1","message":"加载成功","obj":[{"ownerId":12,"artName":"佳句","image":"/hmqq/artwork-0-1/201610051609000_567d71d3-wh.jpg","artSize":"68x68","artist":"马跃然","hits":0,"attention":0,"type":0,"status":3},{"ownerId":11,"artName":"煙雨江南","image":"/hmqq/artwork-0-1/201610051606048_e67e7024-wh.jpg","artSize":"39x54","artist":"李清宇","hits":0,"attention":0,"type":0,"status":2,"price":"60"},{"ownerId":10,"artName":"唐诗","image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artSize":"70x137cm","artist":"师忠民","hits":0,"attention":0,"type":1,"status":3},{"ownerId":9,"artName":"战国红桶珠配饰","image":"/hmqq/artwork-0-1/201610051611007_9b8ba91f-wh.jpg","artSize":"27x13x13mm 重7.5g","artist":"佚名","hits":0,"attention":0,"type":0,"status":0,"price":"0","remainTime":236704},{"ownerId":8,"artName":"佳句","image":"/hmqq/artwork-0-1/201610051609000_567d71d3-wh.jpg","artSize":"68x68","artist":"马跃然","hits":0,"attention":0,"type":0,"status":3},{"ownerId":7,"artName":"煙雨江南","image":"/hmqq/artwork-0-1/201610051606048_e67e7024-wh.jpg","artSize":"39x54","artist":"李清宇","hits":0,"attention":0,"type":0,"status":2,"price":"60"},{"ownerId":6,"artName":"唐诗","image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artSize":"70x137cm","artist":"师忠民","hits":0,"attention":0,"type":1,"status":3},{"ownerId":5,"artName":"年年有余","image":"/hmqq/artwork-1-26/201610051601016_d36e635a-wh.jpg","artSize":"66x132cm","artist":"李双彩","hits":0,"attention":0,"type":1,"status":4,"price":"200","saleDate":"2016年10月07日 12:00:00"},{"ownerId":4,"artName":"金沙石手链","image":"/hmqq/artwork-0-1/201610031639007_1b57a3d7-wh.jpg","artSize":"直径6mm","artist":"不详","hits":0,"attention":0,"type":0,"status":1,"price":"0","remainTime":63904,"auctionNumber":0},{"ownerId":3,"artName":"红梅雪里见精神","image":"/hmqq/artwork-1-26/201610031635053_a4ef7c89-wh.jpg","artSize":"70x138cm","artist":"吴洪志","hits":0,"attention":0,"type":1,"status":4,"price":"300","saleDate":"2016年10月03日 16:34:50"}]});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.shop.detail.URL,{"result":"1","message":"加载成功","obj":{"news":{"title":"最新作品上线，送礼"},"id":3,"name":"聚兴阁书画","starLevel":"5","margin":0,"turnover":1,"lable":["当代书画"],"count":100,"favorited":true}});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.my.favorite.stowShop.URL,{"result":"1","message":"加载成功"});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.vf.list.URL,{"result":"1","message":"加载成功","obj":[{"id":1,"price":"10","expens":"100","time":"12.12-12.20"},{"id":2,"price":"20","expens":"189","time":"12.12-12.20"}]});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.vf.get.URL,{"result":"1","message":"加载成功"});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.sepcial.list.URL,{"result":"1","message":"加载成功","pageCount":1,"total":1,"data":[{"id":1256,"image":"/hmqq/artSellerSpecial/201707101546010_6af612ca.jpg","name":"test","count":0,"browse":0,"remainTime":63920,"status":1}]});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.main.search.URL,{"result":"1","message":"加载成功","obj":[{"title":"大赛报名","image":"/art/advert/201603071726048_81b8de1c.jpg","type":3,"url":"http://app.4008988518.com/art-interface/h5/activityVoting/list2.html"},{"title":"时间","image":"/art/advert/201603071727039_faa25bfa.jpg","type":0,"url":""},{"title":"联系我们","image":"/art/advert/201603071730028_073544b9.jpg","type":3,"url":"http://app.4008988518.com/art-interface/h5/activityVoting/list.html?randNum=43"},{"title":"抽奖登录","image":"/art/advert/201603071731011_2909693e.jpg","type":3,"url":"http://app.4008988518.com/art-interface/h5/lottery/index.html"},{"title":"战略联盟导航页","image":"/art/advert/201603071807045_3be6b008.jpg","type":1,"url":"AllianceGroup"},{"title":"展会","image":"/art/advert/201603081508052_03448a1b.jpg","type":1,"url":"AllianceGroup"}]});
+		app.load.mock(function(){});
+	</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>图文详情</title>
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link href="css/style.css" rel="stylesheet"/>  
+     <style>
+     	*{-webkit-user-select: text;}
+     	.mui-content {
+		    background-color: #fff;
+		}
+     </style>
+</head>
+<body class="bg_white">
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d"></h1>
+	</header>
+	<div class="mui-content mui-scroll-wrapper" style="width=100%;">
+		<div class="mui-scroll">
+			<div class="detail_txt"></div>
+			<div class="detail_img mui-slider-item"  style="padding: 10px; background: #fff;"></div>
+		</div>
+	</div>
+	<script type="text/html" id="temp-img">
+		{{each imgs.split(',') as detailImages i}}
+		<a href="#">
+			<img src="{{imagePath}}{{detailImages}}" style="width:100%; margin: 10px 0;"/>
+		</a>
+		{{/each}}
+	</script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template-ext.js"></script>
+	<script type="text/javascript">		
+		function onARTJsObjReady(){
+			mui('.mui-scroll-wrapper').scroll({
+				 deceleration:deceleration, //阻尼系数,系数越小滑动越灵敏
+				 indicators: true //是否显示滚动条
+			});
+			mui('.mui-title')[0].innerHTML = appParams.tit;
+			var url = config.HOST + 'awo/detail2.htm';
+			mui.ajax({
+				type:'post',
+				url: url,
+				data:{ownerId:appParams.ownerId},
+				dataType: 'html',
+				timeout: 30000, //超时时间
+				success : function(data){
+					mui('.detail_txt')[0].innerHTML = data;
+				},
+				error : function(xhr, type, errorThrown){
+					//errorCallback(xhr, type, errorThrown);
+				}
+			});
+			var imgdata = {
+				imagePath: config.HOST_IMG,
+				imgs: appParams.imgs
+			}
+			var html = template('temp-img',imgdata);
+			mui('.detail_img')[0].innerHTML = html;
+			mui.init( {
+				gestureConfig:{
+					longtap: true, //默认为false
+				}
+			})
+			mui("img").each(function () {
+				this.addEventListener("longtap",function(){
+						var imgurl = this.src;
+						var name = imgurl.split('/')[imgurl.split('/').length-1].split('.jpg')[0];
+						app.confirm.init({
+							message: '是否保存图片？',
+							btnArray : ['取消','确认'],
+							callback: function(i) {
+							if(i==1){
+								if(mui.os.android){
+									HMARTJsObj.saveImage(imgurl,'hmqq',name,'app.saveIMGS.result');
+								}else{
+									if(typeof(HMARTJsObj) == "undefined"){
+										var data = {
+												method:'saveImage',
+												image: imgurl
+											};
+										window.webkit.messageHandlers.AppModel.postMessage(data);
+									}else{
+										HMARTJsObj.saveImage(imgurl,'app.saveIMGS.result');
+									}
+								}
+							}
+							}
+						})
+
+				})
+			});
+		}
+	</script> 
+</body>
+</html>

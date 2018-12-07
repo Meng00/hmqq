@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>店铺</title>
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			/** 卡片间距 **/
+			
+			.mui-table-view {
+				margin-top: 5px;
+			}
+			/** 四周边距 **/
+			
+			.mui-table-view-cell::after {
+				left: 5px;
+			}
+			
+			.mui-table-view-cell {
+				padding: 5px;
+			}
+			/** 图片宽度 **/
+			
+			.mui-table-view .mui-media-object {
+				height: auto;
+				max-width: 80px;
+			}
+			.mui-bar-nav ~ .mui-content{padding-top: 84px;}
+			.mui-active{color: #2d2d2d;}
+			header.kind_sea .mui-input-row{left: 0;width: 100%;}
+			.store_img img{border-radius:0 !important;}
+			.store_img { padding-top: 0.7rem; }
+			.limit_txt .p1 span, .boutique_txt .p1 span, .store_txt .kind span {margin-left: 0.2rem;}
+			.hidden{display: none;}	
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav top-style paddinglr-0 kind_sea auction_1220 Store_1221">
+			<a class="iconfont mui-icon mui-pull-left">&nbsp;</a>
+			<!--搜索条-->
+			<div class="clearfix pos_rel borderb_1 border_lr" style="margin: 0 10px;">
+				<a href="#topPopover" class="Store_select">
+					<span id="type" value="1">店铺</span>
+					<em class="mui-icon mui-icon-arrowdown padding-0 margin-0 font-18"></em><i class="border_l"></i>
+				</a>
+				<div class="mui-input-row" style="overflow: visible;">
+					<input id="search1" type="search" class="mui-input-clear paddingl-10" placeholder="请输入店铺名称" style="height: 36px;">
+					<input id="search2" type="search" class="mui-input-clear paddingl-10" placeholder="请输入作品名称、艺术家名" style="height: 36px;display: none;">
+				</div>
+				<span id="search" class="sea_btn" style="right: 45px;"><i class="border_r"></i>搜索</span>
+			</div>
+			<div class="mui-icon mui-icon-arrowthinup scroll_init hidden"></div>
+		<!--Tab栏-->
+			<div class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-negative bg_white">
+				<a class="mui-control-item mui-active" type="1">
+					全部商家
+				</a>
+				<a class="mui-control-item" type="2">
+					周边商家
+				</a>
+			</div>
+		<!--Tab栏end-->
+		</header>
+		<!--左上角弹出菜单-->
+		<div id="topPopover" class="mui-popover store_pop">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell select1">
+							搜店铺
+						</li>
+						<li class="mui-table-view-cell select2">
+							搜作品
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	<!--左上角弹出菜单end-->
+	
+		<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll"  id="list"></div>
+		</div>
+	
+	</body>
+	<script type="text/html" id="temp-list">
+		{{each data as item i}}
+			<ul class="mui-table-view">
+				<li shopId="{{item.shopId}}" sellerId="{{item.sellerId}}" name="{{item.name}}" class="mui-table-view-cell mui-media">
+					<div class="mui-media-object mui-pull-left store_img">
+						<img src="{{imagePath}}{{item.logo}}"onerror="onerror=null;src='images/150.jpg'"/>
+					</div>
+					<div class="mui-media-body gray_border">
+						<div class="limit_txt auction_txt store_txt">
+							<p class="p1 mui-ellipsis line_1">{{item.name}}</p>
+							<p class="star_list"><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span><span class="mui-icon iconfont">&#xe603;</span></p>
+							<!--<p class="star_list">
+								{{#item.starLevel | toStar}}
+							</p>-->
+							{{if item.margin != null && item.margin > 0}}
+							<p class="p2">保证金<em>￥{{item.margin}}</em></p>
+							{{/if}}
+							<p class="p2">总成交量<em>{{item.turnover}}件</em></p>
+							<p class="p2">粉丝<em>{{item.fans}}</em></p>
+							<p class="kind">
+								{{each item.lable as i}}
+								<span>{{i}}</span>
+								{{/each}}
+							</p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		{{/each}}
+	</script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template-ext.js"></script>
+	<script src="js/mock-min.js"></script>
+	<script>
+		if(mui.os.ios){
+			mui('.mui-content')[0].classList.add('paddingt_106');
+		}
+		winBind = {
+			init : function(){
+				winBind.onSearch();
+				mui('.select1')[0].addEventListener('tap',function(){
+					mui('#topPopover')[0].classList.remove('mui-active');
+					mui('#topPopover')[0].style.display = 'none';
+					mui('.mui-backdrop')[0].remove();
+					mui('#type')[0].innerHTML = '店铺';
+					mui('#type')[0].setAttribute('value',1);
+					mui('#search1')[0].style.display = '';
+					mui('#search2')[0].style.display = 'none';
+				});
+				mui('.select2')[0].addEventListener('tap',function(){
+					mui('#topPopover')[0].classList.remove('mui-active');
+					mui('#topPopover')[0].style.display = 'none';
+					mui('.mui-backdrop')[0].remove();
+					mui('#type')[0].innerHTML = '作品';
+					mui('#type')[0].setAttribute('value',2);
+					mui('#search1')[0].style.display = 'none';
+					mui('#search2')[0].style.display = '';
+				});
+				mui('.mui-segmented-control').on('tap','.mui-control-item',function(){
+					var type = this.getAttribute('type');
+					if(type == 1){
+						mui("#search1")[0].value =  '';
+						api.store.shop.list.DATA.other.keywork = '';
+						api.store.shop.list.DATA.pageIndex=1;
+						app.HMARTJsObj(api.store.shop.list.DATA,'winLoad.list');
+					}else{
+						setTimeout(function(){
+							mui('.mui-segmented-control .mui-control-item')[1].classList.remove('mui-active');
+							mui('.mui-segmented-control .mui-control-item')[0].classList.add('mui-active');
+						},0);
+						var url = 'remote://mui/HMStoreMap.html';
+						app.pushView(url);
+					}
+				});
+				var scroll = mui('#offCanvasContentScroll').scroll();
+				document.querySelector('#offCanvasContentScroll').addEventListener('scroll', function (e) { 
+					scroll_y = -scroll.y;		
+					if(scroll_y <80){
+						mui('.scroll_init')[0].classList.add('hidden');
+					}else{
+						mui('.scroll_init')[0].classList.remove('hidden');
+					}
+				})
+				mui('.scroll_init')[0].setAttribute('style', 'top:'+(document.body.scrollHeight-80)+'px');
+				mui('header').on('tap','.scroll_init',function(){
+				  	mui('#offCanvasContentScroll').scroll().scrollTo(0,0,100);
+				}) 
+			},
+			onSearch : function(){
+				mui('#search')[0].addEventListener("tap",function(){
+					var type = mui('#type')[0].getAttribute('value');
+					if(type == 1){
+						api.store.shop.list.DATA.pageIndex = 1;
+						api.store.shop.list.DATA.other.keywork = mui("#search1")[0].value;
+						app.HMARTJsObj(api.store.shop.list.DATA,'winLoad.list');
+						mui('.mui-segmented-control .mui-control-item')[0].classList.remove('mui-active');
+					}else{
+						var keywork = mui("#search2")[0].value;
+						var url = 'hmqq-jsweb://localhost/mui/HMArtList.html?keywork='+keywork+'&sellerId=0';
+						app.pushView(url);
+					}
+				});
+			},
+			toStore: function(){
+				mui('#list ul').on("tap","li",function(){
+					var shopId = this.getAttribute('shopId');
+					var sellerId = this.getAttribute('sellerId');
+					var name = this.getAttribute('name');
+					var url = 'hmqq-jsweb://localhost/mui/HMStoreInfo.html?sellerId='+sellerId+'&shopId='+shopId+'&name='+name;
+					app.pushView(url);
+				});
+			}
+		}
+		
+		winLoad = {
+			init : function(){
+				/* 加载数据 */
+				api.store.shop.list.DATA.pageIndex=1;
+				app.HMARTJsObj(api.store.shop.list.DATA,'winLoad.list');
+				
+				app.scroll.init({
+					scrollDom : mui('#offCanvasContentScroll')[0], // 滚动容器
+					up: function(target){
+						/* 获取分页参数 */
+						api.store.shop.list.DATA.pageIndex += 1; //下一页
+						app.HMARTJsObj(api.store.shop.list.DATA,'winLoad.pullUp');
+					}
+				});
+			},
+			pullUp : function(data){
+				api.store.shop.list.param = eval('(' + data +')');
+				app.ajax(api.store.shop.list,function(data){
+					if(data.data.length > 0){
+						mui('#list')[0].innerHTML += template('temp-list', data);
+						if(data.pageCount > api.store.shop.list.DATA.pageIndex){
+							mui("#offCanvasContentScroll")[0].setAttribute("up",'true');
+						}
+						
+						winBind.toStore();
+					}
+				});
+			},
+			list : function(data){
+				api.store.shop.list.param = eval('(' + data +')');
+				app.ajax(api.store.shop.list,function(data){
+					var html = template('temp-list', data);
+					mui('#list')[0].innerHTML = html;
+					if(data.pageCount > 1){
+						//启用上拉加载 
+						mui("#offCanvasContentScroll")[0].setAttribute('up', 'true');
+					}
+					
+					winBind.toStore();
+				});
+				
+				mui('#offCanvasContentScroll').scroll().scrollTo(0,0,100);//
+			}
+		}
+	
+		function onARTJsObjReady() {
+			mui('.mui-scroll-wrapper').scroll({
+				 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+				 indicators: true //是否显示滚动条
+			});
+			mui('body')[0].addEventListener('touchend',function(){
+				document.activeElement.blur();
+			});
+			winLoad.init();
+			winBind.init();
+			
+		}
+		function pageRefresh(){
+			if(typeof(pageIndex) == "undefined"){
+				//loadding = false;
+				winLoad.init();
+			}else{
+				delete pageIndex;
+			}
+		}
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.shop.list.URL,{"result":"1","message":"加载成功","pageCount":3,"total":4,"data":[{"shopId":3,"sellerId":1,"name":"聚兴阁书画","logo":"/hmqq/shop/201610192223018_a6a49e23.jpg","starLevel":"5","margin":1000,"turnover":0,"lable":["当代书画","当代书画","当代书画"]},{"shopId":2,"sellerId":2,"name":"国风工艺礼品店","logo":"/hmqq/shop/201610192223018_a6a49e23.jpg","starLevel":"5","turnover":0,"lable":["当代书画"]},{"shopId":1,"sellerId":3,"name":"刘学工作室","logo":"/hmqq/shop/201610192223018_a6a49e23.jpg","starLevel":"5","turnover":0,"lable":["当代书画"]}]});
+		app.load.mock(function(){});
+	</script>
+</html>

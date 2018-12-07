@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>待付款</title>
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link href="../css/style.css" rel="stylesheet"/>
+     <style>
+     	/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 15px;
+		}
+	    /** 四周边距 **/
+	   	/*.mui-table-view-cell::after {
+		    left: 5px 5px 0px 5px;
+   			height: 1px;
+   			left: 0;
+		}*/
+		
+		.mui-table-view-cell:first-child::after {
+		    left: 5px 5px 0px 5px;
+   			height: 1px;
+   			left: 0px;
+		}
+		
+	    .mui-table-view-cell {
+	    		padding: 8px;
+	    }
+		.mui-radio.mui-left input[type="radio"], .mui-checkbox.mui-left input[type="checkbox"] {
+		    left: 5px;
+		    top: 36px;
+		}	    
+		.mui-table-view-cell.mui-radio.mui-left, .mui-table-view-cell.mui-checkbox.mui-left {
+		    padding-left: 12px;
+		}
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 70px;
+		}
+		
+		.tit {
+		    color: #333;font-size: 14px;
+		}
+		
+		.tit span {
+		    position: absolute;
+		    right: 10px;
+		}
+		
+		.pay_order_group .pay_order_tit {
+	   		 background: #fff none repeat scroll 0 0;
+	    }
+	    
+	    .mui-icon {
+		    font-size: 20px;
+		    margin-right: 5px;
+		}
+     </style>
+</head>
+<body class="bg_f4 pay_che">
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">待付款</h1>
+	</header>
+	<!--<nav class="mui-bar mui-bar-tab kind_btn_b pay_btn_b ">
+		<div class="all_l mui-input-row mui-checkbox mui-left"><input type="checkbox" id="ok1" name="bulk_id1" /><label for="ok1">全选</label><ins>合计:0.00</ins></div>
+		<button type="submit" class="mui-btn letter_0">立即支付
+	</nav>-->
+	<div class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" id = "list">
+			
+		</div>
+	</div>
+<script type="text/html" id="temp-list">
+{{each data as group i}}
+<ul id="group_{{i}}" class="mui-table-view">
+	<li class="mui-table-view-cell mui-media">
+		<div class="mui-media-body">
+			<span {{if group.type == 1}}shopId="{{group.shopId}}"{{/if}} class='mui-ellipsis tit color_2d2d2d icon-22'>
+				{{group.shopName}}
+				<span class="color-e60012">
+					<!--待支付-->
+					剩余支付时间&nbsp;<em class="margin-0 timer" time={{group.remainTime}}>{{group.remainTime |timer}}</em>
+				</span>
+			</span>
+		</div>
+	</li>
+	{{each group.orderList as order}}
+	<li class="mui-table-view-cell mui-checkbox mui-left">
+		<!--<input type="checkbox" />-->
+		<div class="mui-media-object mui-pull-left order_id" orderId="{{order.orderId}}">
+			<img class="mui-media-object mui-pull-left" src="{{imagePath}}{{order.image}}" onerror="onerror=null;src='images/150.jpg'"/>
+		</div>
+		<div class="mui-media-body pay_order_group">
+			<div class="pay_con clearfix">
+				<div class="limit_txt auction_txt">
+					<div orderId="{{order.orderId}}" class="order_id">
+					<p class="p1 line_1">{{order.artName}}</p>
+					<p class="p2">作者<em>{{order.artist}}</em></p>
+					<p class="p2">尺寸<em>{{order.artSize}}</em></p>
+					<p class="p3"><span>￥{{order.price}}</span></p>
+					</div>
+					<span orderId="{{order.orderId}}" class="order_cancel mui-icon mui-icon-closeempty close_pay"></span>
+				</div>
+			</div>
+		</div>
+	</li>
+	{{/each}}
+	<li class="mui-table-view-cell mui-media">
+		<div class="mui-media-body pay_order_group" style="text-align: right;">
+			<span class='mui-ellipsis tit'>
+				共{{group.orderList.length}}件作品&nbsp;合计：￥{{group.price}} (不含运费)
+				<span class="color-e60012"></span>
+			</span>
+		</div>
+	</li>
+	<li class="">
+		<div class="mui-media-body pay_order_group">
+			<div class="pay_order_tit">
+				<span class="toPay" gid="group_{{i}}">付款</span>
+			</div>
+		</div>
+	</li>
+	
+</ul>
+{{/each}}
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	
+	winBind = {
+		init : function(){
+			
+		},
+		toPay : function(){
+			mui('body').on('tap', '.toPay', function(){
+				var orderIds = '';
+				var gid = this.getAttribute('gid');
+				mui('#'+gid+' .order_id.mui-pull-left').each(function(i, item){
+					orderIds = orderIds +","+ this.getAttribute('orderId');
+				});
+				if(orderIds.length>0){
+					orderIds = orderIds.substring(1);
+					var url = 'hmqq-jsweb://localhost/mui/member/HMOrder_payment.html?orderIds='+orderIds;
+					app.pushView(url);
+				}
+			});
+			mui('ul').on('tap', '.order_id', function(){
+				var orderIds = this.getAttribute('orderId');
+				var url = 'hmqq-jsweb://localhost/mui/member/HMOrder_payment.html?orderIds='+orderIds;
+				app.pushView(url);
+			});
+			mui('ul').on('tap', '.order_cancel', function(){
+				var orderId = this.getAttribute('orderId');
+				app.confirm.init({
+					message :  '确认删除该艺术品？',
+					btnArray : ['取消','确认'],
+					callback : function(i){
+						if(i==1){
+							api.my.order.cancel.DATA.orderId = orderId;
+							app.HMARTJsObj(api.my.order.cancel.DATA,'winLoad.cancel');
+						}
+					}
+				});
+			});
+			
+		}
+	}
+	winLoad = {
+		init : function(){
+			api.my.order.list.DATA.other.type = 1;
+			app.HMARTJsObj(api.my.order.list.DATA,'winLoad.list');
+		},
+		list : function(data){
+			api.my.order.list.param = eval('(' + data +')');
+			app.ajax(api.my.order.list,function(data){
+				var html = template('temp-list', data);
+				mui('#list')[0].innerHTML = html;
+				if(data.pageCount > api.my.order.list.DATA.pageIndex){
+					mui(".mui-scroll-wrapper")[0].setAttribute("up",'true');
+				}
+				winBind.toPay();
+				app.DateUtil.initCountdown();
+			});
+		},
+		cancel : function(data){
+			api.my.order.cancel.param = eval('(' + data +')');
+			app.ajax(api.my.order.cancel,function(data){
+				app.toast('删除成功');
+				app.HMARTJsObj(api.my.order.list.DATA,'winLoad.list');
+			});
+		}
+	}
+	
+	function onARTJsObjReady(){
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+		winLoad.init();
+		loadding = false;
+	}
+    
+    function pageRefresh(){
+    		winLoad.init();
+    }
+    Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.list.URL,{"result":"1","message":"加载成功","pageCount":1,"total":2,"data":[{"type":0,"ownerId":"0","shopId":"0","shopName":"翰墨千秋","price":180.0,"remainTime":544844,"orderList":[{"orderId":"1","serialNum":"201610180001","ownerId":1,"image":"/hmqq/artwork-1-26/201610051601016_d36e635a-wh.jpg","artName":"年年有余","artist":"李双彩","artSize":"66x132cm","price":100.0,"freight":0.0,"orderStatus":1,"orderStatusCH":"待支付","remainTime":544844},{"orderId":"8","serialNum":"1610221119230010","ownerId":10,"image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artName":"唐诗","artist":"师忠民","artSize":"70x137cm","price":80.0,"freight":0.0,"orderStatus":1,"orderStatusCH":"待支付","remainTime":544814}]},{"type":1,"ownerId":"0","shopId":"1","shopName":"刘学工作室","price":80.0,"remainTime":544814,"orderList":[{"orderId":"8","serialNum":"1610221119230010","ownerId":10,"image":"/hmqq/artwork-1-26/201610051603007_b88a0b80-wh.jpg","artName":"唐诗","artist":"师忠民","artSize":"70x137cm","price":80.0,"freight":0.0,"orderStatus":1,"orderStatusCH":"待支付","remainTime":544814}]}]});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.cancel.URL,{"result":"1","message":"加载成功","obj":{"ownerType":0,"seller_id":"0","shop_id":"0","shop_name":"翰墨千秋","consignee":{"id":3,"name":"刘学","tel":"17600819708","addr":"东四北大街"},"price":200.0,"freight":0.0,"totalAmount":200.0,"invoice":false,"status":4,"serialNum":"51102915070011","createDate":"2016-10-29 15:07:16","payTime":"2016-10-29 15:07:16","data":[{"orderId":17,"sign":true,"serialNum":"1610291507110017","artWorkOwnerId":17,"artName":"测试山水","image":"/hmqq/artwork-0-0/201610251531039_134e0b0d-wh.jpg","artist":"佚名","artSize":"49*49cm","price":200.0,"orderStatus":2,"orderStatusCH":"支付待确认","refund":1}]}});
+	app.load.mock(function(){});
+	
+</script>
+</body>
+</html>

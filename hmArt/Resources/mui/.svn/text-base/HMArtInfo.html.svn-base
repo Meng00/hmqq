@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>商品详情页</title>
+     <link rel="stylesheet" href="css/swiper.css">
+     <link href="css/mui.css" rel="stylesheet"/> 
+     <link rel="stylesheet" type="text/css" href="css/icons-extra.css" />
+     <link href="css/style.css" rel="stylesheet"/>    
+     <link href="css/previewimage.css" rel="stylesheet"/> 
+     <style>
+     	*{-webkit-user-select: text;}
+     	.Description_txt .p1{-webkit-line-clamp:20;}
+     	.mui-slider .mui-slider-group .mui-slider-item img{width: auto;}
+     	.mui-bar-nav ~ .mui-content{padding-top: 44px;}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style Art_1220">
+		<!--mui-bar-transparent-->
+		<!-- <a class="iconfont mui-icon mui-pull-left">&#xe762;</a> -->
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<!--商品详情栏-->
+			<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted bg_white mui-title color-2d">
+				<a class="mui-control-item mui-active" data-type='1'>商品</a>
+				<a class="mui-control-item artconent" data-type='2'>详情</a>
+			</div>
+		<a class="iconfont mui-icon mui-pull-right" style="font-size: 20px; padding-top: 14px;">&#xe60d;</a>
+	</header>
+	<!--<div class="kind_btn_b order_pay">
+		<button type="reset" class="mui-btn">支付金额<span>￥1900</span>
+		<button type="submit" class="mui-btn">确认支付
+	</div>-->
+	<nav class="mui-bar mui-bar-tab xq_b" style="display: none;">
+		
+	</nav>
+	<div class="mui-content mui-scroll-wrapper" style="padding-bottom: 50px;">
+		<div class="mui-scroll" id="detail"></div>
+	</div>
+</body>
+<script src="js/mui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/template.js"></script>
+<script src="js/template-ext.js"></script>
+<script src="js/mock-min.js"></script>
+<script src="js/mui.zoom.js"></script>
+<script src="js/mui.previewimage.js"></script>
+<script>
+//		mui('.mui-content').each(function(){
+//			this.className = 'mui-content';
+//		});		
+		winLoad = {
+			init : function(){
+				/* 加载数据 */	
+				api.other.sysVersion.DATA.device =  hmqq_device;
+				app.HMARTJsObj(api.other.sysVersion.DATA,'winLoad.getVersion');
+			},
+			createOder : function(data){
+				var json = eval('(' + data +')');
+				if(json.loginStatus == '1'){
+					app.confirm.init({
+						message :  '确认购买？',
+						btnArray : ['取消','确认'],
+						callback : function(i){
+							if(i == 1){
+								api.store.createOder.DATA.id = appParams.ownerId;
+								api.store.createOder.DATA.type = 1;
+								api.store.createOder.DATA.mobile = json.mobile;
+								app.HMARTJsObj(api.store.createOder.DATA,'winLoad.createOderPost'); 
+							}
+						}
+					});
+				}
+			},
+			createOderPost : function(data){
+				api.store.createOder.param = eval('(' + data +')');
+				app.ajax(api.store.createOder,function(data){
+					var url = 'hmqq-jsweb://localhost/mui/member/HMOrder_payment.html?orderIds='+data.obj;
+					app.pushView(url);
+				}, function(data){
+					app.toast(data.message);
+					app.HMARTJsObj(api.store.detail.DATA,'winTemp.detail'); 
+				});
+			},
+			subscribe : function(data){
+				api.store.subscribe.param = eval('(' + data +')');
+				app.ajax(api.store.subscribe,function(data){
+					app.toast('提交成功');
+				});
+			},			
+			shoucang : function(data){
+				api.my.favorite.stowArt.param = eval('(' + data +')');			
+				app.ajax(api.my.favorite.stowArt,function(data){
+					var favorited = mui('.shoucang')[0].getAttribute('favorited');
+					if(favorited == 1){
+						mui('.shoucang')[0].setAttribute('favorited','0');
+						mui('.shoucang')[0].innerHTML = '&#xe602';
+						app.toast('取消成功');
+					}else{
+						mui('.shoucang')[0].setAttribute('favorited','1');
+						app.toast('收藏成功');
+						mui('.shoucang')[0].innerHTML = '&#xe601';
+					}
+				});
+			},getVersion: function(data){
+		        api.other.sysVersion.param = eval('(' + data +')');
+		        app.ajax(api.other.sysVersion,function(data){
+		        	currsign = data.obj.device+'_'+data.obj.version;
+		        	loadJs(config.HOST+'mui/apppage/artinfo_'+currsign+'.js');
+		        })
+		    }			
+		}
+		function onARTJsObjReady() {
+			mui('.mui-scroll-wrapper').scroll({
+				 deceleration:deceleration, //阻尼系数,系数越小滑动越灵敏
+				 indicators: true //是否显示滚动条
+			});
+			//alert('商品ID：'+ );
+			if(typeof(HMARTJsObj) == "undefined"){
+				appParams = {};
+				appParams.ownerId = 14;
+			} 
+			if(appParams.sellerId){
+				api.store.detail.DATA.sellerId = appParams.sellerId;
+			}
+			if(appParams.index){
+				api.store.detail.DATA.index = appParams.index;
+			}
+			api.store.detail.DATA.ownerId = appParams.ownerId;
+			api.my.favorite.stowArt.DATA.ownerId =  appParams.ownerId;
+			api.store.subscribe.DATA.ownerId = appParams.ownerId;
+			winLoad.init();			
+		}
+		
+		function pageRefresh(){
+			winLoad.init();
+			winBind.init();
+		}
+		/* 模拟数据 启动 */
+		
+//		Mock.mock(config.HOST+config.MOCK_KEY+api.store.detail.URL,{"result":"1","message":"加载成功","obj":{"ownerId":6,"code":"161024110006","hits":0,"attention":0,"freight":"0","dispatch":"","artName":"莲中乞芳为清凉 （水墨纸本   有补贴不影响裱）","listImage":"/hmqq/artwork-0-0/201610241141005_c14b2047-wh.jpg","image":"/hmqq/artwork-0-0/201610241141010_c381ab2c.jpg","detailImages":"/hmqq/artwork-0-0/201610241141010_c381ab2c-wh.jpg","artSize":"165x66cm","artist":"梁小然","artCreateTime":"2016年","favorited":true,"type":0,"saleStatus":0}});
+		//Mock.mock(config.HOST+config.MOCK_KEY+api.store.detail.URL,{"result":"1","message":"加载成功","obj":{"ownerId":6,"code":"161024110006","hits":1,"attention":0,"freight":"0","dispatch":"","artName":"莲中乞芳为清凉 （水墨纸本   有补贴不影响裱）","listImage":"/hmqq/artwork-0-0/201610241141005_c14b2047-wh.jpg","image":"/hmqq/artwork-0-0/201610241141010_c381ab2c.jpg","detailImages":"/hmqq/artwork-0-0/201610241141010_c381ab2c-wh.jpg","artSize":"165x66cm","artist":"梁小然","artCreateTime":"2016年","favorited":false,"type":0,"saleStatus":0,"auctions":{"auctionStatus":0,"initPrice":"1600","increment":"20","bail":"0","commisionBuyer":"0","remainTime":48137,"auctionNumber":0,"crruPrice":"1600"}}});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.detail.URL,{"result":"1","message":"加载成功","obj":{"ownerId":18,"code":"161024120018","hits":3,"attention":0,"freight":"0","dispatch":"","artName":"喜上梅梢","listImage":"/hmqq/artwork-0-0/201610241256011_9c5180cb-wh.jpg"
+		,"image":"/hmqq/artwork-0-0/201611161044022_84bfe860.jpg,/hmqq/artwork-0-0/201610241141010_c381ab2c.jpg"
+		,"detailImages":"/hmqq/artwork-0-0/201611161044022_84bfe860-wh.jpg,/hmqq/artwork-0-0/201610241141010_c381ab2c-wh.jpg","artSize":"69x69cm","artist":"崔凤来","artCreateTime":"2016年","favorited":false,"shop":{"shopId":6,"sellerId":28,"name":"测试艺术工作室","logo":"/hmqq/shop/201611061423031_e4077d03-wh.jpg","starLevel":5},"type":1,"saleStatus":0,"fixedPrice":"100","auctions":{"auctionStatus":0,"initPrice":"60","increment":"20","bail":"0","commisionBuyer":"0","remainTime":123100,"auctionNumber":0,"crruPrice":"60"}}});
+		
+		
+		Mock.mock(config.HOST+config.MOCK_KEY+api.my.favorite.stowArt.URL,{"result":"1","message":"加载成功"});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.bidding.URL,{"result":"1","message":"加载成功"});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.agentPrice.URL,{"result":"1","message":"加载成功"});
+		Mock.mock(config.HOST+config.MOCK_KEY+api.store.subscribe.URL,{"result":"1","message":"加载成功"});
+		app.load.mock(function(){});
+	
+</script>
+</html>

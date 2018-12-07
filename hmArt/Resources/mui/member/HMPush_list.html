@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的消息</title>
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link href="../css/style.css" rel="stylesheet"/>
+     <style>
+     	/*.mui-table-view-cell {
+		    overflow: hidden;
+		    padding: 8px 8px 2px;
+		    position: relative;
+		}*/
+		/*.mui-text-right{
+			color: #ACACB4;
+		}*/
+		.mui-card-header{
+			padding: 5px 0px;
+			min-height: auto;
+		}
+     </style>
+</head>
+<body class="bg_f4 pay_che">
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">我的消息</h1>
+	</header>
+	<div class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" id = "list" style="padding-top: 5px;">
+			
+		</div>
+	</div>
+<script type="text/html" id="temp-list">
+{{each data as order i}}
+<div style="text-align: center;padding-top: 5px;">
+	<h5>{{order.send_time}}</h5>
+</div>
+<div class="mui-card">
+	<div class="mui-card-content">
+		<div class="mui-card-content-inner" style="padding: 8px 10px;">
+			<p style="color: #000000;margin-bottom: 0px;">{{order.title}}</p>
+			<p style="margin-bottom: 0px;">{{order.content}}</p>
+		</div>
+	</div>
+	{{if order.url != null && order.url.length > 0}}
+	<div class="mui-card-footer" style="padding: 10px;">
+		<a href="{{order.url}}" class="mui-navigate-right">
+			查看详情
+		</a>
+	</div>
+	{{/if }}
+</div>
+{{/each}}
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	
+	winBind = {
+		init : function(){
+			
+		}
+	}
+	winLoad = {
+		init : function(){
+			app.HMARTJsObj(api.push.list.DATA,'winLoad.list');
+			app.scroll.init({
+				scrollDom : mui('.mui-scroll-wrapper')[0], // 滚动容器
+				up: function(target){
+					/* 获取分页参数 */
+					api.push.list.DATA.pageIndex += 1; //下一页
+					app.HMARTJsObj(api.push.list.DATA,'winLoad.pullUp');
+				}
+			});
+		},
+		getHardwareInfo :function(data){
+			var json = eval('(' + data +')');
+			api.push.list.DATA.other.deviceId = json.deviceId;
+			winLoad.init();
+		},
+		pullUp : function(data){
+			api.push.list.param = eval('(' + data +')');
+			app.ajax(api.push.list,function(data){
+				if(data.data.length > 0){
+					mui('#list')[0].innerHTML += template('temp-list', data);
+					if(data.pageCount > api.push.list.DATA.pageIndex){
+						mui(".mui-scroll-wrapper")[0].setAttribute("up",'true');
+					}
+				}
+			});
+		},
+		list : function(data){
+			api.push.list.param = eval('(' + data +')');
+			app.ajax(api.push.list,function(data){
+				var html = template('temp-list', data);
+				mui('#list')[0].innerHTML = html;
+				if(data.pageCount > api.push.list.DATA.pageIndex){
+					mui(".mui-scroll-wrapper")[0].setAttribute("up",'true');
+				}
+			});
+		}
+	}
+	
+	function onARTJsObjReady(){
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+		app.getHardwareInfo('winLoad.getHardwareInfo');
+	}
+    
+    Mock.mock(config.HOST+config.MOCK_KEY+api.push.list.URL,{"result":"1","message":"加载成功","pageCount":3,"total":1,"data":[{"id":1,"send_time":"10月11 13:02","title":"每周一次限时秒杀场，机会不容错过>>","url":"hmqq-jsweb://localhost/mui/HMSepcial.html","content":"每周五11:00—12:00推出限时秒杀场，极速秒拍，低价夺宝，机会不容错过呦~"},{"id":1,"send_time":"10月11日 13:02","title":"【形与色的交响】油画专场，在这里品味油画的激情与张力>>","image":"","url":"","content":"色彩，是油画的生命；形体，便是油画的基石。4月1日，【形与色的交响】油画专场，带你感受不一样的视觉张力~"}]});
+	app.load.mock(function(){});
+	
+</script>
+</body>
+</html>

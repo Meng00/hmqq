@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>订单详情</title>
+    <link href="../css/mui.css" rel="stylesheet"/> 
+    <link href="../css/style.css" rel="stylesheet"/>
+    <style>
+.btns_abs {position: absolute;right: 10px;bottom: 12px;}	
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">订单详情</h1>		
+	</header>
+	<!--双按钮-->
+	<!--<div class="kind_btn_b order_pay">
+		<button type="button" class="mui-btn mui-text-center" id="cancel">取消申请
+		<button type="submit" class="mui-btn" id="confirm">确认收货
+	</div>-->
+	<!--单按钮-->
+	<nav class="sign-bar mui-bar mui-bar-tab order_btn_b" style="display: none;">
+		<button type="button" class="mui-btn mui-btn-block" style="top:0; padding:0;">确认收货</button>
+	</nav>
+	
+<div class="mui-content">
+	<div id="detial" class="paddingt-5">
+		
+	</div>
+</div>
+
+</body>
+<script type="text/html" id="temp-detial">
+	<div class="limit_group auction_group order_detail">
+		<ul class="mui-table-view mui-table-view-chevron list2">
+			<li class="mui-table-view-cell mui-media h60 clearfix paddingr-0">
+				<div class="mui-media-body">
+					<span class="mui-media-object mui-pull-left mui-icon iconfont color-e60012" style="font-size: 24px;">&#xe615;</span>
+					<p class='mui-ellipsis tit'>{{consignee.name}}<span>{{consignee.tel}}</span></p>
+					<p style="text-indent:0em;padding-left:2.4em;">收货地址：{{consignee.addr}}</p>
+				</div>
+				<i class="mui-pull-right"></i>
+			</li>
+		</ul>
+	</div>
+		<div class="limit_group over_hidd auction_group shop_colle paddingt-5 install_group order_list paddingb-0">
+			{{each data as order}}
+			<ol class="limit_list auction_list colle_logician colle_work clearfix">
+				<li class="clearfix pos_rel">
+					<div class="store_img boutique_img toart" ownerId="{{order.artWorkOwnerId}}"><img src="{{imagePath}}{{order.image}}" onerror="onerror=null;src='images/150.jpg'"/></div>
+					<div class="limit_txt auction_txt store_txt boutique_txt toart" ownerId="{{order.artWorkOwnerId}}">
+						<p class="p1 mui-ellipsis line_1">{{order.artName}}</p>
+						<p>作者<em>{{order.artist}}</em></p>
+						<p>尺寸<em>{{order.artSize}}</em></p>
+						<p class="p3"><span class="color-2d">￥{{order.price}}</span></p>
+					</div>
+					<div class="margintb-0 btns_r btns_abs">
+						{{if order.refund != null}}
+						<!--refund class 不要去掉 没用如何样式的 class 不要去掉-->
+						<span class="refund" id="refund_{{order.orderId}}" orderId="{{order.orderId}}" refund="{{order.refund}}">
+							{{if order.refund == 1}} 
+								申请退款
+							{{else if order.refund == 2}}
+								取消退款
+							{{/if}}
+						</span>
+						{{/if}}
+						{{if order.sign}}
+						<!--<span id="signFor" orderId="{{order.orderId}}">确认收货</span>-->
+						{{/if}}
+					</div>
+				</li>
+			</ol>
+			{{/each}}
+		</div>
+		<div class="limit_group over_hidd auction_group shop_colle install_group order_list paddingt-5 paddingb-0">
+		<ul class="mui-table-view mui-table-view-chevron list3">
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>商品总额<span>￥{{price}}</span></p>					
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>运费<span>￥{{freight}}</span></p>					
+				</div>
+			</li>
+			{{if invoice}}
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>发票税费<span>￥{{invoiceAmount}}</span></p>					
+				</div>
+			</li>
+			{{/if}}
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>优惠券<span>￥{{voucherPrice}}</span></p>					
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>实际付款<span class="color-e60012">￥{{needAmount}}</span></p>					
+				</div>
+			</li>
+		</ul>
+		</div>
+		
+		<div class="limit_group over_hidd auction_group shop_colle install_group order_list paddingt-5 paddingb-0">
+		<ul class="mui-table-view mui-table-view-chevron list3">
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>订单组编号<span>{{serialNum}}</span></p>					
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>下单时间<span>{{createDate}}</span></p>					
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-media clearfix">
+				<div class="mui-media-body margintb-0">
+					<p class='mui-ellipsis tit lineh-50'>支付时间<span>{{payTime}}</span></p>					
+				</div>
+			</li>
+		</ul>
+		</div>
+		<p class="margintb-0 contact_btn" >
+			<!--<a href="tel:4008988518"><span>联系客服</span></a>-->
+		</p>
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+
+	winBind = {
+		init : function(){
+			
+		}
+	}
+		
+	winLoad = {
+		init : function(){
+			app.HMARTJsObj(api.my.order.groupDetial.DATA,'winLoad.detial'); 
+		},
+		detial : function(data){
+			api.my.order.groupDetial.param = eval('(' + data +')');
+			app.ajax(api.my.order.groupDetial,function(data){
+				data.obj.imagePath = data.imagePath;
+				var html = template('temp-detial', data.obj);
+				mui('#detial')[0].innerHTML = html;
+				
+				mui("body").off("tap");
+				mui("nav").off("tap");
+				
+				mui('nav')[0].style.display = 'none';
+				if(data.obj.status == 4){
+					mui('nav')[0].style.display = 'inline';
+					mui('nav').on('tap','.mui-btn-block',function(){
+						api.my.order.signFor.DATA = {};
+						api.my.order.signFor.DATA.groupId = appParams.groupId;
+						app.HMARTJsObj(api.my.order.signFor.DATA,'winLoad.signFor');
+					});
+				}
+				mui('body').on('tap','.refund',function(){
+					api.my.order.refund.DATA.orderId = this.getAttribute('orderId');
+					var refund = this.getAttribute('refund');
+					if(refund == 1){
+						var url = 'remote://mui/HMRefund.html?orderId='+api.my.order.refund.DATA.orderId;
+						app.pushView(url);
+					}else{
+						app.HMARTJsObj(api.my.order.refund.DATA,'winLoad.refund');
+					}
+				});
+				mui('body').on('tap','#signFor',function(){
+					api.my.order.signFor.DATA = {};
+					api.my.order.signFor.DATA.orderId = this.getAttribute('orderId');
+					app.HMARTJsObj(api.my.order.signFor.DATA,'winLoad.signFor');
+				});
+				
+				mui('li').on('tap','.toart',function(){
+				 	var ownerId = this.getAttribute('ownerId');
+					var url = 'hmqq-jsweb://localhost/mui/HMArtInfo.html?ownerId='+ownerId;
+					app.pushView(url);
+				});
+			});
+		},
+		signFor : function(data){
+			api.my.order.signFor.param = eval('(' + data +')');
+			app.ajax(api.my.order.signFor,function(data){
+				app.toast('签收成功');
+				app.HMARTJsObj(api.my.order.groupDetial.DATA,'winLoad.detial');
+			});
+		},
+		refund : function(data){
+			api.my.order.refund.param = eval('(' + data +')');
+			app.ajax(api.my.order.refund,function(data){
+				var span = mui("#refund_"+api.my.order.refund.DATA.orderId)[0];
+				var refund = span.getAttribute('refund');
+				if(refund == 1){
+					span.setAttribute('refund',2);
+					span.innerHTML = '取消退款';
+					app.toast('退款申请已提交');
+				}else if(refund == 2){
+					span.setAttribute('refund',1);
+					span.innerHTML = '申请退款';
+					app.toast('退款申请已取消');
+				}
+			});
+		}
+	}
+
+	function onARTJsObjReady() {
+		if(typeof(HMARTJsObj) == "undefined"){
+			appParams = {};
+			appParams.groupId = "1";
+		} 
+		api.my.order.groupDetial.DATA.groupId = appParams.groupId;
+		api.my.order.signFor.DATA.groupId = appParams.groupId;
+		winLoad.init();
+		winBind.init();
+	}
+	function pageRefresh(){
+		app.HMARTJsObj(api.my.order.groupDetial.DATA,'winLoad.detial'); 
+	}
+	/* 模拟数据 启动 */
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.signFor.URL,{"result":"1","message":"加载成功"});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.groupDetial.URL,{"result":"1","message":"加载成功","obj":{"ownerType":0,"seller_id":"0","shop_id":"0","shop_name":"翰墨千秋","consignee":{"id":3,"name":"刘学","tel":"17600819708","addr":"北京市东城区东四北大街科林文化产业园"},"price":200.0,"freight":0.0,"totalAmount":200.0,"invoice":false,"status":4,"serialNum":"51102915070011","createDate":"2016-10-29 15:07:16","payTime":"2016-10-29 15:07:16","data":[{"orderId":17,"sign":true,"serialNum":"1610291507110017","artWorkOwnerId":17,"artName":"测试山水","image":"/hmqq/artwork-0-0/201610251531039_134e0b0d-wh.jpg","artist":"佚名","artSize":"49*49cm","price":200.0,"orderStatus":2,"orderStatusCH":"支付待确认","refund":1},{"orderId":17,"sign":true,"serialNum":"1610291507110017","artWorkOwnerId":17,"artName":"测试山水","image":"/hmqq/artwork-0-0/201610251531039_134e0b0d-wh.jpg","artist":"佚名","artSize":"49*49cm","price":200.0,"orderStatus":2,"orderStatusCH":"支付待确认","refund":1},{"orderId":17,"sign":true,"serialNum":"1610291507110017","artWorkOwnerId":17,"artName":"测试山水","image":"/hmqq/artwork-0-0/201610251531039_134e0b0d-wh.jpg","artist":"佚名","artSize":"49*49cm","price":200.0,"orderStatus":2,"orderStatusCH":"支付待确认","refund":1},{"orderId":17,"sign":true,"serialNum":"1610291507110017","artWorkOwnerId":17,"artName":"测试山水","image":"/hmqq/artwork-0-0/201610251531039_134e0b0d-wh.jpg","artist":"佚名","artSize":"49*49cm","price":200.0,"orderStatus":2,"orderStatusCH":"支付待确认","refund":1}]}});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.refund.URL,{"result":"1","message":"加载成功","obj":{"ownerType":0,"seller_id":"0","shop_id":"0","shop_name":"翰墨千秋","consignee":{"id":3,"name":"刘学","tel":"17600819708","addr":"北京市东城区东四北大街科林文化产业园"},"price":200.0,"freight":0.0,"totalAmount":200.0,"invoice":false,"status":4,"serialNum":"51102915070011","createDate":"2016-10-29 15:07:16","payTime":"2016-10-29 15:07:16","data":[{"orderId":17,"sign":true,"serialNum":"1610291507110017","artWorkOwnerId":17,"artName":"测试山水","image":"/hmqq/artwork-0-0/201610251531039_134e0b0d-wh.jpg","artist":"佚名","artSize":"49*49cm","price":200.0,"orderStatus":2,"orderStatusCH":"支付待确认","refund":1}]}});
+	app.load.mock(function(){});
+</script>
+</html>

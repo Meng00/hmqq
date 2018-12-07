@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>保证金</title>
+     <link rel="stylesheet" href="../css/swiper.css">
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link rel="stylesheet" type="text/css" href="../css/icons-extra.css" />
+     <link href="../css/style.css" rel="stylesheet"/>
+     <style>
+     	.grey{color: #999;}
+     </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">我的保证金</h1>
+		<!--<a class="mui-icon-right-nav mui-pull-right paddingtb-10 font-14">明细</a>-->
+	</header>
+	
+	<div class="mui-content">
+		<div class="limit_group auction_group install_group paddingb-0">
+			<div class="margin_top" id="du">
+				
+			</div>
+			<div class="margin_top" id="ds">
+				
+			</div>
+			<p class="paddinglr-15 color_666">(申请退还保证金，客服会立即与您取得联系，请保证您手机畅通)</p>
+			<ul class="mui-table-view list1">
+				<li class="mui-table-view-cell clearfix">
+					<a href="hmqq-jsweb://localhost/mui/member/HMHtml.html?type=5&tit=保证金规则" class="mui-navigate-right">
+						保证金使用规则				
+						<i class="mui-pull-right update mui-pull-right head"></i>
+					</a>
+				</li>
+			</ul>
+		</div>	
+	</div>
+
+<script type="text/html" id="temp-du">
+	<div class="p_deposit">
+		VIP保证金 <span class="log">￥{{obj.du}}</span>
+	</div>
+	<div class="margin_sel clearfix">
+		<div class="cz_ll"><span>充值保证金</span></div>
+		{{if obj.du == 0}}
+		<div class="grey"><span>申请退款</span></div>
+		{{else}}
+		<div class="tk_rr"><span>申请退款</span></div>
+		{{/if}}
+	</div>
+</script>
+<script type="text/html" id="temp-ds">
+	<div class="p_deposit">
+		商家信誉保证金 <span class="log">￥{{obj.ds}}</span>
+	</div>
+	<div class="margin_sel clearfix">
+		<div class="cz_ll"><span>充值保证金</span></div>
+		{{if obj.ds == 0}}
+		<div class="grey"><span>申请退款</span></div>
+		{{else}}
+		<div class="tk_rr"><span>申请退款</span></div>
+		{{/if}}
+	</div>
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	var winLoad = {
+		init: function() {
+			app.HMARTJsObj(api.my.deposit.serach.DATA,'winLoad.serach');
+		},
+		serach: function(data) {
+			api.my.deposit.serach.param = eval('(' + data +')');
+			app.ajax(api.my.deposit.serach,function(data){
+				var html = template('temp-du', data);
+				var div = document.createElement("div");
+		　　　　	div.innerHTML = html;
+		　　　　	mui('#du')[0].appendChild(div);
+				mui('#du').on('tap','.log',function(){
+					var url = 'hmqq-jsweb://localhost/mui/member/HMDepositLog.html';
+					app.pushView(url);
+				});
+				mui('#du').on('tap','.cz_ll',function(){
+					var url = 'hmqq-jsweb://localhost/mui/member/HMDepositRechatge.html?type=1';
+					app.pushView(url);
+				});
+				mui('#du').on('tap','.tk_rr',function(){
+					api.my.deposit.refund.DATA.type = 1;
+					app.confirm.init({
+						message :  '确认申请退款？',
+						btnArray : ['取消','确认'],
+						callback : function(i){
+							if(i == 1){
+								app.HMARTJsObj(api.my.deposit.refund.DATA,'winLoad.refund');
+							}
+						}
+					});
+				});
+				mui('#du').on('tap','.grey',function(){
+				  	app.toast('目前您还没有待退VIP保证金');
+				});
+				mui('#ds').on('tap','.grey',function(){
+				  	app.toast('目前您还没有待退商家信誉保证金');
+				});
+				if(data.obj.ds || data.obj.ds == 0){
+					var html = template('temp-ds', data);
+					var div = document.createElement("div");
+			　　　　	div.innerHTML = html;
+			　　　　	mui('#ds')[0].appendChild(div);
+					mui('#ds').on('tap','.log',function(){
+						var url = 'hmqq-jsweb://localhost/mui/member/HMDepositLog2.html';
+						app.pushView(url);
+					});
+					mui('#ds').on('tap','.cz_ll',function(){
+						var url = 'hmqq-jsweb://localhost/mui/member/HMDepositRechatge.html?type=2';
+						app.pushView(url);
+					});
+					mui('#ds').on('tap','.tk_rr',function(){
+						api.my.deposit.refund.DATA.type = 2;
+						app.confirm.init({
+							message :  '确认申请退款？',
+							btnArray : ['取消','确认'],
+							callback : function(i){
+								if(i == 1){
+									app.HMARTJsObj(api.my.deposit.refund.DATA,'winLoad.refund');
+								}
+							}
+						});
+					});
+				}
+			});
+		},
+		refund: function(data) {
+			api.my.deposit.refund.param = eval('(' + data +')');
+			app.ajax(api.my.deposit.refund,function(data){
+				app.toast('申请已提交');
+			});
+		}
+	}
+	function onARTJsObjReady(){
+		winLoad.init();	
+	}
+	
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.deposit.serach.URL,{"result":"1","message":"加载成功","obj":{"du":0,"ds":0}});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.deposit.refund.URL,{"result":"1","message":"加载成功"});
+	app.load.mock(function(){});
+</script>
+</body>
+</html>

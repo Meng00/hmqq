@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>退款/退货</title>
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link href="../css/style.css" rel="stylesheet"/>
+     <style>
+     	/** 卡片间距 **/
+		.mui-table-view {
+		    margin-top: 15px;
+		}
+	    /** 四周边距 **/
+	   /*.mui-table-view-cell::after {
+		    left: 5px 5px 0px 5px;
+   			height: 1px;
+   			left: 0;
+		}*/
+		
+		.mui-table-view-cell:first-child::after {
+		    left: 5px 5px 0px 5px;
+   			height: 1px;
+   			left: 0px;
+		}
+		
+	    .mui-table-view-cell {
+	    		padding: 8px;
+	    }
+		.mui-radio.mui-left input[type="radio"], .mui-checkbox.mui-left input[type="checkbox"] {
+		    left: 5px;
+		    top: 36px;
+		}	    
+		.mui-table-view-cell.mui-radio.mui-left, .mui-table-view-cell.mui-checkbox.mui-left {
+		    padding-left: 12px;
+		}
+	    /** 图片宽度 **/
+	    .mui-table-view .mui-media-object {
+		    height: auto;
+		    max-width: 70px;
+		}
+		
+		.tit {
+		    color: #333;font-size: 14px;
+		}
+		
+		.tit span {
+		    position: absolute;
+		    right: 10px;
+		}
+		
+		.pay_order_group .pay_order_tit {
+	   		 background: #fff none repeat scroll 0 0;
+	    }
+	    
+	    .mui-icon {
+		    font-size: 20px;
+		    margin-right: 5px;
+		}
+		/*.limit_txt p{line-height: 1.8rem;}*/
+     </style>
+</head>
+<body class="bg_f4 pay_che">
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">退款/退货</h1>
+	</header>
+	<div class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" id = "list">
+			
+		</div>
+	</div>
+<script type="text/html" id="temp-list">
+{{each data as order i}}
+<ul class="mui-table-view">
+	<li class="mui-table-view-cell mui-media">
+		<div class="mui-media-body">
+			<!--<span class="mui-icon mui-icon-home"></span>-->
+			<span class='mui-ellipsis tit icon-22'>
+				翰墨千秋
+				<span class="color-e60012">
+					{{order.orderStatusCH}}
+				</span>
+			</span>
+		</div>
+	</li>
+	<li class="order_id mui-table-view-cell mui-checkbox mui-left">
+		<div class="mui-media-object mui-pull-left paddingt-10">
+			<img class="mui-media-object mui-pull-left" src="{{imagePath}}{{order.image}}" onerror="onerror=null;src='images/150.jpg'"/>
+		</div>
+		<div class="mui-media-body pay_order_group">
+			<div class="pay_con clearfix padding-0">
+				<div class="limit_txt auction_txt">
+					<p class="p1">{{order.artName}}</p>
+					<p class="p2">作者<em>{{order.artist}}</em></p>
+					<p class="p2">尺寸<em>{{order.artSize}}</em></p>
+					<p class="p3"><span>￥{{order.price}}</span></p>
+					
+					<div class="margintb-0 btns_r clearfix">
+						{{if order.refund != null}}
+						<!--refund class 不要去掉 没用如何样式的 class 不要去掉-->
+						<span class="refund" id="refund_{{order.orderId}}" orderId="{{order.orderId}}" refund="{{order.refund}}">
+							{{if order.refund == 1}} 
+								申请退款
+							{{else if order.refund == 2}}
+								取消退款
+							{{/if}}
+						</span>
+						{{/if}}
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</li>
+</ul>
+{{/each}}
+</script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template-ext.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	
+	winBind = {
+		init : function(){
+			mui('body').on('tap','.refund',function(){
+				api.my.order.refund.DATA.orderId = this.getAttribute('orderId');
+				app.HMARTJsObj(api.my.order.refund.DATA,'winLoad.refund');
+			});
+		}
+	}
+	winLoad = {
+		init : function(){
+			app.HMARTJsObj(api.my.order.refundList.DATA,'winLoad.list');
+			app.scroll.init({
+				scrollDom : mui('.mui-scroll-wrapper')[0], // 滚动容器
+				up: function(target){
+					/* 获取分页参数 */
+					api.my.order.refundList.DATA.pageIndex += 1; //下一页
+					app.HMARTJsObj(api.my.order.refundList.DATA,'winLoad.pullUp');
+				}
+			});
+		},
+		pullUp : function(data){
+			api.my.order.refundList.param = eval('(' + data +')');
+			app.ajax(api.my.order.refundList,function(data){
+				if(data.data.length > 0){
+					mui('#list')[0].innerHTML += template('temp-list', data);
+					if(data.pageCount > api.my.order.refundList.DATA.pageIndex){
+						mui(".mui-scroll-wrapper")[0].setAttribute("up",'true');
+					}
+					winBind.init();
+				}
+			});
+		},
+		list : function(data){
+			api.my.order.refundList.param = eval('(' + data +')');
+			app.ajax(api.my.order.refundList,function(data){
+				var html = template('temp-list', data);
+				mui('#list')[0].innerHTML = html;
+				if(data.pageCount > api.my.order.refundList.DATA.pageIndex){
+					mui(".mui-scroll-wrapper")[0].setAttribute("up",'true');
+				}
+				winBind.init();
+			});
+		},
+		refund : function(data){
+			api.my.order.refund.param = eval('(' + data +')');
+			app.ajax(api.my.order.refund,function(data){
+				var span = mui("#refund_"+api.my.order.refund.DATA.orderId)[0];
+				var refund = span.getAttribute('refund');
+				app.HMARTJsObj(api.my.order.refundList.DATA,'winLoad.list');
+			});
+		}
+	}
+	
+	function onARTJsObjReady(){
+		mui('.mui-scroll-wrapper').scroll({
+			 deceleration:0.001, //阻尼系数,系数越小滑动越灵敏
+			 indicators: true //是否显示滚动条
+		});
+		winLoad.init();
+		
+	}
+    
+    Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.refundList.URL,{"result":"1","message":"加载成功","pageCount":1,"total":1,"data":[{"orderId":6,"serialNum":"1610301056010007","createDate":"2016-10-30 10:56:01","type":0,"ownerId":7,"artName":"莲中乞芳为清凉","image":"/hmqq/artwork-0-0/201610241140042_a94d610e-wh.jpg","artist":"梁小然","artSize":"165x66cm","price":1000.0,"orderStatus":3,"orderStatusCH":"待发货","refund":2},{"orderId":6,"serialNum":"1610301056010007","createDate":"2016-10-30 10:56:01","type":0,"ownerId":7,"artName":"莲中乞芳为清凉","image":"/hmqq/artwork-0-0/201610241140042_a94d610e-wh.jpg","artist":"梁小然","artSize":"165x66cm","price":1000.0,"orderStatus":3,"orderStatusCH":"待发货","refund":2},{"orderId":6,"serialNum":"1610301056010007","createDate":"2016-10-30 10:56:01","type":0,"ownerId":7,"artName":"莲中乞芳为清凉","image":"/hmqq/artwork-0-0/201610241140042_a94d610e-wh.jpg","artist":"梁小然","artSize":"165x66cm","price":1000.0,"orderStatus":3,"orderStatusCH":"待发货","refund":2}]});
+	Mock.mock(config.HOST+config.MOCK_KEY+api.my.order.refund.URL,{"result":"1","message":"加载成功","obj":{"ownerType":0,"seller_id":"0","shop_id":"0","shop_name":"翰墨千秋","consignee":{"id":3,"name":"刘学","tel":"17600819708","addr":"北京市东城区东四北大街科林文化产业园"},"price":200.0,"freight":0.0,"totalAmount":200.0,"invoice":false,"status":4,"serialNum":"51102915070011","createDate":"2016-10-29 15:07:16","payTime":"2016-10-29 15:07:16","data":[{"orderId":17,"sign":true,"serialNum":"1610291507110017","artWorkOwnerId":17,"artName":"测试山水","image":"/hmqq/artwork-0-0/201610251531039_134e0b0d-wh.jpg","artist":"佚名","artSize":"49*49cm","price":200.0,"orderStatus":2,"orderStatusCH":"支付待确认","refund":1}]}});
+	app.load.mock(function(){});
+	
+</script>
+</body>
+</html>

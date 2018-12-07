@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>设置</title>
+     <link href="../css/mui.css" rel="stylesheet"/> 
+     <link href="../css/style.css" rel="stylesheet"/>
+    <style>
+    		.mui-table-view {
+    			margin-top: 5px;
+    		}
+    		.install_group {
+    			background-color: #efeff4;
+    		}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav top-style">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title color-2d">设置</h1>		
+	</header>	
+	<div class="mui-content">
+		<div class="limit_group auction_group install_group">
+			<ul class="mui-table-view list1">
+				
+				<!--<li class="mui-table-view-cell clearfix">
+					<a id="head" class="mui-navigate-right">用户名修改				
+					<i class="mui-pull-right update mui-pull-right head"></i></a>
+				</li>-->
+				<!--<li class="mui-table-view-cell clearfix" href="hmqq-app://ChgPass">-->
+				<li class="mui-table-view-cell clearfix" href="hmqq-jsweb://localhost/mui/member/HMPass.html">
+					<a class="mui-navigate-right">密码修改</a>
+				</li>
+				<li class="mui-table-view-cell clearfix" href="hmqq-jsweb://localhost/mui/member/HMConsigneeList.html">
+					<a class="mui-navigate-right">我的收货地址</a>
+				</li>
+			</ul>
+			
+			<button type="button" class="mui-btn mui-btn-success btn8_red margint-20">退出登录</button>
+		</div>
+	</div>
+
+<script src="../js/mui.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script src="../js/mock-min.js"></script>
+<script>
+	
+	var winLoad = {
+		init :function(){
+			mui('ul').on('tap','li',function(){
+				var href = this.getAttribute('href');
+				app.pushView(href);
+			});
+			mui('body').on('tap','.mui-btn-success',function(){
+				app.HMARTJsObj(api.my.logout.DATA,'winLoad.signout');				
+			});
+		},
+		signout :function(data){
+			api.my.logout.param = eval('(' + data +')');
+			app.ajax(api.my.logout,function(data){
+                 sessionStorage.setItem('loginToken',"");
+                 localStorage.setItem('loginToken',"");
+                 //winLoad.delCookie('loginToken');
+                 HMARTJsObj.signout(1,'winLoad.Appsignout');
+			});
+		},
+		Appsignout :function(data){			
+			mui.back();
+		},
+		delCookie: function(key) {
+	        var date = new Date();
+	        date.setTime(date.getTime() - 1);
+	        var delValue = getCookie(key);
+	        if (!!delValue) {
+	            document.cookie = key+'='+delValue+';expires='+date.toGMTString();
+	        }
+	    }
+	};
+	function onARTJsObjReady(){
+		winLoad.init();
+	}
+	
+	app.load.mock(function(){});
+	
+</script>
+</body>
+</html>
