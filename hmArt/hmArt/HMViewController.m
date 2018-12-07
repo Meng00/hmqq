@@ -274,6 +274,7 @@
     NSURL *url = navigationAction.request.URL;
     NSString *scheme = [url scheme];
     NSLog(@"url: %@", [url absoluteString]);
+    
     if ([scheme isEqualToString:@"appaction"]) {
         
         decisionHandler(WKNavigationActionPolicyCancel);
@@ -290,6 +291,10 @@
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }else if([[url path] isEqualToString:@"/art-interface/mui/HMHome.html"]){
+        [self selectedToClose];
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }else if([[url path] isEqualToString:@"/art-interface/mui/HMHome.do"]){
         [self selectedToClose];
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
