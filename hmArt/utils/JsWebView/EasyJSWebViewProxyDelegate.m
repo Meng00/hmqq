@@ -174,10 +174,19 @@ return EasyJS.call(obj, method, Array.prototype.slice.call(arguments));\
     if (!webView.isLoading) {
         NSString *currentURL = [webView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
         NSLog(@"currentURL: %@", currentURL);
+
         if([currentURL hasPrefix:@"file:"]){
             [webView stringByEvaluatingJavaScriptFromString:@"javascript:onARTJsObjReady()"];
         }else{
             [webView stringByEvaluatingJavaScriptFromString:@"javascript:onARTJsObjReady2()"];
+        }
+        
+        if ([currentURL isEqualToString:@"https://app.4008988518.com/art-interface/mui/HMHome.html"]) {
+            UIViewController * topVC = [(UITabBarController *)[[[UIApplication sharedApplication] keyWindow] rootViewController] selectedViewController];
+            if ([topVC isKindOfClass:[UINavigationController class]]) {
+                UINavigationController * naviVC = (UINavigationController *)topVC;
+                [naviVC popViewControllerAnimated:YES];
+            }
         }
     }
     //    NSString *jsToGetHTMLSource = @"document.getElementsByTagName('html')[0].innerHTML";
@@ -271,7 +280,6 @@ return EasyJS.call(obj, method, Array.prototype.slice.call(arguments));\
     if ([self.realDelegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [self.realDelegate webViewDidStartLoad:webView];
     }
-    
     
 }
 
