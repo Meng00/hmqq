@@ -13,6 +13,9 @@
 #import <AlipaySDK/AlipaySDK.h>
 #import "LCJsonUtil.h"
 
+@interface HMJSBaseView ()
+@end
+
 @implementation HMJSBaseView
 
 - (void)viewDidLoad
@@ -415,8 +418,6 @@
     
     LCActionSheet *actionSheet = [[LCActionSheet alloc] initWithTitle:title phone:phone showPhoneNumber:show  type:service name:service cancelButtonTitle:@"取消" okButtonTitle:@"确定"];
     [actionSheet showPhonecall:self.view];
-    
-    
 }
 
 -(void) sendSms:(NSString *)content toMobile:(NSString *)mobile
@@ -539,14 +540,34 @@
     UIImage *image = [UIImage imageWithData:data];
     UIImageWriteToSavedPhotosAlbum(image, self, nil, nil);
 }
+- (NSArray *)location:(NSString *)func {
+//    if ([CLLocationManager locationServicesEnabled]) {
+//        _locationmanager = [[CLLocationManager alloc]init];
+//        _locationmanager.delegate = self;
+//        [_locationmanager requestAlwaysAuthorization];
+//        [_locationmanager requestWhenInUseAuthorization];
+//
+//        //设置寻址精度
+//        _locationmanager.desiredAccuracy = kCLLocationAccuracyBest;
+//        _locationmanager.distanceFilter = 5.0;
+//        [_locationmanager startUpdatingLocation];
+//    }else{
+//        //提示用户 打开定位
+//
+//
+//    }
+}
 
-
+- (void)start:(NSString *)log Navi:(NSString *)lat {
+    
+}
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     //self.navigationController.navigationBarHidden = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
-}   
+}
+
 
 @end
 

@@ -43,7 +43,7 @@
     [_scrollView setContentSize:CGSizeMake(rect.size.width, 200)];
     self.inputform = _scrollView;
     [self addInput:_mobileText sequence:0 name:@"手机号码"];
-    [self addInput:_pwdText sequence:1 name:@"密码"];
+    [self addInput:_pwdText sequence:1 name:@"验证码"];
     [self addInput:_proxyCodeText sequence:2 name:@"区域代码"];
     
     _canSendAuthCode = YES;
@@ -203,7 +203,7 @@
 
     if (_stopCountDown || tShow <= 0)  {
         _canSendAuthCode = YES;
-        [_smsButton setTitle:@"获取短信密码" forState:UIControlStateNormal];
+        [_smsButton setTitle:@"获取验证码" forState:UIControlStateNormal];
         if ([_timer isValid]) {
             [_timer invalidate];
             _timer = nil;

@@ -3705,7 +3705,9 @@ static NSOperationQueue *sharedQueue = nil;
 		[connectionsLock lock];
 		runningRequestCount++;
 		if (shouldUpdateNetworkActivityIndicator) {
-			[[self class] showNetworkActivityIndicator];
+            if ([[NSThread currentThread] isMainThread]) {
+                [[self class] showNetworkActivityIndicator];
+            }
 		}
 		[connectionsLock unlock];
 
@@ -4733,7 +4735,9 @@ static NSOperationQueue *sharedQueue = nil;
 + (void)showNetworkActivityIndicator
 {
 #if TARGET_OS_IPHONE
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    if ([[NSThread currentThread] isMainThread]) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    }
 #endif
 }
 

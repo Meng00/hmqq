@@ -231,14 +231,14 @@
     } else {
         _currentIndex = tabBarController.selectedIndex;
     }
-    // 添加转换视图的动画效果
-    CATransition *ani = [CATransition animation];
-    [ani setDuration:0.3f];
-    [ani setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
-    [ani setType:kCATransitionMoveIn];
-    [ani setSubtype:kCATransitionFromTop];
-    //[ani setSubtype:kCATransitionFromRight];
-    [tabBarController.view.layer addAnimation:ani forKey:@"switch"];
+//    // 添加转换视图的动画效果
+//    CATransition *ani = [CATransition animation];
+//    [ani setDuration:0.3f];
+//    [ani setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+//    [ani setType:kCATransitionMoveIn];
+//    [ani setSubtype:kCATransitionFromTop];
+//    //[ani setSubtype:kCATransitionFromRight];
+//    [tabBarController.view.layer addAnimation:ani forKey:@"switch"];
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController

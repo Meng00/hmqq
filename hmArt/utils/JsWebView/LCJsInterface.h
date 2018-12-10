@@ -19,7 +19,7 @@
 - (void)login:(EasyJSDataFunction*) func;
 - (void)signout:(NSString*) backurl;
 - (void)sendSms:(NSString *)content toMobile:(NSString *)mobile;
-- (void)locate:(NSNumber *)reverseGeo func:(EasyJSDataFunction *)func;
+- (NSArray *)location:(NSString * )func;
 - (void)scanQrcode:(EasyJSDataFunction*) func;
 - (void)shakeMotion:(EasyJSDataFunction*) func;
 - (void)openUrl:(NSString *)url inAPP:(BOOL)isIn;

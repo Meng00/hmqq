@@ -9,6 +9,15 @@
 #import "LCJsInterface.h"
 #import "LCDESCoder.h"
 #import "HMUtility.h"
+#import <CoreLocation/CoreLocation.h>
+
+
+@interface LCJsInterface ()<CLLocationManagerDelegate>
+{
+    CLLocationManager * _locationmanager;
+    NSString * _locationCallback;
+}
+@end
 
 @implementation LCJsInterface
 
@@ -191,6 +200,27 @@
  **/
 - (NSString *)myLocation:(NSString *)callback
 {
+//    [self.delegate location:callback];
+    
+//    if ([CLLocationManager locationServicesEnabled]) {
+//        _locationmanager = [[CLLocationManager alloc]init];
+//        _locationmanager.delegate = self;
+//        [_locationmanager requestAlwaysAuthorization];
+//        [_locationmanager requestWhenInUseAuthorization];
+//
+//        //设置寻址精度
+//        _locationmanager.desiredAccuracy = kCLLocationAccuracyBest;
+//        _locationmanager.distanceFilter = 5.0;
+//        [_locationmanager startUpdatingLocation];
+//
+//        _locationCallback = callback;
+//
+//    }else{
+//        //提示用户 打开定位
+//
+//
+//    }
+
     NSString *result = @"{result:\"1\",message:\"\"}";
     
     return result;
@@ -392,4 +422,26 @@
         [func executeWithParam:@"true"];
     }
 }
+//#pragma MARK CLLocationManagerDelegate Methods
+//- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+//
+//    CLLocation *currLocation = [locations lastObject];
+//    NSLog(@"经度=%f 纬度=%f 高度=%f", currLocation.coordinate.latitude, currLocation.coordinate.longitude, currLocation.altitude);
+//
+//    if (_locationCallback) {
+//        EasyJSDataFunction* func = [[EasyJSDataFunction alloc] initWithWebView:self.jsWebView];
+//        func.funcID = _locationCallback;
+//
+//        NSMutableDictionary *ret = [[NSMutableDictionary alloc] initWithCapacity: 2];
+//        [ret setValue:@"1" forKey:@"result"];
+//        [ret setValue:@"" forKey:@"message"];
+//        [ret setValue:@(currLocation.coordinate.longitude) forKey:@"longitude"];
+//        [ret setValue:@(currLocation.coordinate.latitude) forKey:@"latitude"];
+//
+//        [func executeWithParam:[ret JSONString]];
+//    }
+//}
+//- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+//    //定位失败 查看原因
+//}
 @end

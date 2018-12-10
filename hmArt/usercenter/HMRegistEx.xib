@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -48,7 +48,7 @@
                                     </constraints>
                                 </view>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gaZ-5G-DuE">
-                                    <rect key="frame" x="62.5" y="52" width="250" height="50"/>
+                                    <rect key="frame" x="102.5" y="52" width="250" height="50"/>
                                     <color key="backgroundColor" white="0.85483886799999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="E8T-iX-8HT"/>
@@ -57,19 +57,19 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="短信密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pPU-KS-WHY">
-                                    <rect key="frame" x="62.5" y="112" width="125" height="50"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="验证码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pPU-KS-WHY">
+                                    <rect key="frame" x="102.5" y="112" width="125" height="50"/>
                                     <color key="backgroundColor" white="0.85483886799999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" secureTextEntry="YES"/>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dud-lD-q27">
-                                    <rect key="frame" x="222.5" y="112" width="90" height="50"/>
+                                    <rect key="frame" x="262.5" y="112" width="90" height="50"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="90" id="vTo-IE-VXV"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                    <state key="normal" title="获取短信密码" backgroundImage="btn_border.png">
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title="获取验证码" backgroundImage="btn_border.png">
                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
@@ -78,13 +78,31 @@
                                     </connections>
                                 </button>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="4位区域代码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dY2-tD-h23">
-                                    <rect key="frame" x="62.5" y="172" width="250" height="50"/>
+                                    <rect key="frame" x="102.5" y="172" width="250" height="50"/>
                                     <color key="backgroundColor" white="0.85483886799999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="手机号码" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Noc-qB-zly">
+                                    <rect key="frame" x="10" y="59" width="87" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="短信验证码" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="laT-ly-oiv">
+                                    <rect key="frame" x="10" y="119" width="87" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="区域代码" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ft0-b9-Q47">
+                                    <rect key="frame" x="10" y="179" width="76.5" height="36"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kfb-lX-bh3">
-                                    <rect key="frame" x="62.5" y="252" width="250" height="40"/>
+                                    <rect key="frame" x="62.5" y="257" width="250" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="svs-xv-x7o"/>
                                     </constraints>
@@ -103,25 +121,37 @@
                                 <constraint firstAttribute="height" constant="400" id="2u3-sp-B1R"/>
                                 <constraint firstItem="pPU-KS-WHY" firstAttribute="height" secondItem="gaZ-5G-DuE" secondAttribute="height" id="3DG-2v-dtY"/>
                                 <constraint firstItem="dud-lD-q27" firstAttribute="top" secondItem="pPU-KS-WHY" secondAttribute="top" id="58N-FQ-1FY"/>
-                                <constraint firstItem="gaZ-5G-DuE" firstAttribute="centerX" secondItem="rcO-K2-IhN" secondAttribute="centerX" id="5f4-05-A8r"/>
+                                <constraint firstItem="gaZ-5G-DuE" firstAttribute="centerX" secondItem="rcO-K2-IhN" secondAttribute="centerX" constant="40" id="5f4-05-A8r"/>
+                                <constraint firstItem="ft0-b9-Q47" firstAttribute="leading" secondItem="laT-ly-oiv" secondAttribute="leading" id="7HQ-Zf-bSF"/>
                                 <constraint firstItem="dY2-tD-h23" firstAttribute="centerX" secondItem="gaZ-5G-DuE" secondAttribute="centerX" id="Abm-Xb-SVP"/>
                                 <constraint firstItem="pPU-KS-WHY" firstAttribute="leading" secondItem="gaZ-5G-DuE" secondAttribute="leading" id="B6D-ki-f1S"/>
+                                <constraint firstItem="laT-ly-oiv" firstAttribute="height" secondItem="Noc-qB-zly" secondAttribute="height" id="EZa-b0-YTc"/>
                                 <constraint firstItem="dud-lD-q27" firstAttribute="height" secondItem="pPU-KS-WHY" secondAttribute="height" id="Ing-a7-Rj2"/>
+                                <constraint firstItem="ft0-b9-Q47" firstAttribute="centerY" secondItem="dY2-tD-h23" secondAttribute="centerY" id="KeK-Q9-xhg"/>
                                 <constraint firstItem="dY2-tD-h23" firstAttribute="width" secondItem="gaZ-5G-DuE" secondAttribute="width" id="Kgi-sM-Mxu"/>
+                                <constraint firstItem="laT-ly-oiv" firstAttribute="leading" secondItem="kAG-8m-vHg" secondAttribute="leading" id="KkZ-Zr-gkM"/>
                                 <constraint firstItem="kAG-8m-vHg" firstAttribute="top" secondItem="rcO-K2-IhN" secondAttribute="top" constant="11" id="NYP-Bw-weM"/>
                                 <constraint firstItem="dY2-tD-h23" firstAttribute="height" secondItem="gaZ-5G-DuE" secondAttribute="height" id="Pjr-F2-yIN"/>
-                                <constraint firstItem="kfb-lX-bh3" firstAttribute="centerX" secondItem="gaZ-5G-DuE" secondAttribute="centerX" id="RKz-Rj-1Wg"/>
+                                <constraint firstItem="laT-ly-oiv" firstAttribute="top" secondItem="Noc-qB-zly" secondAttribute="bottom" constant="24" id="QEP-ZX-8Db"/>
+                                <constraint firstItem="kfb-lX-bh3" firstAttribute="centerX" secondItem="gaZ-5G-DuE" secondAttribute="centerX" constant="-40" id="RKz-Rj-1Wg"/>
+                                <constraint firstItem="laT-ly-oiv" firstAttribute="width" secondItem="Noc-qB-zly" secondAttribute="width" id="Tqd-zU-qd9"/>
                                 <constraint firstItem="PY3-h6-ySo" firstAttribute="leading" secondItem="rcO-K2-IhN" secondAttribute="leading" id="U4N-Ek-dLL"/>
                                 <constraint firstItem="pPU-KS-WHY" firstAttribute="width" secondItem="gaZ-5G-DuE" secondAttribute="width" multiplier="0.5" id="Wi7-ej-BfN"/>
                                 <constraint firstItem="PY3-h6-ySo" firstAttribute="top" secondItem="kAG-8m-vHg" secondAttribute="bottom" constant="5" id="XqB-HL-Q6X"/>
                                 <constraint firstItem="dud-lD-q27" firstAttribute="trailing" secondItem="gaZ-5G-DuE" secondAttribute="trailing" id="ZGH-iP-DiA"/>
+                                <constraint firstItem="Noc-qB-zly" firstAttribute="centerY" secondItem="gaZ-5G-DuE" secondAttribute="centerY" id="djQ-85-1vW"/>
+                                <constraint firstItem="gaZ-5G-DuE" firstAttribute="leading" secondItem="Noc-qB-zly" secondAttribute="trailing" constant="5.5" id="dl1-SP-qgm"/>
+                                <constraint firstItem="laT-ly-oiv" firstAttribute="leading" secondItem="Noc-qB-zly" secondAttribute="leading" id="eOt-lZ-LI7"/>
                                 <constraint firstItem="pPU-KS-WHY" firstAttribute="top" secondItem="gaZ-5G-DuE" secondAttribute="bottom" constant="10" id="g9f-JP-Tlh"/>
                                 <constraint firstItem="kfb-lX-bh3" firstAttribute="width" secondItem="gaZ-5G-DuE" secondAttribute="width" id="hgi-KP-bAs"/>
+                                <constraint firstItem="laT-ly-oiv" firstAttribute="centerY" secondItem="pPU-KS-WHY" secondAttribute="centerY" id="htg-px-MId"/>
+                                <constraint firstItem="ft0-b9-Q47" firstAttribute="height" secondItem="laT-ly-oiv" secondAttribute="height" id="hwC-MU-Sub"/>
                                 <constraint firstItem="dY2-tD-h23" firstAttribute="top" secondItem="dud-lD-q27" secondAttribute="bottom" constant="10" id="iLy-hQ-yPB"/>
                                 <constraint firstItem="kAG-8m-vHg" firstAttribute="leading" secondItem="rcO-K2-IhN" secondAttribute="leading" constant="10" id="iX6-F9-rGU"/>
                                 <constraint firstItem="PY3-h6-ySo" firstAttribute="width" secondItem="rcO-K2-IhN" secondAttribute="width" id="pMB-2D-Nt8"/>
-                                <constraint firstItem="kfb-lX-bh3" firstAttribute="top" secondItem="dY2-tD-h23" secondAttribute="bottom" constant="30" id="q0Y-8R-Mki"/>
+                                <constraint firstItem="kfb-lX-bh3" firstAttribute="top" secondItem="dY2-tD-h23" secondAttribute="bottom" constant="35" id="q0Y-8R-Mki"/>
                                 <constraint firstItem="gaZ-5G-DuE" firstAttribute="top" secondItem="PY3-h6-ySo" secondAttribute="bottom" constant="14" id="tv0-kL-fL5"/>
+                                <constraint firstItem="dY2-tD-h23" firstAttribute="leading" secondItem="ft0-b9-Q47" secondAttribute="trailing" constant="16" id="ylH-8G-lto"/>
                             </constraints>
                         </view>
                     </subviews>
