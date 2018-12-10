@@ -15,17 +15,17 @@ svn:wc:ra_dav:version-url
 V 52
 /svn/!svn/ver/1745/51art/assets/mui/HMStoreNews.html
 END
-HMStore.html
-K 25
-svn:wc:ra_dav:version-url
-V 48
-/svn/!svn/ver/2059/51art/assets/mui/HMStore.html
-END
 .project
 K 25
 svn:wc:ra_dav:version-url
 V 44
 /svn/!svn/ver/8024/51art/assets/mui/.project
+END
+HMStore.html
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/2059/51art/assets/mui/HMStore.html
 END
 HMSeckillArt.html
 K 25
@@ -51,17 +51,17 @@ svn:wc:ra_dav:version-url
 V 60
 /svn/!svn/ver/1053/51art/assets/mui/HMStoreNews-content.html
 END
-HMArtInfo.html
-K 25
-svn:wc:ra_dav:version-url
-V 50
-/svn/!svn/ver/8054/51art/assets/mui/HMArtInfo.html
-END
 HMAuction.html
 K 25
 svn:wc:ra_dav:version-url
 V 50
 /svn/!svn/ver/2096/51art/assets/mui/HMAuction.html
+END
+HMArtInfo.html
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/8054/51art/assets/mui/HMArtInfo.html
 END
 HMStore-content.html
 K 25
@@ -69,17 +69,17 @@ svn:wc:ra_dav:version-url
 V 56
 /svn/!svn/ver/4983/51art/assets/mui/HMStore-content.html
 END
-MapTest0.html
-K 25
-svn:wc:ra_dav:version-url
-V 49
-/svn/!svn/ver/1046/51art/assets/mui/MapTest0.html
-END
 HMStoreInfo.html
 K 25
 svn:wc:ra_dav:version-url
 V 52
 /svn/!svn/ver/8024/51art/assets/mui/HMStoreInfo.html
+END
+MapTest0.html
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/1046/51art/assets/mui/MapTest0.html
 END
 HMArtInfo-content.html
 K 25
@@ -133,7 +133,7 @@ HMArtList.html
 K 25
 svn:wc:ra_dav:version-url
 V 50
-/svn/!svn/ver/8024/51art/assets/mui/HMArtList.html
+/svn/!svn/ver/8379/51art/assets/mui/HMArtList.html
 END
 HMMain.html
 K 25
@@ -151,7 +151,7 @@ HMMy.html
 K 25
 svn:wc:ra_dav:version-url
 V 45
-/svn/!svn/ver/8026/51art/assets/mui/HMMy.html
+/svn/!svn/ver/8377/51art/assets/mui/HMMy.html
 END
 HMSeckill.html
 K 25

@@ -441,10 +441,12 @@
     }else if([scheme isEqualToString:@"hmqq-mui"]){
         NSString *httpUrl=[url absoluteString];
         NSString *host = [url host];
+        //返回页面必经之方式
         if([host isEqualToString:@"goBack"]){
             UINavigationController *navController = (UINavigationController *)self.rootController.selectedViewController;
             [navController popViewControllerAnimated:YES];
         }else{
+            
             HMViewController *webVC = [HMViewController new];
             //webVC.urlString = @"http://47.95.67.213/pitaya/api/authorize.htm";
             webVC.urlString =[httpUrl stringByReplacingOccurrencesOfString:@"hmqq-mui" withString: HM_SYS_SERVER_scheme];

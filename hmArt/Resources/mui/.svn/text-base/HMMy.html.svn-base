@@ -49,6 +49,7 @@
 		.mui-grid-view.mui-grid-9 .mui-table-view-cell > a:not(.mui-btn) {padding: 0; }
 		.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {color: #000000;font-size: 12px; margin-top: 10px;}
 		.mui-grid-9 img{ width: 30px; padding-top: 5px; }
+		.hidden{display: none !important;}
 	</style>
 </head>
 <body>
@@ -134,7 +135,7 @@
 					<img class="mui-icon" src="images/mb_6.png" />
 					<div class="mui-media-body">我的发布</div>
 	            </li>-->
-	            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" href="remote://mui/HMStoreMap.html" >
+	            <li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3 hidden" href="remote://mui/HMStoreMap.html" >
 					<img class="mui-icon" src="images/mb_9.png" />
 					<div class="mui-media-body">周边店铺</div>
 	            </li>

@@ -449,9 +449,9 @@ header.art_1226 .bdb_1{border-bottom: 1px solid #eee;}
 					winTemp.setListData(data);
 					//var html = template('temp-search_all', data);
 					//mui('#search_all')[0].innerHTML += html;
-					var div = document.createElement("div");
-				　　	div.innerHTML = html;
-				　　	mui('#search_all')[0].appendChild(div);
+//					var div = document.createElement("div");
+//				　　	div.innerHTML = html;
+//				　　	mui('#search_all')[0].appendChild(div);
 				
 					if(data.pageCount > api.store.search.DATA.pageIndex){
 						mui("#offCanvasContentScroll")[0].setAttribute("up",'true');
@@ -465,7 +465,9 @@ header.art_1226 .bdb_1{border-bottom: 1px solid #eee;}
 						if(typeof(appParams) != "undefined" && appParams != null && appParams.sellerId){
 							data.sellerId = appParams.sellerId;
 						} 
- 						winTemp.setListData(data);
+						mui('#search_all')[0].innerHTML = '';
+ 						mui('#offCanvasContentScroll').scroll().scrollTo(0,0,100);
+						winTemp.setListData(data);
 						if(data.total == 0){
 							mui('#search_all')[0].innerHTML = '<div class="nogoods">亲~  非常抱歉，没有符合规则作品！逛逛其他的吧。</div>'
 							winBind.toArtInfo();
