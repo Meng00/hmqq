@@ -181,7 +181,7 @@ return EasyJS.call(obj, method, Array.prototype.slice.call(arguments));\
             [webView stringByEvaluatingJavaScriptFromString:@"javascript:onARTJsObjReady2()"];
         }
         
-        if ([currentURL isEqualToString:@"https://app.4008988518.com/art-interface/mui/HMHome.html"]) {
+        if ([currentURL rangeOfString:@"/art-interface/mui/HMHome.html"].location != NSNotFound) {
             UIViewController * topVC = [(UITabBarController *)[[[UIApplication sharedApplication] keyWindow] rootViewController] selectedViewController];
             if ([topVC isKindOfClass:[UINavigationController class]]) {
                 UINavigationController * naviVC = (UINavigationController *)topVC;
