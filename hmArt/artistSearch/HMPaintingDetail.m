@@ -261,15 +261,17 @@
     [_pictureImage load];
     _titleLabel.text = [_paintingInfo objectForKey:@"name"];
     
+    CGFloat labWodth = 350;
+    
     CGFloat offsetY = 0;
-    UILabel *labelAuthor = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, 300, 21)];
+    UILabel *labelAuthor = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, labWodth, 21)];
     labelAuthor.backgroundColor = [UIColor clearColor];
     labelAuthor.font = [UIFont systemFontOfSize:14.0];
     labelAuthor.text = [NSString stringWithFormat:@"作       者：%@", [_paintingInfo objectForKey:@"artist"]];
     [_contentView addSubview:labelAuthor];
     offsetY += 21;
     
-    UILabel *labelSize = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, 300, 21)];
+    UILabel *labelSize = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, labWodth, 21)];
     labelSize.backgroundColor = [UIColor clearColor];
     labelSize.font = [UIFont systemFontOfSize:14.0];
     NSString *size = [_paintingInfo objectForKey:@"size"];
@@ -277,7 +279,7 @@
     [_contentView addSubview:labelSize];
     offsetY += 21;
     
-    UILabel *labelCreateTime = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, 300, 21)];
+    UILabel *labelCreateTime = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, labWodth, 21)];
     labelCreateTime.backgroundColor = [UIColor clearColor];
     labelCreateTime.font = [UIFont systemFontOfSize:14.0];
     labelCreateTime.text = [NSString stringWithFormat:@"创作时间：%@", [_paintingInfo objectForKey:@"createDate"]];
@@ -287,7 +289,7 @@
     NSInteger pictureType = [[_paintingInfo objectForKey:@"type"] integerValue];
     NSString *price = [HMUtility getPrice:[_paintingInfo objectForKey:@"price"] pictureType:pictureType];
     if (price.length > 0) {
-        UILabel *dealPrice = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, 300, 21)];
+        UILabel *dealPrice = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, labWodth, 21)];
         dealPrice.backgroundColor = [UIColor clearColor];
         dealPrice.font = [UIFont systemFontOfSize:14.0];
         if (pictureType == 2) {
@@ -300,7 +302,7 @@
     }
     
     if (pictureType == 2) {//已售作品，增加显示出售日期
-        UILabel *dealSellDate = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, 300, 21)];
+        UILabel *dealSellDate = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, labWodth, 21)];
         dealSellDate.backgroundColor = [UIColor clearColor];
         dealSellDate.font = [UIFont systemFontOfSize:14.0];
         dealSellDate.text = [NSString stringWithFormat:@"售出日期：%@", [_paintingInfo objectForKey:@"sellDate"]];
@@ -310,14 +312,14 @@
     
     NSString *desc = [HMUtility getString:[_paintingInfo objectForKey:@"description"]];
     if (desc.length > 0) {
-        UILabel *labelDescTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, 300, 21)];
+        UILabel *labelDescTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, offsetY, labWodth, 21)];
         labelDescTitle.backgroundColor = [UIColor clearColor];
         labelDescTitle.font = [UIFont systemFontOfSize:14.0];
         labelDescTitle.text = @"简       介：";
         [_contentView addSubview:labelDescTitle];
         offsetY += 21;
         
-        UILabel *labelDesc = [[UILabel alloc] initWithFrame:CGRectMake(10, offsetY, 295, 21)];
+        UILabel *labelDesc = [[UILabel alloc] initWithFrame:CGRectMake(10, offsetY, labWodth, 21)];
         labelDesc.backgroundColor = [UIColor clearColor];
         labelDesc.font = [UIFont systemFontOfSize:14.0];
         labelDesc.numberOfLines = 0;
@@ -333,7 +335,7 @@
     offsetY += 15;
     if (pictureType != 2) {
         UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [callButton setFrame:CGRectMake(35, offsetY, 240, 30)];
+        [callButton setFrame:CGRectMake(50, offsetY, 240, 30)];
         [callButton setBackgroundImage:[UIImage imageNamed:@"btn_bg_brown.png"] forState:UIControlStateNormal];
         [callButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [callButton setTitle:@"我要咨询购买" forState:UIControlStateNormal];
@@ -341,8 +343,8 @@
         [_contentView addSubview:callButton];
         offsetY += 35;
     }
-    
-    [_scrollView setContentSize:CGSizeMake(320, 225 + offsetY)];
+    [_contentView setFrame:CGRectMake(_contentView.frame.origin.x, _contentView.frame.origin.y, self.view.frame.size.width, _contentView.frame.origin.y+offsetY+10)];
+    [_scrollView setContentSize:_contentView.frame.size];
     
 }
 
@@ -355,9 +357,9 @@
     }else{
         [call appendString:HM_SYS_CUSTOM_SERVICE_PHONE];
     }
-    NSString *name = [NSString stringWithFormat:@"致电%@咨询购买？", call];
+    NSString *name = [NSString stringWithFormat:@"致电咨询购买"];
     
-    LCActionSheet *actionSheet = [[LCActionSheet alloc] initWithTitle:name phone:call type:0 name:@"销售咨询" cancelButtonTitle:@"取消" okButtonTitle:@"确定"];
+    LCActionSheet *actionSheet = [[LCActionSheet alloc] initWithTitle:name phone:call type:0 name:nil cancelButtonTitle:@"取消" okButtonTitle:@"确定"];
     [actionSheet showPhonecall:self.tabBarController.tabBar];
     
 }
