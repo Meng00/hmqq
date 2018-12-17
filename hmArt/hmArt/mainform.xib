@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -65,21 +65,6 @@
                         </viewController>
                     </viewControllers>
                 </navigationController>
-                <navigationController title="火龙果" nibName="HMStore" definesPresentationContext="YES" hidesBarsWhenVerticallyCompact="YES" id="13">
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" tag="4" title="火龙果" image="tab_ico_4.png" id="17"/>
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="14">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </navigationBar>
-                    <viewControllers>
-                        <viewController title="火龙果" nibName="HMStore" id="15" customClass="HMStore">
-                            <extendedEdge key="edgesForExtendedLayout"/>
-                            <navigationItem key="navigationItem" title="火龙果" id="16"/>
-                        </viewController>
-                    </viewControllers>
-                </navigationController>
                 <navigationController title="我的" nibName="HMMy" definesPresentationContext="YES" id="fKi-s8-fYW">
                     <tabBarItem key="tabBarItem" tag="5" title="我的" image="tab_ico_5.png" id="ktt-QM-gF3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WcR-Aa-MZk">
@@ -104,7 +89,6 @@
         <image name="tab_ico_1.png" width="30" height="30"/>
         <image name="tab_ico_2.png" width="30" height="30"/>
         <image name="tab_ico_3.png" width="30" height="30"/>
-        <image name="tab_ico_4.png" width="30" height="30"/>
         <image name="tab_ico_5.png" width="30" height="30"/>
     </resources>
 </document>
